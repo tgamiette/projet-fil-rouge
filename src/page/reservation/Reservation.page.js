@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import events from './events.js'
 
 export const Reservation = () => {
 
@@ -10,7 +12,7 @@ export const Reservation = () => {
    <>
     <h1>Calendars</h1>
     <div className="calendar-container">
-      <Calendar onChange={setDate} value={date}/>
+      <MyCalendar />
     </div>
 
     <div className="selected-date">
@@ -18,4 +20,14 @@ export const Reservation = () => {
     </div>
   </>
  )
+}
+
+const MyCalendar = props => {
+  // or globalizeLocalizer
+  const localizer = momentLocalizer(moment);
+  return(
+    <div className="calendar-container">
+      <Calendar localizer={localizer} events={events} startAccessor="start" endAccessor="end"/>
+    </div>
+  )
 }

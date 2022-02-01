@@ -1,3 +1,4 @@
+import React from 'react';
 import { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import './App.css';
@@ -8,7 +9,6 @@ import { Reservation } from './page/reservation/Reservation.page';
 function App() {
   return (
     <div className="App">
-
       <Reservation />
     </div>
   );
