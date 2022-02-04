@@ -1,10 +1,30 @@
 {
+<<<<<<< HEAD
+  "name": "thiscrmapp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.1.3",
+    "moment": "^2.29.1",
+    "prop-types": "^15.8.1",
+    "react": "^17.0.2",
+    "react-big-calendar": "^0.38.6",
+    "react-bootstrap": "^2.1.1",
+    "react-datepicker": "^4.6.0",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^3.0.1",
+    "web-vitals": "^2.1.3"
+=======
   "name": "app",
   "version": "1.0.0",
   "description": "A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.",
   "main": "index.js",
   "directories": {
     "doc": "docs"
+>>>>>>> 6574611a2d3e77f731a737ee3f61c4c04463c558
   },
   "devDependencies": {},
   "scripts": {
