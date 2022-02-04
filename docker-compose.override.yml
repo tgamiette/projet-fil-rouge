@@ -12,7 +12,7 @@ services:
       # - /srv/app/var
     environment:
       APP_ENV: dev
-
+      
   caddy:
     volumes:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
@@ -23,6 +23,8 @@ services:
 
 ###> doctrine/doctrine-bundle ###
   database:
+    volumes:
+     - ./docker/BDD:/var/lib/mysql/main
     ports:
       - "3306"
 ###< doctrine/doctrine-bundle ###

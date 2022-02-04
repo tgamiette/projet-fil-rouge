@@ -13,21 +13,22 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class AppFixtures extends Fixture {
     protected $slugger;
     protected $password;
+    protected $userPasswordHasher;
+    protected $encoder;
 
-    public function __construct(SluggerInterface $slugger, UserPasswordHasherInterface $userPasswordHasher, PasswordHasherFactoryInterface $passwordHasherFactory) {
+    public function __construct(SluggerInterface $slugger, UserPasswordHasherInterface $encoder, PasswordHasherFactoryInterface $passwordHasherFactory) {
         $this->slugger = $slugger;
-        $userPasswordHasher->
-        $passwordHasherFactory->getPasswordHasher();
-}
+        $this->encoder = $encoder;
+    }
 
 
     public function load(ObjectManager $manager): void {
         $faker = Factory::create('fr_FR');
 
-
         $admin = new User();
+        $hash= $this->encoder->hashPassword($admin,"password");
         $admin->setEmail("admin@gmail.com");
-        $admin->setPassword("Password");
+        $admin->setPassword($hash);
         $admin->setFullName("Admin");
         $admin->setRoles(['ROLE_ADMIN']);
 
@@ -35,9 +36,11 @@ class AppFixtures extends Fixture {
 
         for ($u = 0; $u < 5; $u++) {
             $user = new User();
+            $hash= $this->encoder->hashPassword($user,"password");
+
             $user->setEmail("user$u@gmail.com")
                 ->setFullName($faker->name())
-                ->setPassword("Paswword");
+                ->setPassword($hash);
 
             $manager->persist($user);
 
