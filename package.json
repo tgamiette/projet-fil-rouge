@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "thiscrmapp",
   "version": "0.1.0",
   "private": true,
@@ -16,29 +17,27 @@
     "react-dom": "^17.0.2",
     "react-scripts": "^3.0.1",
     "web-vitals": "^2.1.3"
+=======
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+>>>>>>> 6574611a2d3e77f731a737ee3f61c4c04463c558
   },
+  "devDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tgamiette/Projet-fil-rouge-symfony-.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tgamiette/Projet-fil-rouge-symfony-/issues"
+  },
+  "homepage": "https://github.com/tgamiette/Projet-fil-rouge-symfony-#readme"
 }
