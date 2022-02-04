@@ -25,4 +25,4 @@ vendor/
 
 docker/BDD/*log*
 docker/BDD/mysql/
-docker/BDD/*ib*
+
