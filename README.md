@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# Symfony Docker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
 
-## Available Scripts
+![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
 
-In the project directory, you can run:
+## Getting Started
 
-### `npm start`
+1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
+2. Run `docker-compose build --pull --no-cache` to build fresh images
+3. Run `docker-compose up` (the logs will be displayed in the current shell)
+4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
+5. Run `docker-compose down --remove-orphans` to stop the Docker containers.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* Production, development and CI ready
+* Automatic HTTPS (in dev and in prod!)
+* HTTP/2, HTTP/3 and [Preload](https://symfony.com/doc/current/web_link.html) support
+* Built-in [Mercure](https://symfony.com/doc/current/mercure.html) hub
+* [Vulcain](https://vulcain.rocks) support
+* Just 2 services (PHP FPM and Caddy server)
+* Super-readable configuration
 
-### `npm test`
+**Enjoy!**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Docs
 
-### `npm run build`
+1. [Build options](docs/build.md)
+2. [Using Symfony Docker with an existing project](docs/existing-project.md)
+3. [Support for extra services](docs/extra-services.md)
+4. [Deploying in production](docs/production.md)
+5. [Installing Xdebug](docs/xdebug.md)
+6. [Using a Makefile](docs/makefile.md)
+7. [Troubleshooting](docs/troubleshooting.md)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Credits
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Created by [Kévin Dunglas](https://dunglas.fr), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
