@@ -23,8 +23,8 @@ services:
 
 ###> doctrine/doctrine-bundle ###
   database:
-#    volumes:
-#     - ./docker/BDD:/var/lib/mysql/
+    volumes:
+     - ./docker/BDD:/var/lib/mysql/
     ports:
       - "3306:3306"
 ###< doctrine/doctrine-bundle ###
