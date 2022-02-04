@@ -11,6 +11,8 @@ services:
 #      - "3000:3000"
 #    
   php:
+    depends_on:
+      - database
     build:
       context: .
       target: symfony_php
