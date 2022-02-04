@@ -78,8 +78,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: azerty
       MYSQL_DATABASE: main
-    volumes:
-      - my-db:/var/lib/mysql
     ports:
       # To allow the host machine to access the ports below, modify the lines below.
       # For example, to allow the host to connect to port 3306 on the container, you would change
