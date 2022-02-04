@@ -61,20 +61,20 @@ RUN set -eux; \
 
 
 #Xdebug 3
-RUN apk update \
-    && apk add autoconf \
-    && apk add gcc g++ \
-    && apk add make \
-    && docker-php-ext-install pcntl \
-    && pecl install redis \
-    && docker-php-ext-enable redis
-
-
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
-COPY docker/php/conf.d/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
-COPY docker/php/conf.d/error_reporting.ini $PHP_INI_DIR/conf.d/error_reporting.ini
+#RUN apk update \
+#    && apk add autoconf \
+#    && apk add gcc g++ \
+#    && apk add make \
+#    && docker-php-ext-install pcntl \
+#    && pecl install redis \
+#    && docker-php-ext-enable redis
+#
+#
+#RUN pecl install xdebug \
+#    && docker-php-ext-enable xdebug
+#
+#COPY docker/php/conf.d/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
+#COPY docker/php/conf.d/error_reporting.ini $PHP_INI_DIR/conf.d/error_reporting.ini
 
 ##Xdebug 3
 
