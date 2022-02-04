@@ -23,6 +23,4 @@ yarn-error.log*
 
 vendor/
 
-docker/BDD/*log*
-docker/BDD/mysql/
 
