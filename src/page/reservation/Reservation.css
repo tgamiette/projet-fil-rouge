@@ -1,0 +1,12 @@
+.c-calendar_form{
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ align-items: center;
+}
+
+
+.react-datepicker-wrapper{
+ width: auto;
+ margin: 0 20px;
+}
