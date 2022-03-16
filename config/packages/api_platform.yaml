@@ -8,5 +8,5 @@ api_platform:
     collection:
         pagination:
             enabled: false
-            client_enable: true
+            client_enabled: true
             
