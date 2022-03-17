@@ -77,6 +77,8 @@ services:
         
   database:
     image: mariadb:latest
+    volumes:
+      - my-db:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: azerty
       MYSQL_DATABASE: main
