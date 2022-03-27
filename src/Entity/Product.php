@@ -40,6 +40,19 @@ class Product {
     #[Groups(['products_read'])]
     private $category;
 
+    #[ORM\Column(type: 'float')]
+    private $quantity;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
+    #[Groups(['products_read'])]
+    private $seller;
+
+    #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
+    private $objective;
+
     public function getId(): ?int {
         return $this->id;
     }
@@ -80,6 +93,59 @@ class Product {
 
     public function setCategory(?Category $category): self {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getSeller(): ?User
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?User $seller): self
+    {
+        $this->seller = $seller;
+
+        return $this;
+    }
+
+    public function getObjective(): ?Objective
+    {
+        return $this->objective;
+    }
+
+    public function setObjective(Objective $objective): self
+    {
+        // set the owning side of the relation if necessary
+        if ($objective->getProduct() !== $this) {
+            $objective->setProduct($this);
+        }
+
+        $this->objective = $objective;
 
         return $this;
     }
