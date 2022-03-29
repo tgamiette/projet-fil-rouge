@@ -8,7 +8,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
-#[ApiResource]
+#[ApiResource(denormalizationContext: ['disable_type_enforcement' => true])]
 class Products {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,17 +22,18 @@ class Products {
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message: 'Le prix est obligatoire')]
-    #[Assert\Positive(message: "Nombre invalide")]
+    #[Assert\Positive(message: "Nombre négatif interdit")]
+    #[Assert\Type(type: 'numeric', message: "Nombre invalide")]
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank(message: 'Le prix est obligatoire')]
     #[Assert\Length(min: 3, max: 255, minMessage: "Entre 3 et  255 caractères", maxMessage: "Entre 3 et  255 caractères")]
+    #[Assert\Type(type: 'string', message: "la description doit être un champs texte")]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     #[Assert\NotBlank(message: 'Le prix est obligatoire')]
-
     private $category;
 
     public function getId(): ?int {
@@ -53,7 +54,7 @@ class Products {
         return $this->price;
     }
 
-    public function setPrice(float $price): self {
+    public function setPrice( $price): self {
         $this->price = $price;
 
         return $this;
