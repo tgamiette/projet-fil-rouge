@@ -5,12 +5,7 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
-
-home:
-    path: /
-    controller: App\Controller\HomeController
-
-
-calendar:
-    path: /calendar
-    controller: App\Controller\CalendarController
+    
+#calendar:
+#    path: /calendar
+#    controller: App\Controller\CalendarController
