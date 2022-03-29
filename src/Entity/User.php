@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -22,6 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'Email  est obligatoire')]
+    #[Assert\Email(message: "Email invalide")]
     #[Groups(['orderUser_read','users_read','products_read'])]
     private $email;
 
@@ -29,18 +32,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private $roles = [];
 
+    #[Assert\NotBlank(message: 'Mot de passe requit')]
     #[ORM\Column(type: 'string')]
     private $password;
 
+    #[Assert\NotBlank(message: 'Mot de passe requit')]
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['orderUser_read','users_read','products_read'])]
     private $fullName;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserAddress::class, cascade: ['persist', 'remove'])]
+    private $userAddress;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserPayment::class, orphanRemoval: true)]
+    private $userPayments;
+
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
     private $products;
 
-    public function __construct()
-    {
+    public function __construct() {
+        $this->userPayments = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
@@ -49,13 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
-    {
+    public function getEmail(): ?string {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
-    {
+    public function setEmail(string $email): self {
         $this->email = $email;
 
         return $this;
@@ -66,16 +75,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @see UserInterface
      */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
+    public function getUserIdentifier(): string {
+        return (string)$this->email;
     }
 
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
-    {
+    public function getRoles(): array {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
@@ -83,8 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
+    public function setRoles(array $roles): self {
         $this->roles = $roles;
 
         return $this;
@@ -93,13 +99,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
-    {
+    public function getPassword(): string {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
-    {
+    public function setPassword(string $password): self {
         $this->password = $password;
 
         return $this;
@@ -108,20 +112,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
-    {
+    public function eraseCredentials() {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
-    public function getFullName(): ?string
-    {
+    public function getFullName(): ?string {
         return $this->fullName;
     }
 
-    public function setFullName(string $fullName): self
-    {
+    public function setFullName(string $fullName): self {
         $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    public function getUserAddress(): ?UserAddress {
+        return $this->userAddress;
+    }
+
+    public function setUserAddress(UserAddress $userAddress): self {
+        // set the owning side of the relation if necessary
+        if ($userAddress->getUser() !== $this) {
+            $userAddress->setUser($this);
+        }
+
+        $this->userAddress = $userAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserPayment[]
+     */
+    public function getUserPayments(): Collection {
+        return $this->userPayments;
+    }
+
+    public function addUserPayment(UserPayment $userPayment): self {
+        if (!$this->userPayments->contains($userPayment)) {
+            $this->userPayments[] = $userPayment;
+            $userPayment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserPayment(UserPayment $userPayment): self {
+        if ($this->userPayments->removeElement($userPayment)) {
+            // set the owning side to null (unless already changed)
+            if ($userPayment->getUser() === $this) {
+                $userPayment->setUser(null);
+            }
+        }
 
         return $this;
     }
@@ -155,4 +198,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }
