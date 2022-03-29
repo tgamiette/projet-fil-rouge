@@ -23,6 +23,7 @@ yarn-error.log*
 
 vendor/
 docker/BDD/ib_logfile0
+/.idea/
 
 
 ###> symfony/webpack-encore-bundle ###
