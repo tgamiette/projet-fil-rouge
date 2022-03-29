@@ -7,7 +7,7 @@ use App\Repository\OrderSellerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderSellerRepository::class)]
-#[ApiResource(attributes: ['order'=>['date'=>'desc']], normalizationContext: ['groups'=>['orderSeller_read']])]
+#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'],attributes: ['order'=>['date'=>'desc']], normalizationContext: ['groups'=>['orderSeller_read']])]
 class OrderSeller
 {
     #[ORM\Id]

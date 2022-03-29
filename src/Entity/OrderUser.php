@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
-#[ApiResource(attributes: ['order'=>['date'=>'desc']], normalizationContext: ['groups'=>['orderUser_read']])]
+#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'],attributes: ['order'=>['date'=>'desc']], normalizationContext: ['groups'=>['orderUser_read']])]
 class OrderUser
 {
     #[ORM\Id]

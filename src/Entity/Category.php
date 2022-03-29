@@ -7,12 +7,12 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource()]
+#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ApiResource]
 class Category {
     #[ORM\Id]
     #[ORM\GeneratedValue]

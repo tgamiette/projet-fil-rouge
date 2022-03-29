@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
-#[ApiResource(attributes: [
+#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'], attributes: [
     'order' => ['price' => 'desc'],
     'pagination_enabled' => true,
     'pagination_items_per_page' => 20
@@ -97,49 +97,41 @@ class Product {
         return $this;
     }
 
-    public function getQuantity(): ?float
-    {
+    public function getQuantity(): ?float {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self
-    {
+    public function setQuantity(float $quantity): self {
         $this->quantity = $quantity;
 
         return $this;
     }
 
-    public function getImage(): ?string
-    {
+    public function getImage(): ?string {
         return $this->image;
     }
 
-    public function setImage(?string $image): self
-    {
+    public function setImage(?string $image): self {
         $this->image = $image;
 
         return $this;
     }
 
-    public function getSeller(): ?User
-    {
+    public function getSeller(): ?User {
         return $this->seller;
     }
 
-    public function setSeller(?User $seller): self
-    {
+    public function setSeller(?User $seller): self {
         $this->seller = $seller;
 
         return $this;
     }
 
-    public function getObjective(): ?Objective
-    {
+    public function getObjective(): ?Objective {
         return $this->objective;
     }
 
-    public function setObjective(Objective $objective): self
-    {
+    public function setObjective(Objective $objective): self {
         // set the owning side of the relation if necessary
         if ($objective->getProduct() !== $this) {
             $objective->setProduct($this);

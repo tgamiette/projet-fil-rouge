@@ -9,9 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[
-ORM\Entity(repositoryClass: DeliveryRepository::class)]
-#[ApiResource(normalizationContext: ['groups'=>['delivery_read']])]
+#[ORM\Entity(repositoryClass: DeliveryRepository::class)]
+#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'], normalizationContext: ['groups' => ['delivery_read']])]
 class Delivery {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,8 +24,7 @@ class Delivery {
     #[ORM\OneToMany(mappedBy: 'delivery', targetEntity: OrderSeller::class)]
     private $orderSellers;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->orderSellers = new ArrayCollection();
     }
 
@@ -34,13 +32,11 @@ class Delivery {
         return $this->id;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
+    public function getCreatedAt(): ?\DateTimeImmutable {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self {
         $this->createdAt = $createdAt;
 
         return $this;
@@ -49,13 +45,11 @@ class Delivery {
     /**
      * @return Collection|OrderSeller[]
      */
-    public function getOrderSellers(): Collection
-    {
+    public function getOrderSellers(): Collection {
         return $this->orderSellers;
     }
 
-    public function addOrderSeller(OrderSeller $orderSeller): self
-    {
+    public function addOrderSeller(OrderSeller $orderSeller): self {
         if (!$this->orderSellers->contains($orderSeller)) {
             $this->orderSellers[] = $orderSeller;
             $orderSeller->setDelivery($this);
@@ -64,8 +58,7 @@ class Delivery {
         return $this;
     }
 
-    public function removeOrderSeller(OrderSeller $orderSeller): self
-    {
+    public function removeOrderSeller(OrderSeller $orderSeller): self {
         if ($this->orderSellers->removeElement($orderSeller)) {
             // set the owning side to null (unless already changed)
             if ($orderSeller->getDelivery() === $this) {
