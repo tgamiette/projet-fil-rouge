@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,15 +16,23 @@ class Products {
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Titre du produit obligatoire')]
+    #[Assert\Length(min: 3, max: 255, minMessage: "Entre 3 et  255 caractères", maxMessage: "Entre 3 et  255 caractères")]
     private $title;
 
     #[ORM\Column(type: 'float')]
+    #[Assert\NotBlank(message: 'Le prix est obligatoire')]
+    #[Assert\Positive(message: "Nombre invalide")]
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank(message: 'Le prix est obligatoire')]
+    #[Assert\Length(min: 3, max: 255, minMessage: "Entre 3 et  255 caractères", maxMessage: "Entre 3 et  255 caractères")]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    #[Assert\NotBlank(message: 'Le prix est obligatoire')]
+
     private $category;
 
     public function getId(): ?int {
