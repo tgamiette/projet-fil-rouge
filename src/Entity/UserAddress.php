@@ -7,7 +7,7 @@ use App\Repository\UserAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserAddressRepository::class)]
-#[ApiResource()]
+#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'])]
 class UserAddress
 {
     #[ORM\Id]

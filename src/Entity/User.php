@@ -41,8 +41,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['orderUser_read','users_read','products_read'])]
     private $fullName;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserAddress::class, cascade: ['persist', 'remove'])]
-    private $userAddress;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserPayment::class, orphanRemoval: true)]
     private $userPayments;
@@ -123,21 +121,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setFullName(string $fullName): self {
         $this->fullName = $fullName;
-
-        return $this;
-    }
-
-    public function getUserAddress(): ?UserAddress {
-        return $this->userAddress;
-    }
-
-    public function setUserAddress(UserAddress $userAddress): self {
-        // set the owning side of the relation if necessary
-        if ($userAddress->getUser() !== $this) {
-            $userAddress->setUser($this);
-        }
-
-        $this->userAddress = $userAddress;
 
         return $this;
     }

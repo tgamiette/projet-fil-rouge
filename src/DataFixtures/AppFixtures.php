@@ -81,7 +81,7 @@ class AppFixtures extends Fixture {
                     $hash = $this->encoder->hashPassword($users, "password");
                     $users->setEmail("user$n@gmail.com")
                         ->setFullName($faker->name())
-                        ->setPassword("poo")
+                        ->setPassword($hash)
                         ->setRoles(['ROLE_USER']);
                     $manager->persist($users);
 //
