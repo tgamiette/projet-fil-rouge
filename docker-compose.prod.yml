@@ -18,14 +18,14 @@ services:
       - "8000:80"
         
   node:
-    build:  
-      context: .
-      dockerfile: ./docker/node/Dockerfile
+    build:
+      context: ./docker/node
+      dockerfile: Dockerfile.prod
     volumes:
       - ./app/front:/app
       - /app/node_modules
     ports:
-      - "3001:3000"
+      - '1337:80'
     environment:
       - CHOKIDAR_USEPOLLING=true
 
