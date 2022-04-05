@@ -1,30 +1,9 @@
-version: "3.4"
+version: '3'
 
-# Development environment override
 services:
   php:
-    volumes:
-      # The "cached" option has no effect on Linux but improves performance on Mac
-      - ./:/srv/app:rw,cached
-      - ./docker/php/conf.d/symfony.dev.ini:/usr/local/etc/php/conf.d/symfony.ini
-      # If you develop on Mac you can remove the var/ directory from the bind-mount
-      # for better performance by enabling the next line 
-      # - /srv/app/var
-    environment:
-      APP_ENV: dev
-      
-  caddy:
-    volumes:
-      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./public:/srv/app/public:ro
-
-###> symfony/mercure-bundle ###
-###< symfony/mercure-bundle ###
-
-###> doctrine/doctrine-bundle ###
-  database:
-#    volumes:
-#     - ./docker/BDD:/var/lib/mysql/
     ports:
-      - "3306:3306"
-###< doctrine/doctrine-bundle ###
+      - "8000:80"
+  phpmyadmin:
+    ports:
+      - "8001:80"

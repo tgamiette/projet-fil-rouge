@@ -1,14 +1,8 @@
-# the different stages of this Dockerfile are meant to be built into separate images
-# https://docs.docker.com/develop/develop-images/multistage-build/#stop-at-a-specific-build-stage
-# https://docs.docker.com/compose/compose-file/#target
-
-
-# https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG PHP_VERSION=8.1
 ARG CADDY_VERSION=2
 
-# "php" stage
-FROM php:${PHP_VERSION}-fpm-alpine AS symfony_php
+FROM php:8.0-apache AS symfony_php
+## Basic tools
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -76,15 +70,16 @@ RUN set -eux; \
 #COPY docker/php/conf.d/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
 #COPY docker/php/conf.d/error_reporting.ini $PHP_INI_DIR/conf.d/error_reporting.ini
 
-##Xdebug 3
+## Apache
+RUN a2enmod ssl rewrite
 
 COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck
 
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 
-RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
-COPY docker/php/conf.d/symfony.prod.ini $PHP_INI_DIR/conf.d/symfony.ini
+## Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
