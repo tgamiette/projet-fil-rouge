@@ -26,7 +26,6 @@ class AppFixtures extends Fixture {
         $this->encoder = $encoder;
     }
 
-
     public function load(ObjectManager $manager): void {
         $faker = Factory::create('fr_FR');
         $admin = new User();
