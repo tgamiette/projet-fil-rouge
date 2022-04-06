@@ -16,11 +16,11 @@ services:
       DATABASE_URL: mysql://$MYSQL_USER:$MYSQL_PASSWORD@$MYSQL_HOST:$MYSQL_PORT/$MYSQL_DATABASE
     ports:
       - "8000:80"
-        
+  
   node:
     build:
-      context: ./docker/node
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: /docker/node/Dockerfile.prod
     volumes:
       - ./app/front:/app
       - /app/node_modules
