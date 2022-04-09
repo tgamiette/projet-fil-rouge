@@ -15,7 +15,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'pagination_enabled' => true,
     'pagination_items_per_page' => 20
 
-], normalizationContext: ["groups" => ["products_read"]])]
+]
+    , normalizationContext: ["groups" => ["products_read"]]
+)]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial'])]
 class Product {
     #[ORM\Id]
@@ -41,15 +43,19 @@ class Product {
     private $category;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(['products_read'])]
+
     private $quantity;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['products_read'])]
     private $image;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'product')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[Groups(['products_read'])]
     private $seller;
 
+    #[Groups(['products_read'])]
     #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
     private $objective;
 

@@ -23,8 +23,8 @@ class Delivery {
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    #[ORM\OneToMany(mappedBy: 'Delivery', targetEntity: Product::class)]
-    private $products;
+//    #[ORM\OneToMany(mappedBy: 'Delivery', targetEntity: Product::class)]
+//    private $products;
 
     public function __construct() {
         $this->products = new ArrayCollection();

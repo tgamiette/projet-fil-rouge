@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
+    #[Groups(['users_read'])]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
@@ -30,9 +31,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['users_read'])]
     private $roles = [];
 
     #[Assert\NotBlank(message: 'Mot de passe requit')]
+    #[Groups(['users_read'])]
     #[ORM\Column(type: 'string')]
     private $password;
 
@@ -43,9 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserPayment::class, orphanRemoval: true)]
+    #[Groups(['users_read'])]
     private $userPayments;
 
+
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
+    #[Groups(['orderUser_read','users_read'])]
     private $products;
 
     public function __construct() {
