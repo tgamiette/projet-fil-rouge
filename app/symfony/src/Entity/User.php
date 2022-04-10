@@ -8,15 +8,18 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(normalizationContext: ["groups"=>['users_read']])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
-{
+#[ApiResource(normalizationContext: ["groups" => ['users_read']],
+    denormalizationContext: ['disable_type_enforcement' => true],
+)]
+//#[UniqueEntity("email", "Un Utilisateur existe déja avec cet email")]
+class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\Id]
     #[Groups(['users_read'])]
     #[ORM\GeneratedValue]
@@ -24,9 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Assert\NotBlank(message: 'Email  est obligatoire')]
+    #[Assert\NotBlank(message: 'Email obligatoire')]
     #[Assert\Email(message: "Email invalide")]
-    #[Groups(['orderUser_read','users_read','products_read'])]
+    #[Groups(['orderUser_read', 'users_read', 'products_read'])]
     private $email;
 
 
@@ -35,13 +38,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     #[Assert\NotBlank(message: 'Mot de passe requit')]
+//    #[Assert\Type(type: "string", message: 'Mo')]
     #[Groups(['users_read'])]
     #[ORM\Column(type: 'string')]
     private $password;
 
     #[Assert\NotBlank(message: 'Mot de passe requit')]
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['orderUser_read','users_read','products_read'])]
+    #[Groups(['orderUser_read', 'users_read', 'products_read'])]
     private $fullName;
 
 
@@ -51,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
-    #[Groups(['orderUser_read','users_read'])]
+    #[Groups(['orderUser_read', 'users_read'])]
     private $products;
 
     public function __construct() {
@@ -59,8 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->products = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
@@ -161,13 +164,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|Product[]
      */
-    public function getProducts(): Collection
-    {
+    public function getProducts(): Collection {
         return $this->products;
     }
 
-    public function addProduct(Product $product): self
-    {
+    public function addProduct(Product $product): self {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
             $product->setSeller($this);
@@ -176,8 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeProduct(Product $product): self
-    {
+    public function removeProduct(Product $product): self {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
             if ($product->getSeller() === $this) {

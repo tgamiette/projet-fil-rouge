@@ -9,9 +9,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
-#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'],attributes: ['order'=>['date'=>'desc']], normalizationContext: ['groups'=>['orderUser_read']])]
-class OrderUser
-{
+#[ApiResource(collectionOperations: ['GET', 'POST'],
+    itemOperations: ['GET', 'PUT', 'DELETE'],
+    attributes: ['order' => ['date' => 'desc']],
+    denormalizationContext: ['disable_type_enforcement' => true],
+    normalizationContext: ['groups' => ['orderUser_read']])]
+class OrderUser {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -32,7 +35,6 @@ class OrderUser
 
     #[ORM\ManyToOne(targetEntity: OrderSeller::class)]
     #[Groups(['orderUser_read'])]
-
     private $orderSeller;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -40,66 +42,55 @@ class OrderUser
     #[Groups(['orderUser_read'])]
     private $customer;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getTotal(): ?float
-    {
+    public function getTotal(): ?float {
         return $this->total;
     }
 
-    public function setTotal(float $total): self
-    {
+    public function setTotal($total): self {
         $this->total = $total;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
+    public function getDate(): ?\DateTimeInterface {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
-    {
+    public function setDate(\DateTimeInterface $date): self {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getProduct(): ?array
-    {
+    public function getProduct(): ?array {
         return $this->product;
     }
 
-    public function setProduct( $product): self
-    {
+    public function setProduct($product): self {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getOrderSeller(): ?OrderSeller
-    {
+    public function getOrderSeller(): ?OrderSeller {
         return $this->orderSeller;
     }
 
-    public function setOrderSeller(?OrderSeller $orderSeller): self
-    {
+    public function setOrderSeller(?OrderSeller $orderSeller): self {
         $this->orderSeller = $orderSeller;
 
         return $this;
     }
 
-    public function getCustomer(): ?User
-    {
+    public function getCustomer(): ?User {
         return $this->customer;
     }
 
-    public function setCustomer(?User $customer): self
-    {
+    public function setCustomer(?User $customer): self {
         $this->customer = $customer;
 
         return $this;

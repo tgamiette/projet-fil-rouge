@@ -10,13 +10,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
-#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'], attributes: [
+#[ApiResource(collectionOperations: ['GET', 'POST'],
+    itemOperations: ['GET', 'PUT', 'DELETE'],
+    attributes: [
     'order' => ['price' => 'desc'],
     'pagination_enabled' => true,
     'pagination_items_per_page' => 20
 
 ]
-    , normalizationContext: ["groups" => ["products_read"]]
+    , denormalizationContext: ['disable_type_enforcement' => true],
+    normalizationContext: ["groups" => ["products_read"]]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial'])]
 class Product {
@@ -27,7 +30,7 @@ class Product {
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['products_read'])]
+    #[Groups(['products_read', 'orderSeller_read'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
@@ -44,7 +47,6 @@ class Product {
 
     #[ORM\Column(type: 'float')]
     #[Groups(['products_read'])]
-
     private $quantity;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -77,7 +79,7 @@ class Product {
         return $this->price;
     }
 
-    public function setPrice(float $price): self {
+    public function setPrice($price): self {
         $this->price = $price;
 
         return $this;

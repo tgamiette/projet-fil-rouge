@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserPaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserPaymentRepository::class)]
-class UserPayment
-{
+#[ApiResource(collectionOperations: ['GET', 'POST'],
+    itemOperations: ['GET', 'PUT', 'DELETE'],
+    denormalizationContext: ['disable_type_enforcement' => true]
+)]
+class UserPayment {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -26,54 +30,45 @@ class UserPayment
     #[ORM\Column(type: 'date')]
     private $expiry;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getUser(): ?User
-    {
+    public function getUser(): ?User {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
+    public function setUser(?User $user): self {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getPaymentType(): ?string
-    {
+    public function getPaymentType(): ?string {
         return $this->paymentType;
     }
 
-    public function setPaymentType(string $paymentType): self
-    {
+    public function setPaymentType(string $paymentType): self {
         $this->paymentType = $paymentType;
 
         return $this;
     }
 
-    public function getAccount(): ?int
-    {
+    public function getAccount(): ?int {
         return $this->account;
     }
 
-    public function setAccount(int $account): self
-    {
+    public function setAccount(int $account): self {
         $this->account = $account;
 
         return $this;
     }
 
-    public function getExpiry(): ?\DateTimeInterface
-    {
+    public function getExpiry(): ?\DateTimeInterface {
         return $this->expiry;
     }
 
-    public function setExpiry(\DateTimeInterface $expiry): self
-    {
+    public function setExpiry(\DateTimeInterface $expiry): self {
         $this->expiry = $expiry;
 
         return $this;

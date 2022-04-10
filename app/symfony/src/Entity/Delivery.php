@@ -11,15 +11,16 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'])]
+#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'])]
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
 class Delivery {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['orderSeller_read'])]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read', 'orderSeller_read'])]
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 

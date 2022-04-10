@@ -11,7 +11,8 @@ RUN apt-get update -y && \
             curl \
             wget \
             ca-certificates \
-            nano
+            nano \
+    		acl
 
 ## Apache
 RUN a2enmod ssl rewrite
@@ -60,3 +61,4 @@ RUN mkdir -p $CACHE_SYMFONY
 RUN chown -R www-data: $CACHE_SYMFONY
 
 WORKDIR /var/www/symfony
+
