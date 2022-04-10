@@ -35,25 +35,12 @@ RUN apt-get update && apt-get install -y \
 ## APCU
 ENV EXT_APCU_VERSION=5.1.17
 RUN docker-php-source extract \
-#     ext-apcu \
-     &&  pecl install apcu && docker-php-ext-enable apcu \
-    # cleanup
+     &&  pecl install apcu  \
+    && docker-php-ext-enable apcu \
     && docker-php-source delete
 
 ## Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-## WkHtmlToPdf
-# RUN apt-get install -y xvfb libfontconfig fontconfig libpng16-16 libxrender1 xfonts-75dpi build-essential xorg xfonts-base && \
-#     mkdir -p /tmp && \
-#     wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.stretch_amd64.deb -P /tmp/wkhtmltopdf && \
-#     dpkg -i /tmp/wkhtmltopdf/wkhtmltox_0.12.6-1.stretch_amd64.deb && \
-#     apt -f install && \
-#     ln -s /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf && \
-#     apt-get autoremove -y  && \
-#     apt-get clean && \
-#     rm -rf /var/lib/apt/lists/* && \
-#     rm -rf /tmp/*
 
 ## Symfony cache folder
 ENV CACHE_SYMFONY=/var/www/symfony/var/cache
