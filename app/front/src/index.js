@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 
+import App from "./Main/App";
+import Nav from "./Main/Nav";
+import Map from "./Map/map";
+import Calendrier from "./Calendrier/calendrier";
+import Producteur from "./Producteurs/producteur";
+import Commande from "./Commande/commande";
+
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Nav />
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="map" element={<Map />} />
+      <Route path="commandes" element={<Commande />} />
+      <Route path="producteurs" element={<Producteur />} />
+      <Route path="calendrier" element={<Calendrier />} />
+    </Routes>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
