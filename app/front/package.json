@@ -40,7 +40,6 @@
   },
   "devDependencies": {
     "ajv": "^8.11.0",
-    "ajv-keywords": "^5.1.0",
-    "webpack": "^5.71.0"
+    "ajv-keywords": "^5.1.0"
   }
 }
