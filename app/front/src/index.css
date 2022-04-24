@@ -15,4 +15,20 @@ code {
 
 :root {
   --primary-text-black: #000000;
+  --primary-text-white: #FFFFFF;
+  --primary-text-yellow: #FDD46D;
+}
+
+#root{
+  height: 100vh;
+}
+
+
+.c-btn{
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary-text-yellow);
+  color:var(--primary-text-white);
+  cursor: pointer;
 }

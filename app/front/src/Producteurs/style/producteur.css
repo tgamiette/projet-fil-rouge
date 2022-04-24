@@ -1,0 +1,60 @@
+.c-producteurs{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.c-filter{
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 20px;
+  width: 25rem;
+  margin-top: 170px;
+}
+
+
+.c-producteur_div{
+  margin-left: 30rem;
+  width: 100%;
+}
+
+
+/* FILTER */
+.c-filter_input{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+label{margin-bottom: 10px;}
+
+input[type="search"], input[type="text"]{
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #e5e5e5;
+}
+
+
+/* CARD */
+.c-card_producteur{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.c-producteur_img{
+  border-radius: 100%;
+  width: 80px;
+  height: 80px;
+  background: #f5f5f5;
+}
+
+.c-producteur_infos{
+  margin-left: 20px;
+}
