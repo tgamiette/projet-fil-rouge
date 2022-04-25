@@ -15,6 +15,9 @@ export default function Nav(){
           <Link to="/map">Carte</Link>
           <Link to="/calendrier">Calendrier</Link>
         </ul>
+        <ul>
+          <Link to="/login">Login</Link>
+        </ul>
       </nav>
     </header>
   )

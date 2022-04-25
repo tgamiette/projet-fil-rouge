@@ -8,8 +8,12 @@ import App from "./Main/App";
 import Nav from "./Main/Nav";
 import Map from "./Map/map";
 import Calendrier from "./Calendrier/calendrier";
-import Producteur from "./Producteurs/producteur";
+import Producteurs from "./Producteurs/producteurs";
+import ProducteurSingle from "./Producteurs/producteur_single";
 import Commande from "./Commande/commande";
+import Login from "./Main/login";
+import Account from "./Accounts/account";
+import SignIn from "./Main/signIn";
 
 
 ReactDOM.render(
@@ -19,8 +23,12 @@ ReactDOM.render(
       <Route path="/" element={<App />} />
       <Route path="map" element={<Map />} />
       <Route path="commandes" element={<Commande />} />
-      <Route path="producteurs" element={<Producteur />} />
+      <Route path="producteurs" element={<Producteurs />} />
       <Route path="calendrier" element={<Calendrier />} />
+      <Route path="/producteur/:id" element={<ProducteurSingle />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/SignIn" element={<SignIn />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')

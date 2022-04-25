@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
+import { Link } from "react-router-dom";
 import './style/producteur.css';
 
-export default function Producteur(){
+export default function Producteurs(){
 
   const [search , setSearch] = useState("");
 
@@ -37,7 +38,7 @@ export default function Producteur(){
         <div className="c-producteur_div">
           <h1>Nos producteurs</h1>
           {
-            users.map((item) => {
+            users.map((item, index) => {
               return(
                 <>
                   <div className="c-card_producteur">
@@ -47,7 +48,7 @@ export default function Producteur(){
                     <div className="c-producteur_infos">
                       <h2>Marcel Champs</h2>
                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla lorem est, eu imperdiet lectus pretium sed.</p>
-                      <button type="button" className="c-btn">Découvrir</button>
+                      <Link to={`/producteur/${index}`} className="c-btn">Découvrir</Link>
                     </div>
                   </div>
                 </>
