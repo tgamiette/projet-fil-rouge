@@ -91,7 +91,6 @@ class AppFixtures extends Fixture {
                         ->setPassword($hash)
                         ->setRoles(['ROLE_USER']);
                     $manager->persist($users);
-//
                     $orderUser = new OrderUser();
                     $orderUser->setDate(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                         ->setProduct($product)

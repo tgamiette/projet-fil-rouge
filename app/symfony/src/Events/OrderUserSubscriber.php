@@ -41,7 +41,9 @@ class OrderUserSubscriber implements EventSubscriberInterface {
         $order = $event->getControllerResult();
         if($event->getRequest()->isMethod("POST") && $order instanceof OrderUser){
             //TODO blablbalba
-            $product->setSeller($this->security->getUser());
+//            $order->
+//            $order->setTotal()
+//            $product->setSeller($this->security->getUser());
         }elseif ($event->getRequest()->isMethod("POST") && $order instanceof OrderSeller){
             //TODO blablabla
         }
