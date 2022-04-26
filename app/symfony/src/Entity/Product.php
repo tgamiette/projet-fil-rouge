@@ -33,13 +33,13 @@ class Product {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['products_read', 'orderSeller_read'])]
+    #[Groups(['products_read','orderUser_read', 'orderSeller_read'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message: 'Prix manquant')]
     #[Assert\Type(type: 'integer', message: 'type incorrecte ')]
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','orderUser_read'])]
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]

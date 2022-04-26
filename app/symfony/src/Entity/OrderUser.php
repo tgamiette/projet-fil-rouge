@@ -66,7 +66,7 @@ class OrderUser {
         return $this;
     }
 
-    public function getProduct(): ?array {
+    public function getProduct() {
         return $this->product;
     }
 

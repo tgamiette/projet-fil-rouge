@@ -8,6 +8,7 @@ use App\Entity\OrderUser;
 use App\Entity\Place;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\UserInfo;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -43,14 +44,22 @@ class AppFixtures extends Fixture {
             $manager->persist($place);
         }
 
-
         for ($u = 0; $u < 10; $u++) {
             $user = new User();
             $hash = $this->encoder->hashPassword($user, "password");
             $user->setEmail("seller$u@gmail.com")
                 ->setFullName($faker->name())
+                ->setRoles(['ROLE_SELLER'])
                 ->setPassword($hash);
             $manager->persist($user);
+
+            $userInfo = new UserInfo();
+            $userInfo->setUser($user)
+                ->setAdress($faker->address())
+                ->setImage($faker->image())
+                ->setDescription($faker->paragraph(5))
+                ->setCreatedAt(new \DateTime());
+            $manager->persist($userInfo);
 
             $category = new Category();
             $category->setTitle($faker->sentence(5));
