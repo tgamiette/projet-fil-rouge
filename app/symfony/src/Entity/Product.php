@@ -7,16 +7,18 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
-#[ApiResource(collectionOperations: ['GET', 'POST'],
+#[ApiResource(
+    collectionOperations: ['GET', 'POST'],
     itemOperations: ['GET', 'PUT', 'DELETE'],
     attributes: [
     'order' => ['price' => 'desc'],
     'pagination_enabled' => true,
     'pagination_items_per_page' => 20
-
 ]
     , denormalizationContext: ['disable_type_enforcement' => true],
     normalizationContext: ["groups" => ["products_read"]]
@@ -30,10 +32,13 @@ class Product {
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Titre obligatoire')]
     #[Groups(['products_read', 'orderSeller_read'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
+    #[Assert\NotBlank(message: 'Prix manquant')]
+    #[Assert\Type(type: 'integer', message: 'type incorrecte ')]
     #[Groups(['products_read'])]
     private $price;
 
@@ -42,18 +47,23 @@ class Product {
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    #[Assert\Type(Category::class)]
     #[Groups(['products_read'])]
     private $category;
 
     #[ORM\Column(type: 'float')]
+    #[Assert\NotBlank(message: 'quantité manquant')]
+    #[Assert\PositiveOrZero(message: 'Valeur négative')]
     #[Groups(['products_read'])]
     private $quantity;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Image()]
     #[Groups(['products_read'])]
     private $image;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
+    #[Assert\NotBlank(message: 'vendeur manquant')]
     #[Groups(['products_read'])]
     private $seller;
 

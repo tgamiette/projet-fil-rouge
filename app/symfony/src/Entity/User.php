@@ -15,10 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource(normalizationContext: ["groups" => ['users_read']],
-    denormalizationContext: ['disable_type_enforcement' => true],
+#[ApiResource(
+    collectionOperations: ['GET', 'POST'],
+    itemOperations: ['GET', 'PUT', 'DELETE'],
+    denormalizationContext: ['disable_type_enforcement' => true], normalizationContext: ["groups" => ['users_read']]
 )]
-//#[UniqueEntity("email", "Un Utilisateur existe déja avec cet email")]
+#[UniqueEntity("email", "Un Utilisateur existe déja avec cet email")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\Id]
     #[Groups(['users_read'])]
