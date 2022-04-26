@@ -6,9 +6,9 @@ import moment from 'moment';
 import events from './events.js';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import "react-datepicker/dist/react-datepicker.css";
-import './Reservation.css';
+import './style/calendrier.css';
 
-export const Reservation = () => {
+export default function Reservation(){
 
  const [date, setDate] = useState(new Date());
 

@@ -39,3 +39,8 @@
  left: 50%;
  transform: translate(-50%, -50%);
 }
+
+/* Calendar */
+.rbc-header{
+  height: 60px;
+}
