@@ -1,3 +1,27 @@
+/* FONT-FACE */
+
+@font-face {
+ font-family: "Jost-light";
+ src: url("./assets/fonts/Jost-Light.woff2") format("woff2"),
+      url("./assets/fonts/Jost-Light.woff") format("woff");
+}
+
+@font-face {
+ font-family: "Jost-regular";
+ src: url("./assets/fonts/Jost-Regular.woff2") format("woff2"),
+      url("./assets/fonts/Jost-Regular.woff") format("woff");
+}
+
+@font-face {
+ font-family: "Jost-SemiBold";
+ src: url("./assets/fonts/Jost-SemiBold.woff2") format("woff2"),
+      url("./assets/fonts/Jost-SemiBold.woff") format("woff");
+}
+
+
+
+/* MAIN */
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -14,9 +38,35 @@ code {
 
 
 :root {
+
+  /* COLOR */
   --primary-text-black: #000000;
   --primary-text-white: #FFFFFF;
   --primary-text-yellow: #FDD46D;
+
+
+  /* FONTS */
+  --font-title: Jost-SemiBold;
+  --font-text: Jost-Regular;
+  --font-span: Jost-Light;
+
+}
+
+p, a{
+  font-family: var(--font-text);
+  font-size: 24px;
+}
+
+h1
+{
+  font-family: var(--font-title);
+  font-size: 36px;
+}
+
+h2
+{
+  font-family: var(--font-text);
+  font-size: 30px;
 }
 
 #root{
@@ -28,6 +78,9 @@ code {
   padding: 10px;
   border: none;
   border-radius: 10px;
+  font-family: var(--font-text);
+  text-transform: uppercase;
+  text-decoration: none;
   background: var(--primary-text-yellow);
   color:var(--primary-text-white);
   cursor: pointer;
