@@ -57,8 +57,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
 
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
-    #[Groups(['orderUser_read', 'users_read'])]
+    #[Groups(['users_read'])]
     private $products;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserInfo::class, cascade: ['persist', 'remove'])]
+    private $userInfo;
 
     public function __construct() {
         $this->userPayments = new ArrayCollection();
@@ -192,6 +195,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
     public function getUsername(): string {
         return $this->email;
+    }
+
+    public function getUserInfo(): ?UserInfo
+    {
+        return $this->userInfo;
+    }
+
+    public function setUserInfo(?UserInfo $userInfo): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($userInfo === null && $this->userInfo !== null) {
+            $this->userInfo->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userInfo !== null && $userInfo->getUser() !== $this) {
+            $userInfo->setUser($this);
+        }
+
+        $this->userInfo = $userInfo;
+
+        return $this;
     }
 
 }

@@ -29,28 +29,29 @@ class OrderSeller {
     #[Groups(['orderSeller_read'])]
     #[Assert\NotBlank(message: 'Quantité obligatoire')]
     #[Assert\Positive(message: "La quantité doit être positive")]
-    private $quantity;
+    private ?float $quantity;
 
     #[ORM\ManyToOne(targetEntity: Product::class)]
     #[Assert\NotBlank(message: 'Produit obligatoire')]
     #[Groups(['orderSeller_read'])]
-    private $product;
+    private ?Product $product;
 
-    #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'order_sellers')]
-    #[Groups(['orderSeller_read'])]
-    private $delivery;
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message: 'Total obligatoire')]
     #[Assert\Positive(message: "Le Total doit être positive")]
     #[Groups(['orderSeller_read'])]
-    private $total;
+    private ?float $total;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotBlank(message: 'Date manquante')]
     #[Assert\DateTime(message: 'la date doit être auformat YYY/MM/DD (hh:min:sec)')]
     #[Groups(['orderSeller_read'])]
-    private $createdAt;
+    private ?\DateTimeImmutable $createdAt;
+
+    #[ORM\OneToOne(targetEntity: Delivery::class, cascade: ['persist', 'remove'])]
+    #[Groups(['orderSeller_read'])]
+    private ?Delivery $delivery;
 
     public function getId(): ?int {
         return $this->id;
@@ -60,7 +61,7 @@ class OrderSeller {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self {
+    public function setQuantity( $quantity): self {
         $this->quantity = $quantity;
 
         return $this;
