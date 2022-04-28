@@ -61,7 +61,7 @@ class OrderSeller {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self {
+    public function setQuantity( $quantity): self {
         $this->quantity = $quantity;
 
         return $this;
