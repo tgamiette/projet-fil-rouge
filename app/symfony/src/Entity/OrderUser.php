@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderUserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,6 +50,13 @@ class OrderUser {
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['orderUser_read'])]
     private $products = [];
+
+    #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]
+    private $purchases;
+
+    public function __construct() {
+        $this->purchases = new ArrayCollection();
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -99,6 +108,32 @@ class OrderUser {
 
     public function setProducts(?array $products): self {
         $this->products = $products;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Purchase>
+     */
+    public function getPurchases(): Collection {
+        return $this->purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): self {
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases[] = $purchase;
+            $purchase->setOrderUser($this);
+        }
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): self {
+        if ($this->purchase->removeElement($purchase)) {
+            // set the owning side to null (unless already changed)
+            if ($purchase->getOrderUser() === $this) {
+                $purchase->setOrderUser(null);
+            }
+        }
 
         return $this;
     }

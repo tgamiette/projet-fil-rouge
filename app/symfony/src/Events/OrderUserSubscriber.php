@@ -54,7 +54,7 @@ class OrderUserSubscriber implements EventSubscriberInterface {
 
     public function setOrder2(ViewEvent $event) {
         $orderUser=  $event->getControllerResult();
-        var_dump($orderUser);die();
+
         if($orderUser instanceof  OrderUser){
             $products =$orderUser->getProduct();
             foreach ($products as $product){
