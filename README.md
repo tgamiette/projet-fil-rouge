@@ -2,8 +2,6 @@
 
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
-
 ## Getting Started
 
 1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
@@ -33,7 +31,3 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 5. [Installing Xdebug](docs/xdebug.md)
 6. [Using a Makefile](docs/makefile.md)
 7. [Troubleshooting](docs/troubleshooting.md)
-
-## Credits
-
-Created by [Kévin Dunglas](https://dunglas.fr), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
