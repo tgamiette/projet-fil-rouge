@@ -5,18 +5,20 @@ function axios_api_json(method, suffix_url) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     }
-    const options = {
-      method: method
+    if(loggedIn()){
+      headers['Authorization'] = 'Bearer ' + getToken();
     }
-    if(this.loggedIn()){
-      headers['Authorization'] = 'Bearer' + this.getToken();
-    }
+    console.log(headers);
     return fetch(DOMAIN_API + suffix_url, {
       headers,
-      ...options,
+      method: method,
     }).then((response) => {
-        return response.json();
-    }).catch((error) => console.error(error));
+      console.log('res', response.json());
+    })
+    // .then((res) => {
+    //   console.log('data', res);
+    // })
+    .catch((error) => console.error(error));
 }
 
 // Products
@@ -98,32 +100,33 @@ export function logIn(email: String, password: String) {
             password: password
         })
     })
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      setToken(data.token);
+    .then(response => response.json())
+    .then(res => {
+      setToken(res.token);
+      var token = getToken();
+      if(token !== "undefined" && token !== undefined){
+        window.location.href = `http://localhost:3001/producteurs`;
+      }
     })
     .catch((error) => { console.error(error);return false;})
 }
 
 function setToken(idToken) {
-   // Saves user token to localStorage
-   localStorage.setItem('id_token', idToken);
+   localStorage.setItem('token', idToken);
 }
 
 function getToken() {
-  return localStorage.getItem('id_token');
+  return localStorage.getItem('token');
 }
 
 function loggedIn() {
-   const token = this.getToken();
-   return !!token && !this.isTokenExpired(token);
+   const token = getToken();
+   return !!token && !isTokenExpired(token);
 }
 
 function isTokenExpired(token){
   try{
-    const jwt = jwt(token);
+    const jwt = parseJwt(token);
     if(jwt.exp < Date.now() / 1000){
       return true;
     }else return false;
@@ -131,6 +134,14 @@ function isTokenExpired(token){
     return false;
   }
 }
+
+function parseJwt(token) {
+   try {
+     return JSON.parse(atob(token.split('.')[1]));
+   } catch (e) {
+     return null;
+   }
+ };
 
 //Customers
 export function get_all_customers() {

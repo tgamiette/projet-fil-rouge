@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import { Link } from "react-router-dom";
 import './style/Nav.css'
+// import ShoppingBasket from '@styled-icons/remix-line/ShoppingBasket';
+
 
 export default function Nav(){
 
@@ -17,6 +19,8 @@ export default function Nav(){
         </ul>
         <ul>
           <Link to="/login">Login</Link>
+          <Link to="/login">Logout</Link>
+          <Link to="/panier"></Link>
         </ul>
       </nav>
     </header>

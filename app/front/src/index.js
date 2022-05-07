@@ -21,14 +21,14 @@ ReactDOM.render(
     <Nav />
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="map" element={<Map />} />
-      <Route path="commandes" element={<Commande />} />
-      <Route path="producteurs" element={<Producteurs />} />
-      <Route path="calendrier" element={<Calendrier />} />
+      <Route path="/map" element={<Map />} />
+      <Route path="/commandes" element={<Commande />} />
+      <Route path="/producteurs" element={<Producteurs />} />
+      <Route path="/calendrier" element={<Calendrier />} />
       <Route path="/producteur/:id" element={<ProducteurSingle />} />
       <Route path="/login" element={<Login />} />
       <Route path="/account" element={<Account />} />
-      <Route path="/SignIn" element={<SignIn />} />
+      <Route path="/signIn" element={<SignIn />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')
