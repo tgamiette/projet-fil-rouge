@@ -1,23 +1,24 @@
 const DOMAIN_API = "http://localhost:8000/api";
 
 function axios_api_json(method, suffix_url) {
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    }
+    let auth;
     if(loggedIn()){
-      headers['Authorization'] = 'Bearer ' + getToken();
+      auth = getToken();
     }
-    console.log(headers);
+
     return fetch(DOMAIN_API + suffix_url, {
-      headers,
       method: method,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + auth,
+      },
     }).then((response) => {
-      console.log('res', response.json());
+      response.json()
     })
-    // .then((res) => {
-    //   console.log('data', res);
-    // })
+    .then((res) => {
+      console.log('data', res);
+    })
     .catch((error) => console.error(error));
 }
 
@@ -61,7 +62,7 @@ export function get_all_users() {
 }
 
 export function get_user(id) {
-  return axios_api_json("GET", `/user/${id}`);
+  return axios_api_json("GET", `/users/${id}`);
 }
 
 export function add_user(email, password, name) {
@@ -111,15 +112,21 @@ export function logIn(email: String, password: String) {
     .catch((error) => { console.error(error);return false;})
 }
 
+export function unsetToken() {
+  const token = getToken();
+  localStorage.removeItem('token', token);
+  window.location.href = `http://localhost:3001/login`;
+}
+
 function setToken(idToken) {
    localStorage.setItem('token', idToken);
 }
 
-function getToken() {
+export function getToken() {
   return localStorage.getItem('token');
 }
 
-function loggedIn() {
+export function loggedIn() {
    const token = getToken();
    return !!token && !isTokenExpired(token);
 }

@@ -12,7 +12,6 @@ export default function Commande(){
     [],
     (res) => {
       console.log('products', res);
-
     }
   );
 
