@@ -6,14 +6,7 @@ import {getToken, unsetToken} from '../api';
 import {ShoppingBasket} from '@styled-icons/remix-line/ShoppingBasket';
 
 
-export default function Nav(){
-
-  const [isLogged, setIsLogged] = useState(false);
-
-  useEffect(() => {
-    getToken() === "undefined" ? setIsLogged(false) : setIsLogged(true);
-    console.log(isLogged);
-  }, []);
+export default function Nav({logged, setLogged}){
 
   return (
     <header>
@@ -27,10 +20,10 @@ export default function Nav(){
         </ul>
         <ul>
           {
-            isLogged ?
+            logged ?
               <>
-              <a onClick={() => { setIsLogged(false); unsetToken();}}>Logout</a>
-              <Link to="/panier"><ShoppingBasket size="50"/></Link>
+                <a onClick={() => { setLogged(false); unsetToken();}}>Logout</a>
+                <Link to="/panier"><ShoppingBasket size="50"/></Link>
               </>
             :
             <Link to="/login">Login</Link>

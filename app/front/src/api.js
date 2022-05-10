@@ -14,10 +14,7 @@ function axios_api_json(method, suffix_url) {
         'Authorization': "Bearer " + auth,
       },
     }).then((response) => {
-      response.json()
-    })
-    .then((res) => {
-      console.log('data', res);
+      console.log('res', response.json());
     })
     .catch((error) => console.error(error));
 }
@@ -67,6 +64,7 @@ export function get_user(id) {
 
 export function add_user(email, password, name) {
     const url = DOMAIN_API +"/users"
+    console.log('email', password);
     return fetch(url,{
         method:"POST",
         headers: {
@@ -76,15 +74,12 @@ export function add_user(email, password, name) {
         body: JSON.stringify({
             email: email,
             password: password,
-            name: name
+            fullName: name
         })
-    }).then((response) => {
-        if(response.status===200){
-            return response.json();
-        }else{
-            return false;
-        }
-    }).catch((error) => { console.error(error);return false;})
+    })
+    .then(response => response.json())
+    // .then(res => console.log(res))
+    .catch((error) => { console.error(error);return false;})
 }
 
 

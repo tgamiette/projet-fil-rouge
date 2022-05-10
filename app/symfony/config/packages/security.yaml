@@ -27,6 +27,7 @@ security:
             pattern: ^/api/users
             provider: app_user_provider
             methods: [POST]
+
         login:
             pattern: ^/api/login_check
             provider: app_user_provider

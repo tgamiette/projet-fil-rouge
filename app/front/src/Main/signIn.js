@@ -1,16 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {add_user} from '../api';
 import { useWaitFor } from "../shared/hooks";
+import { useLocation } from 'react-router-dom';
+import {useNavigate} from "react-router-dom"
 
 export default function SignIn(){
 
-  const [user, setUser] = useState({username: "", password: "", email: ""});
+  const [user, setUser] = useState({fullName: "", password: "", email: ""});
+  const navigate = useNavigate();
 
   useWaitFor(
-     () => add_user(user.email, user.password, user.username),
+     () => add_user(user.email, user.password, user.fullName),
      [user],
      (res) => {
-       console.log('user', res);
+      if(res.id){
+       navigate("/login");
+     }else{
+       return null
+     }
+      console.log(res);
      }
    );
 
@@ -19,13 +27,17 @@ export default function SignIn(){
     setUser({
       email: e.target.email.value,
       password: e.target.password.value,
-      username: `${e.target.prenom.value} ${e.target.nom.value}`
+      fullName: `${e.target.prenom.value} ${e.target.nom.value}`
     });
   }
 
  return(
   <>
    <h1>SignIn</h1>
+
+   <div className="error-message">
+    <p>
+   </div>
 
    <form className="" onSubmit={handleSubmit}>
     <label className="">Nom</label>

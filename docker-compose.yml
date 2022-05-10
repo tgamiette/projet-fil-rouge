@@ -34,12 +34,12 @@ services:
     restart: always
     volumes:
       - ./docker/bdd/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - ./app/sql:/var/lib/mysql/:delegated
+      - db-data:/var/lib/mysql/:delegated
     environment:
-      MARIADB_ROOT_PASSWORD: azerty
-      MARIADB_DATABASE: app
-      MARIADB_USER: root
-      MARIADB_PASSWORD: azerty
+      MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
 
 
   phpmyadmin:
@@ -56,4 +56,4 @@ services:
 
 volumes:
   #  app-vendor:
-  sql:
+  db-data:
