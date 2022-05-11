@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import './style/Nav.css'
 import {getToken, unsetToken} from '../api';
 import {ShoppingBasket} from '@styled-icons/remix-line/ShoppingBasket';
+import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
 
 
 export default function Nav({logged, setLogged}){
@@ -23,7 +24,8 @@ export default function Nav({logged, setLogged}){
             logged ?
               <>
                 <a onClick={() => { setLogged(false); unsetToken();}}>Logout</a>
-                <Link to="/panier"><ShoppingBasket size="50"/></Link>
+                <Link to="/panier"><ShoppingBasket size="40"/></Link>
+                <Link to="/account"><AccountCircle size="40"/></Link>
               </>
             :
             <Link to="/login">Login</Link>
