@@ -6,8 +6,9 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -70,6 +71,17 @@ class Product {
     #[Groups(['products_read'])]
     #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
     private $objective;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
+    private $productsOrders;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $unit;
+
+    public function __construct()
+    {
+        $this->productsOrders = new ArrayCollection();
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -156,6 +168,51 @@ class Product {
         }
 
         $this->objective = $objective;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductsOrder>
+     */
+    public function getProductsOrders(): Collection
+    {
+        return $this->productsOrders;
+    }
+
+    public function addProductsOrder(ProductsOrder $productsOrder): self
+    {
+        if (!$this->productsOrders->contains($productsOrder)) {
+            $this->productsOrders[] = $productsOrder;
+            $productsOrder->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductsOrder(ProductsOrder $productsOrder): self
+    {
+        if ($this->productsOrders->removeElement($productsOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($productsOrder->getProduct() === $this) {
+                $productsOrder->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnit(): mixed {
+        return $this->unit;
+    }
+
+
+    public function setUnit(string $unit): self
+    {
+        $this->unit = $unit;
 
         return $this;
     }

@@ -11,7 +11,7 @@ fix:
 		docker-compose exec apache sh -c 'vendor/bin/php-cs-fixer fix src/'
 
 bash:
-		docker-compose exec apache bash
+	docker exec projet-fil-rouge-php-1 bash
 
 stop:
 		docker-compose stop

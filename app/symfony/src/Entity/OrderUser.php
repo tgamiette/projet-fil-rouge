@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace App\Entity;
 
@@ -23,15 +23,16 @@ class OrderUser {
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'float',nullable: true)]
     #[Assert\NotBlank(message: 'Total obligatoire')]
     #[Assert\Type(type: 'integer', message: 'valeur incorrecte')]
     #[Groups(['orderUser_read'])]
     private $total;
 
-    #[ORM\Column(type: 'date')]
-    #[Groups(['orderUser_read'])]
-    private $date;
+
+//    #[ORM\Column(type: 'date')]
+//    #[Groups(['orderUser_read'])]
+//    private $date;
 
 //    #[ORM\JoinColumn(nullable: false)]
 //    #[Groups(['orderUser_read'])]
@@ -43,7 +44,7 @@ class OrderUser {
     private $orderSeller;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['orderUser_read'])]
     private $customer;
 
@@ -54,8 +55,18 @@ class OrderUser {
     #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]
     private $purchases;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime')]
+    private $updatedAt;
+
+    #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: ProductsOrder::class)]
+    private $productsOrders;
+
     public function __construct() {
         $this->purchases = new ArrayCollection();
+        $this->productsOrders = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -132,6 +143,60 @@ class OrderUser {
             // set the owning side to null (unless already changed)
             if ($purchase->getOrderUser() === $this) {
                 $purchase->setOrderUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductsOrder>
+     */
+    public function getProductsOrders(): Collection
+    {
+        return $this->productsOrders;
+    }
+
+    public function addProductsOrder(ProductsOrder $productsOrder): self
+    {
+        if (!$this->productsOrders->contains($productsOrder)) {
+            $this->productsOrders[] = $productsOrder;
+            $productsOrder->setOrderId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductsOrder(ProductsOrder $productsOrder): self
+    {
+        if ($this->productsOrders->removeElement($productsOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($productsOrder->getOrderId() === $this) {
+                $productsOrder->setOrderId(null);
             }
         }
 

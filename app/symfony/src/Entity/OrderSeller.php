@@ -37,7 +37,7 @@ class OrderSeller {
     private ?Product $product;
 
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'float',nullable: true)]
     #[Assert\NotBlank(message: 'Total obligatoire')]
     #[Assert\Positive(message: "Le Total doit être positive")]
     #[Groups(['orderSeller_read'])]
