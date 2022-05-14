@@ -1,18 +1,13 @@
 import React from 'react';
+import SubNav from './nav'
 
 export default function Account(){
 
  return (
   <>
+  <SubNav />
    <div className="c-nav account">
-    <nav>
-      <ul>
-        <li>Informations</li>
-        <li>Mes Commandes</li>
-        <li>Securité & payements</li>
-        <li>Paramètres</li>
-      </ul>
-    </nav>
+      <h1>hello</h1>
    </div>
   </>
  )
