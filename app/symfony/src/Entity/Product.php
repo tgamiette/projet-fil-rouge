@@ -33,7 +33,7 @@ class Product {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['products_read','orderUser_read', 'orderSeller_read'])]
+    #[Groups(['users_read','products_read','orderUser_read', 'orderSeller_read'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
