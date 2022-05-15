@@ -11,7 +11,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'])]
+//#[ApiResource(collectionOperations: ['GET', 'POST'], itemOperations: ['GET', 'PUT', 'DELETE'])]
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
 class Delivery {
     #[ORM\Id]

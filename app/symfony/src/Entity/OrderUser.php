@@ -8,13 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AssertCustom; // A custom constraint
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: ['GET', 'POST'],
     itemOperations: ['GET', 'PUT', 'DELETE'],
-    attributes: ['order' => ['date' => 'desc']],
+    attributes: ['order' => ['createdAt' => 'desc']],
     denormalizationContext: ['disable_type_enforcement' => true],
     normalizationContext: ['groups' => ['orderUser_read']])]
 class OrderUser {
@@ -50,6 +51,8 @@ class OrderUser {
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['orderUser_read'])]
+    #[AssertCustom\OrderUserConstraint\MinimalProperties()]
+    #[Assert\NotBlank()]
     private $products = [];
 
     #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]

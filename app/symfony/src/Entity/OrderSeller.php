@@ -9,16 +9,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderSellerRepository::class)]
-#[ApiResource(collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT', 'DELETE'],
-    attributes: [
-        'order' => ['createdAt' => 'desc'],
-        'pagination_enabled' => true,
-        'pagination_items_per_page' => 5
-    ],
-    denormalizationContext: ['disable_type_enforcement' => true],
-    normalizationContext: ['groups' => ['orderSeller_read']]
-)]
+//#[ApiResource(collectionOperations: ['GET', 'POST'],
+//    itemOperations: ['GET', 'PUT', 'DELETE'],
+//    attributes: [
+//        'order' => ['createdAt' => 'desc'],
+//        'pagination_enabled' => true,
+//        'pagination_items_per_page' => 5
+//    ],
+//    denormalizationContext: ['disable_type_enforcement' => true],
+//    normalizationContext: ['groups' => ['orderSeller_read']]
+//)]
 class OrderSeller {
     #[ORM\Id]
     #[ORM\GeneratedValue]

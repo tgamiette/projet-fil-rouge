@@ -49,18 +49,18 @@ class OrderUserSubscriber implements EventSubscriberInterface {
 //TODO affecer automatique au bon order seller rajouter le customer automatiquement dans la requete api
 // ajouter la date autolatiquement
     public function setOrder(ViewEvent $event) {
-        $order = $event->getControllerResult();
-        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
-            $order->setCustomer($this->security->getUser());
-            foreach ($order->getProducts() as $data) {
-                self::checkOrderData($data);
-
-                if (!$this->productsRepository->find($id)) {
-                    $event->setResponse(new Response("produit $id introuvable", 500));
-                    $event->stopPropagation();
-                }
-            }
-        }
+//        $order = $event->getControllerResult();
+//        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
+//            $order->setCustomer($this->security->getUser());
+//            foreach ($order->getProducts() as $data) {
+//                self::checkOrderData($data);
+//
+//                if (!$this->productsRepository->find($id)) {
+//                    $event->setResponse(new Response("produit $id introuvable", 500));
+//                    $event->stopPropagation();
+//                }
+//            }
+//        }
     }
 
     /**
