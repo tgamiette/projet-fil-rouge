@@ -20,7 +20,7 @@ function axios_api_json(method, suffix_url) {
       redirect: 'follow'
     };
 
-    return fetch("http://localhost:8000/api/products/", requestOptions)
+    return fetch(DOMAIN_API+suffix_url, requestOptions)
     .then(response => response.json())
     .then((result) => result)
     .catch(error => console.log('error', error));
