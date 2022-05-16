@@ -75,7 +75,7 @@ class Product {
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255,nullable: true)]
     private $unit;
 
     public function __construct()
@@ -210,7 +210,8 @@ class Product {
     }
 
 
-    public function setUnit(string $unit): self
+    public function setUnit(string $unit=null
+    ): self
     {
         $this->unit = $unit;
 

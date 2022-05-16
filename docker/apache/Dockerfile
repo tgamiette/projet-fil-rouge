@@ -43,15 +43,6 @@ RUN docker-php-source extract \
 ## Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ## ho my zsh
-# terminal colors with xterm
-  ENV TERM xterme
-# set the zsh theme
-  ENV ZSH_THEME agnoster
-
-  # run the installation script
-  RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
-
-  # start zsh
 ## Symfony cache folder
 ENV CACHE_SYMFONY=/var/www/symfony/var/cache
 RUN mkdir -p $CACHE_SYMFONY
@@ -59,4 +50,4 @@ RUN chown -R www-data: $CACHE_SYMFONY
 
 WORKDIR /var/www/symfony
 
-CMD [ "zsh" ]
+#CMD [ "zsh" ]

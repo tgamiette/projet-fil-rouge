@@ -55,6 +55,7 @@ class OrderUser {
     private $updatedAt;
 
     #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: ProductsOrder::class)]
+    #[Groups(['orderUser_read'])]
     private $productsOrders;
 
     public function __construct() {
@@ -72,16 +73,6 @@ class OrderUser {
 
     public function setTotal($total): self {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self {
-        $this->date = $date;
 
         return $this;
     }
