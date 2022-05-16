@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT', 'DELETE'],
+    itemOperations: ['GET', 'PUT'],
     attributes: ['order' => ['createdAt' => 'desc']],
     denormalizationContext: ['disable_type_enforcement' => true],
     normalizationContext: ['groups' => ['orderUser_read']])]

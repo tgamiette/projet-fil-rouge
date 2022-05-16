@@ -7,7 +7,7 @@ use App\Repository\PurchaseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
-#[ApiResource]
+#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT'])]
 class Purchase {
 
     public const STATUS_PENDING = 'PENDING';

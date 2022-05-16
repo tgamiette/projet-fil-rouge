@@ -14,15 +14,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 #[ApiResource(
-    collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT', 'DELETE'],
+    collectionOperations: [
+        'GET',
+    ],
+    itemOperations: [
+        'GET',
+        'PUT' => [
+            "security_message" => "Tu n'as pas les droits sur ce produit ",
+            "security" => "is_granted('ROLE_ADMIN') and object.seller == user",
+        ],
+        'DELETE' => [
+            "security_message" => "Tu n'as pas les droits sur ce produit ",
+            "security" => "is_granted('ROLE_ADMIN') and object.seller == user",
+        ]
+    ],
     attributes: [
-    'order' => ['price' => 'desc'],
-    'pagination_enabled' => true,
-    'pagination_items_per_page' => 20
-]
-    , denormalizationContext: ['disable_type_enforcement' => true],
-    normalizationContext: ["groups" => ["products_read"]]
+        'order' => ['price' => 'desc'],
+        'pagination_enabled' => true,
+        'pagination_items_per_page' => 20,
+
+    ],
+    denormalizationContext: ['disable_type_enforcement' => true]
+    , normalizationContext: ["groups" => ["products_read"]],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial'])]
 class Product {
@@ -34,13 +47,13 @@ class Product {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read','products_read','orderUser_read', 'orderSeller_read'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message: 'Prix manquant')]
     #[Assert\Type(type: 'integer', message: 'type incorrecte ')]
-    #[Groups(['products_read','orderUser_read'])]
+    #[Groups(['products_read', 'orderUser_read'])]
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -66,7 +79,7 @@ class Product {
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[Assert\NotBlank(message: 'vendeur manquant')]
     #[Groups(['products_read'])]
-    private $seller;
+    public $seller;
 
     #[Groups(['products_read'])]
     #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
@@ -75,11 +88,10 @@ class Product {
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
 
-    #[ORM\Column(type: 'string', length: 255,nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $unit;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->productsOrders = new ArrayCollection();
     }
 
@@ -147,7 +159,7 @@ class Product {
         return $this;
     }
 
-    public function getSeller(): ?User {
+    public function getSeller() {
         return $this->seller;
     }
 
@@ -175,13 +187,11 @@ class Product {
     /**
      * @return Collection<int, ProductsOrder>
      */
-    public function getProductsOrders(): Collection
-    {
+    public function getProductsOrders(): Collection {
         return $this->productsOrders;
     }
 
-    public function addProductsOrder(ProductsOrder $productsOrder): self
-    {
+    public function addProductsOrder(ProductsOrder $productsOrder): self {
         if (!$this->productsOrders->contains($productsOrder)) {
             $this->productsOrders[] = $productsOrder;
             $productsOrder->setProduct($this);
@@ -190,8 +200,7 @@ class Product {
         return $this;
     }
 
-    public function removeProductsOrder(ProductsOrder $productsOrder): self
-    {
+    public function removeProductsOrder(ProductsOrder $productsOrder): self {
         if ($this->productsOrders->removeElement($productsOrder)) {
             // set the owning side to null (unless already changed)
             if ($productsOrder->getProduct() === $this) {
@@ -210,9 +219,8 @@ class Product {
     }
 
 
-    public function setUnit(string $unit=null
-    ): self
-    {
+    public function setUnit(string $unit = null
+    ): self {
         $this->unit = $unit;
 
         return $this;

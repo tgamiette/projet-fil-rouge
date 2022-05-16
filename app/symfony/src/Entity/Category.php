@@ -11,7 +11,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'])]
+#[ApiResource(collectionOperations: ['GET'], itemOperations: ['GET'])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category {
     #[ORM\Id]

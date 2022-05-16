@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductsOrderRepository::class)]
 class ProductsOrder extends AbstractEntity {
     public const STATUT_PENDING = 'PENDING';
+    public const STATUT_PENDING_RETURN = 'PENDING_RETURN';
     public const STATUT_RETURN = 'RETURN';
     public const STATUT_VALIDE = 'VALID';
-
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
