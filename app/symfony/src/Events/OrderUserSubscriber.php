@@ -66,14 +66,6 @@ class OrderUserSubscriber implements EventSubscriberInterface {
 //        }
     }
 
-
-    public function setOrder2(ViewEvent $event) {
-        $orderUser=  $event->getControllerResult();
-        if($orderUser instanceof  OrderUser){
-            $products =$orderUser->getProduct();
-            foreach ($products as $product){
-            }
-
     /**
      * Check du fichier JSON passé dans l'API
      * @param array $data
@@ -92,7 +84,6 @@ class OrderUserSubscriber implements EventSubscriberInterface {
         if (!$this->productsRepository->find($id)) {
             $event->setResponse(new Response("produit $id introuvable", 500));
             $event->stopPropagation();
-
         }
     }
 }
