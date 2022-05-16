@@ -32,28 +32,41 @@ export default function SignIn(){
   }
 
  return(
-  <>
-   <h1>SignIn</h1>
+   <div className="c-bg is__full">
+     <div className="c-form">
+     <h1>SignIn</h1>
 
-   <div className="error-message">
-    <p>
+     <div className="error-message">
+      <p></p>
+     </div>
+
+     <form className="" onSubmit={handleSubmit}>
+
+      <div className="c-form_wrapper">
+       <label className="">Nom</label>
+       <input type="text" name="nom"  />
+      </div>
+
+      <div className="c-form_wrapper">
+        <label className="">Prénom</label>
+        <input type="text" name="prenom"  />
+      </div>
+
+      <div className="c-form_wrapper">
+        <label className="">Email</label>
+        <input type="email" name="email"  />
+      </div>
+
+      <div className="c-form_wrapper">
+        <label className="">Password</label>
+        <input className="" type="password" name="password"  />
+      </div>
+
+      <button className="c-btn " type="submit">S'inscrire</button>
+     </form>
+
+    </div>
+
    </div>
-
-   <form className="" onSubmit={handleSubmit}>
-    <label className="">Nom</label>
-    <input type="text" name="nom"  />
-
-    <label className="">Prénom</label>
-    <input type="text" name="prenom"  />
-
-    <label className="">Email</label>
-    <input type="email" name="email"  />
-
-    <label className="">Password</label>
-    <input className="" type="password" name="password"  />
-
-    <button className="" type="submit">S'inscrire</button>
-   </form>
-  </>
  )
 }

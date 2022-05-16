@@ -1,22 +1,29 @@
 const DOMAIN_API = "http://localhost:8000/api";
 
+
 function axios_api_json(method, suffix_url) {
     let auth;
+
     if(loggedIn()){
       auth = getToken();
     }
 
-    return fetch(DOMAIN_API + suffix_url, {
-      method: method,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + auth,
-      },
-    }).then((response) => {
-      console.log('res', response.json());
-    })
-    .catch((error) => console.error(error));
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIwNDQwNDgsImV4cCI6MTY1NTA0NDA0OCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGdtYWlsLmNvbSJ9.j8p-2RSmCDJ7izvgd6zgETSUwcFfDGIbNbCjCtESU2P6OO_rMeeI43NRldvHFTqd57glUqjdAnbUjRL39Q2VV8SUAsNnJIxuW3oY1QCp2KzHXptmJWlBiuuMPOuKvrjGU9a-Z8Zw7-Skc6J0qG1g5RqcPxuqJcr6CZuJAngSLHwTpUM3WylLB269ljDfeLu0MFaF2etXKFGo3wHno7vzgKGMc4Nm9ZL4ajloTniIiSr4rFvYHUMXGuxCwiqYIb1kqEf8c0V9f8X9B9LTgcvltmBLHGru6bjui687WEDEKsaLEyUnjHU9Kix8wwgUpsNXdmnOoEMAp00BscoiEArMEw");
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({});
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    return fetch(DOMAIN_API+suffix_url, requestOptions)
+    .then(response => response.json())
+    .then((result) => result)
+    .catch(error => console.log('error', error));
 }
 
 // Products

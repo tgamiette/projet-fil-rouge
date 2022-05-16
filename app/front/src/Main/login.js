@@ -18,20 +18,24 @@ export default function Login(){
 
 
  return(
-   <>
-    <h1>Login</h1>
+   <div className="c-bg is__full">
+      <div className="c-form">
+       <h1>Login</h1>
+       <form onSubmit={handleLogin}>
+         <div className="c-form_wrapper">
+           <label className="">Email</label>
+           <input type="email" name="email"  />
+         </div>
+         <div className="c-form_wrapper">
+           <label className="">Password</label>
+           <input className="" type="password" name="password"  />
+         </div>
 
-    <form className="" onSubmit={handleLogin}>
-     <label className="">Email</label>
-     <input type="email" name="email"  />
+        <button className="c-btn is__form" type="submit">Se connecter</button>
+       </form>
 
-     <label className="">Password</label>
-     <input className="" type="password" name="password"  />
-
-     <button className="" type="submit">Se connecter</button>
-    </form>
-
-    <p>Vous n'avez pas encore de compte ? <Link to="/signIn">S'inscrire</Link></p>
-   </>
+       <p>Vous n'avez pas encore de compte ? <Link to="/signIn">S'inscrire</Link></p>
+      </div>
+   </div>
  )
 }

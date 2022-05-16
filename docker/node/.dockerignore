@@ -8,8 +8,6 @@
 **/.gitattributes
 **/.gitignore
 **/.gitmodules
-node_modules
-npm-debug.log
 **/docker-compose.*.yaml
 **/docker-compose.*.yml
 **/docker-compose.yaml

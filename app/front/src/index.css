@@ -70,7 +70,7 @@ h2
 }
 
 #root{
-  height: 100vh;
+  height: calc(100vh - 105px);
 }
 
 
@@ -82,6 +82,64 @@ h2
   text-transform: uppercase;
   text-decoration: none;
   background: var(--primary-text-yellow);
+  border: 2px solid var(--primary-text-yellow);
   color:var(--primary-text-white);
   cursor: pointer;
+  transition: 0.3s ease-in;
+}
+
+.c-btn:hover{
+  background: transparent;
+  color:var(--primary-text-yellow);
+  border: 2px solid var(--primary-text-yellow);
+  cursor: pointer;
+}
+
+.c-bg{
+  width: 100%;
+  height: 100%;
+  background: #313232;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.c-form{
+  width: 50%;
+  margin: auto;
+  background-color: var(--primary-text-white);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+  margin: auto;
+}
+
+.c-form_wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 10px 0;
+  width: 100%
+}
+
+input{
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  box-shadow: none;
+  border: none;
+  width: 100%;
+  border: 1px solid #dfdfdf;
 }
