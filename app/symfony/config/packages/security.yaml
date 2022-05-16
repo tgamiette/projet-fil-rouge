@@ -11,16 +11,9 @@ security:
                 property: email
     #        users_in_memory: { memory: null }
     firewalls:
-        #        dev:
-        #            pattern: ^/_(profiler|wdt)
-        #            security: false
-
-#        login:
-#            stateless: true
-#            lazy: true
-#            pattern: ^/api/users
-#            provider: app_user_provider
-#            methods: [ GET ,PUT ,DELETE ]
+        dev:
+            pattern: ^/_(profiler|wdt)
+            security: false
         inscription:
             stateless: true
             lazy: true
@@ -54,11 +47,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/docs, roles: PUBLIC_ACCESS } #
-        - { path: ^/api/login, roles: PUBLIC_ACCESS, methods: [ POST ] } # Allows accessing the Swagger UI
-        - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [ POST ] } # Allows accessing the Swagger UI
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY } # Allows accessing the Swagger UI
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/docs, roles: PUBLIC_ACCESS }  # Allows accessing the Swagger UI
+        - { path: ^/api/login, roles: PUBLIC_ACCESS, methods: [ POST ] } 
+        - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [ POST ] } 
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 #
 #when@test:
 #    security:
