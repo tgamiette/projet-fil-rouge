@@ -8,8 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
 #[ApiResource]
-class Purchase
-{
+class Purchase {
+
+    public const STATUS_PENDING = 'PENDING';
+    public const STATUS_PAID = 'PAID';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -24,42 +27,35 @@ class Purchase
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'purchases')]
     private $orderUser;
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getStripeToken(): ?string
-    {
+    public function getStripeToken(): ?string {
         return $this->stripeToken;
     }
 
-    public function setStripeToken(string $stripeToken): self
-    {
+    public function setStripeToken(string $stripeToken): self {
         $this->stripeToken = $stripeToken;
 
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
+    public function getStatus(): ?string {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
-    {
+    public function setStatus(string $status): self {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getOrderUser(): ?OrderUser
-    {
+    public function getOrderUser(): ?OrderUser {
         return $this->orderUser;
     }
 
-    public function setOrderUser(?OrderUser $orderUser): self
-    {
+    public function setOrderUser(?OrderUser $orderUser): self {
         $this->orderUser = $orderUser;
 
         return $this;

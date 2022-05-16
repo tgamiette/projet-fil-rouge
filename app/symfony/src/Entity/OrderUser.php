@@ -30,16 +30,6 @@ class OrderUser {
     #[Groups(['orderUser_read'])]
     private $total;
 
-
-//    #[ORM\Column(type: 'date')]
-//    #[Groups(['orderUser_read'])]
-//    private $date;
-
-//    #[ORM\JoinColumn(nullable: false)]
-//    #[Groups(['orderUser_read'])]
-//    #[ORM\Column(type: 'json')]
-//    private $product;
-
     #[ORM\ManyToOne(targetEntity: OrderSeller::class)]
     #[Groups(['orderUser_read'])]
     private $orderSeller;

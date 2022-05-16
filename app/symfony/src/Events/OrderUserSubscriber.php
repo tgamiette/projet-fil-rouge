@@ -41,7 +41,7 @@ class OrderUserSubscriber implements EventSubscriberInterface {
     public static function getSubscribedEvents() {
         return [
             KernelEvents::VIEW => [
-                ['setOrder', EventPriorities::POST_VALIDATE],
+                ['setOrder', EventPriorities::POST_WRITE],
             ]
         ];
     }
@@ -49,8 +49,11 @@ class OrderUserSubscriber implements EventSubscriberInterface {
 //TODO affecer automatique au bon order seller rajouter le customer automatiquement dans la requete api
 // ajouter la date autolatiquement
     public function setOrder(ViewEvent $event) {
-//        $order = $event->getControllerResult();
-//        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
+        $order = $event->getControllerResult();
+        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
+            dd($order);
+
+        }
 //            $order->setCustomer($this->security->getUser());
 //            foreach ($order->getProducts() as $data) {
 //                self::checkOrderData($data);
