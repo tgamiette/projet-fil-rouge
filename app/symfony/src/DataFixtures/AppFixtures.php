@@ -93,10 +93,10 @@ class AppFixtures extends Fixture {
                     $manager->persist($users);
                     $orderUser = new OrderUser();
                     $orderUser->setDate(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
-                        // ->setProducts($product)
                         ->setOrderSeller($orderSeller)
                         ->setCustomer($users)
                         ->setTotal($product->getPrice());
+
 
                     $manager->persist($orderUser);
                 }

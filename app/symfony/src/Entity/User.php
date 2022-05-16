@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
 
     #[Assert\NotBlank(message: 'Mot de passe requit')]
 //    #[Assert\Type(type: "string", message: 'Mo')]
-    #[Groups(['users_read'])]
+//    #[Groups()]
     #[ORM\Column(type: 'string')]
     private $password;
 
@@ -49,7 +49,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['orderUser_read', 'users_read', 'products_read'])]
     private $fullName;
-
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserPayment::class, orphanRemoval: true)]
     #[Groups(['users_read'])]
@@ -169,7 +168,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection|Product[]
      */
-    public function getProducts(): Collection {
+    public function getProducts() {
         return $this->products;
     }
 
