@@ -13,7 +13,7 @@ services:
       - /var/www/symfony/var/cache/
       - ./app/symfony/vendor:/var/www/symfony/vendor
     environment:
-      DATABASE_URL: mysql://$MYSQL_USER:$MYSQL_PASSWORD@db:$MYSQL_PORT/$MYSQL_DATABASE
+      DATABASE_URL: mysql://root:azerty@db:3306/app
     ports:
       - "8000:80"
 
@@ -36,10 +36,10 @@ services:
       - ./docker/bdd/my.cnf:/etc/mysql/conf.d/my.cnf:ro
       - db-data:/var/lib/mysql/:delegated
     environment:
-      MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
-      MYSQL_DATABASE: $MYSQL_DATABASE
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: azerty
+      MYSQL_DATABASE: app
+      MYSQL_USER: root
+      MYSQL_PASSWORD: azerty
 
 
   phpmyadmin:
