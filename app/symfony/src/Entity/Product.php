@@ -32,10 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         'order' => ['price' => 'desc'],
         'pagination_enabled' => true,
         'pagination_items_per_page' => 20,
-
     ],
-    denormalizationContext: ['disable_type_enforcement' => true]
-    , normalizationContext: ["groups" => ["products_read"]],
+    denormalizationContext: ['disable_type_enforcement' => true],
+    normalizationContext: ["groups" => ["products_read"]],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial'])]
 class Product {

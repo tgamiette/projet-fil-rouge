@@ -24,15 +24,10 @@ class OrderUser {
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'float',nullable: true)]
-    #[Assert\NotBlank(message: 'Total obligatoire')]
-    #[Assert\Type(type: 'integer', message: 'valeur incorrecte')]
+    #[ORM\Column(type: 'float',nullable: false)]
+    #[Assert\Type(type: 'float', message: 'valeur incorrecte')]
     #[Groups(['orderUser_read'])]
     private $total;
-
-    #[ORM\ManyToOne(targetEntity: OrderSeller::class)]
-    #[Groups(['orderUser_read'])]
-    private $orderSeller;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -73,16 +68,6 @@ class OrderUser {
 
     public function setTotal($total): self {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getOrderSeller(): ?OrderSeller {
-        return $this->orderSeller;
-    }
-
-    public function setOrderSeller(?OrderSeller $orderSeller): self {
-        $this->orderSeller = $orderSeller;
 
         return $this;
     }
