@@ -10,20 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
 //#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT'])]
-#[ApiResource(collectionOperations: ['GET', 'POST'],
+#[ApiResource(collectionOperations: ['GET'],
     itemOperations: [
+        'GET',
         'validate' =>
             [
                 'method' => 'POST',
-                'path' => '/purchase/{id}/validate',
-                'controller' => ValidatePurchase::class
+                'path' => '/purchases/{id}/validate',
+                'controller' => ValidatePurchase::class,
             ],
         'refuse' => [
             'method' => 'POST',
             'path' => '/purchase/{id}/refuse',
             'controller' => RefusePurchase::class,
         ],
-    ])]
+    ],
+)]
 class Purchase {
 
     public const STATUS_PENDING = 'PENDING';
@@ -36,10 +38,10 @@ class Purchase {
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $stripeToken;
+    private ?string $stripeToken;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $status;
+    private ?string $status;
 
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'purchases')]
     private $orderUser;

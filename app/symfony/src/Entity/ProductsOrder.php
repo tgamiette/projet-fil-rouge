@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductsOrder extends AbstractEntity {
     public const STATUT_PENDING = 'PENDING';
     public const STATUT_PENDING_RETURN = 'PENDING_RETURN';
+    public const STATUT_PAID = 'PAID';
     public const STATUT_RETURN = 'RETURN';
     public const STATUT_VALIDE = 'VALID';
 
@@ -70,7 +71,7 @@ class ProductsOrder extends AbstractEntity {
         return $this->status;
     }
 
-    public function setStatus( $status): self {
+    public function setStatus(string $status): self {
         $this->status = $status;
 
         return $this;
