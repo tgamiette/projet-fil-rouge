@@ -11,7 +11,8 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT','DELETE'])]
+#[ApiResource(collectionOperations: ['GET'], itemOperations: ['GET'], normalizationContext: ["groups" => ["category_read"]]
+)]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category {
     #[ORM\Id]
@@ -20,10 +21,11 @@ class Category {
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','category_read'])]
     private $title;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
+    #[Groups(['category_read'])]
     private $products;
 
     public function __construct() {

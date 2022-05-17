@@ -6,8 +6,13 @@ use App\Repository\ProductsOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductsOrderRepository::class)]
-class ProductsOrder extends AbstractEntity
-{
+class ProductsOrder extends AbstractEntity {
+    public const STATUT_PENDING = 'PENDING';
+    public const STATUT_PENDING_RETURN = 'PENDING_RETURN';
+    public const STATUT_PAID = 'PAID';
+    public const STATUT_RETURN = 'RETURN';
+    public const STATUT_VALIDE = 'VALID';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -17,9 +22,9 @@ class ProductsOrder extends AbstractEntity
     private $orderId;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productsOrders')]
-    private  $product;
+    private $product;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'string')]
     private $status;
 
     #[ORM\Column(type: 'datetime')]
@@ -38,102 +43,85 @@ class ProductsOrder extends AbstractEntity
     private $total;
 
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getOrderId(): ?OrderUser
-    {
+    public function getOrderId(): ?OrderUser {
         return $this->orderId;
     }
 
-    public function setOrderId(?OrderUser $orderId): self
-    {
+    public function setOrderId(?OrderUser $orderId): self {
         $this->orderId = $orderId;
 
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
+    public function getProduct(): ?Product {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
-    {
+    public function setProduct(?Product $product): self {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getStatus(): ?int
-    {
+    public function getStatus(): ?int {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
-    {
+    public function setStatus(string $status): self {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
+    public function getUpdatedAt(): ?\DateTimeInterface {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getQuantity(): ?float
-    {
+    public function getQuantity(): ?float {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self
-    {
+    public function setQuantity(float $quantity): self {
         $this->quantity = $quantity;
 
         return $this;
     }
 
-    public function getPrixU(): ?float
-    {
+    public function getPrixU(): ?float {
         return $this->prixU;
     }
 
-    public function setPrixU(float $prixU): self
-    {
+    public function setPrixU(float $prixU): self {
         $this->prixU = $prixU;
 
         return $this;
     }
 
-    public function getUnit(): ?int
-    {
+    public function getUnit(): ?int {
         return $this->unit;
     }
 
-    public function setUnit(int $unit): self
-    {
+    public function setUnit(int $unit): self {
         $this->unit = $unit;
 
         return $this;
     }
 
-    public function getTotal(): ?int
-    {
+    public function getTotal(): ?int {
         return $this->total;
     }
 
-    public function setTotal(int $total): self
-    {
+    public function setTotal(int $total): self {
         $this->total = $total;
 
         return $this;

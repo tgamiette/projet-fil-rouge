@@ -28,8 +28,6 @@ class ProductSubscriber implements EventSubscriberInterface {
         return[KernelEvents::VIEW=>['setProduct',EventPriorities::PRE_VALIDATE]];
 	}
 
-
-
     public function setProduct(ViewEvent $event) {
         $product = $event->getControllerResult();
         if($event->getRequest()->isMethod("POST") && $product instanceof Product){

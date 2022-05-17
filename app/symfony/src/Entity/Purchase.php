@@ -3,15 +3,34 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\RefusePurchase;
+use App\Controller\ValidatePurchase;
 use App\Repository\PurchaseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
-#[ApiResource]
+//#[ApiResource(collectionOperations: ['GET','POST'], itemOperations: ['GET','PUT'])]
+#[ApiResource(collectionOperations: ['GET'],
+    itemOperations: [
+        'GET',
+        'validate' =>
+            [
+                'method' => 'POST',
+                'path' => '/purchases/{id}/validate',
+                'controller' => ValidatePurchase::class,
+            ],
+        'refuse' => [
+            'method' => 'POST',
+            'path' => '/purchase/{id}/refuse',
+            'controller' => RefusePurchase::class,
+        ],
+    ],
+)]
 class Purchase {
 
     public const STATUS_PENDING = 'PENDING';
     public const STATUS_PAID = 'PAID';
+    public const STATUS_ERROR = 'ERROR';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,10 +38,10 @@ class Purchase {
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $stripeToken;
+    private ?string $stripeToken;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $status;
+    private ?string $status;
 
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'purchases')]
     private $orderUser;

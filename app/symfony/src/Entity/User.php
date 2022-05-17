@@ -17,7 +17,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT', 'DELETE'],
+    itemOperations: [
+        'GET',
+        'PUT' => [
+            "security_message" => "Tu n'as pas les droits pour modifier cet utilisateur.",
+            "security" => "is_granted('ROLE_ADMIN') and object.seller == user",
+        ],
+    ],
     denormalizationContext: ['disable_type_enforcement' => true], normalizationContext: ["groups" => ['users_read']]
 )]
 #[UniqueEntity("email", "Un Utilisateur existe déja avec cet email")]
@@ -196,13 +202,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this->email;
     }
 
-    public function getUserInfo(): ?UserInfo
-    {
+    public function getUserInfo(): ?UserInfo {
         return $this->userInfo;
     }
 
-    public function setUserInfo(?UserInfo $userInfo): self
-    {
+    public function setUserInfo(?UserInfo $userInfo): self {
         // unset the owning side of the relation if necessary
         if ($userInfo === null && $this->userInfo !== null) {
             $this->userInfo->setUser(null);
