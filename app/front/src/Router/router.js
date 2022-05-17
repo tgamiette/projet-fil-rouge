@@ -12,7 +12,9 @@ import Commande from "../Commande/commande";
 import Login from "../Main/login";
 import Account from "../Accounts/account";
 import Parametres from "../Accounts/parametres";
+import Commandes from "../Accounts/commandes";
 import SignIn from "../Main/signIn";
+import Produits from "../Produits/produits";
 import {getToken} from "../api";
 
 export default function Router({}){
@@ -22,7 +24,6 @@ export default function Router({}){
   useEffect(() => {
     setLogged(logged);
     getToken() === "undefined" ? setLogged(false) : setLogged(true);
-
     console.log('logged', logged);
   }, [logged]);
 
@@ -37,6 +38,7 @@ export default function Router({}){
           <Route path="/producteurs" element={<Producteurs />} />
           <Route path="/calendrier" element={<Calendrier />} />
           <Route path="/producteur/:id" element={<ProducteurSingle />} />
+          <Route path="/produits/:id" element={<Produits />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signIn" element={<SignIn />} />
           {/*<Route path="/commandes" element={
@@ -46,13 +48,12 @@ export default function Router({}){
                 <NeedAuth logged={logged} children={<Calendrier />}></NeedAuth>
           }/>
 
-          <Route path="/account/*" element={
-                <NeedAuth logged={logged} children={<Account />}></NeedAuth>
-          }/>
 
           <Route path="/account/*">
-           <Route index element={<NeedAuth logged={logged} children={<Account />}></NeedAuth>} />
-           <Route path="commandes" element={<Parametres />} />
+           {/*<Route index element={<NeedAuth logged={logged} children={<Account />}></NeedAuth>} />*/}
+           <Route index element={<Account />}/>
+
+           <Route path="commandes" element={<Commandes />} />
            <Route path="paiement" element={<Parametres />} />
            <Route path="parametres" element={<Parametres />} />
          </Route>

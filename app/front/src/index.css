@@ -140,6 +140,6 @@ input{
   font-size: 1rem;
   box-shadow: none;
   border: none;
-  width: 100%;
+  width: auto;
   border: 1px solid #dfdfdf;
 }

@@ -1,11 +1,25 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { useParams } from "react-router-dom";
+import {useWaitFor} from '../shared/hooks';
+import {get_product, get_producteur} from '../api';
+import { Link } from "react-router-dom";
+
+
 
 export default function ProducteurSingle({}){
 
+  const [producteur, setProducteur] = useState(false);
+
+
   const {id} = useParams();
-  
-  const products = ["1", "2", "3"];
+
+  useWaitFor(
+    () => get_producteur(id),[],(res) => {
+      console.log('res', res);
+      setProducteur(res);
+    }
+  );
+
 
   return(
     <>
@@ -13,25 +27,29 @@ export default function ProducteurSingle({}){
       <div className="c-producteur">
         <img src="" alt="" />
         <div className="c-producteur_info">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla lorem est, eu imperdiet lectus pretium sed</p>
+          <p>{producteur['fullName']}</p>
+          <p>{producteur['description']}</p>
           <button className="c-btn">Voir tous mes produits</button>
         </div>
       </div>
 
       <div className="c-main_products">
         {
-          products.map((item) => {
-            return(
-              <>
-                <div className="c-product_card">
-                  <span className="c-product_img">
-                    <img src="" alt="" />
-                  </span>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla lorem est, eu imperdiet lectus pretium sed.</p>
-                </div>
-              </>
-            )
-          })
+          producteur['products'] !== undefined ?
+            producteur['products'].map((item) => {
+              return(
+                <>
+                  <div className="c-product_card">
+                    <span className="c-product_img">
+                      <img src="" alt="" />
+                    </span>
+                    <p>{item['title']}</p>
+                  </div>
+                </>
+              )
+            })
+          :
+          null
         }
       </div>
 

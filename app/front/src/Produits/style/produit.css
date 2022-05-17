@@ -1,0 +1,49 @@
+.c-produits{
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  grid-gap: 30px;
+  height: 100%;
+}
+
+
+.c-produit_single{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+
+.c-produit_img, .c-produit_infos{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+.c-img_circle{
+  position: relative;
+  width: 70%;
+}
+
+.CircularProgressbar {
+  position: relative;
+  z-index: 5;
+}
+
+.CircularProgressbar .CircularProgressbar-trail{
+  stroke: #efefef;
+}
+
+.CircularProgressbar .CircularProgressbar-path{
+  stroke: var(--primary-text-yellow);
+}
+
+.c-img_produit{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+}

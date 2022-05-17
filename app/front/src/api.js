@@ -35,6 +35,14 @@ export function get_product(id) {
   return axios_api_json("GET", `/products/${id}`);
 }
 
+export function get_all_categories() {
+  return axios_api_json("GET", `/categories/`);
+}
+
+export function get_categorie(id) {
+  return axios_api_json("GET", `/categories/${id}`);
+}
+
 export function add_product(title : String, price: Int, quantity: Int, description: String, category: String) {
     const url = DOMAIN_API +"/products/"
     return fetch(url,{
@@ -59,6 +67,33 @@ export function add_product(title : String, price: Int, quantity: Int, descripti
     }).catch((error) => { console.error(error);return false;})
 }
 
+// Producteurs
+export function get_all_producteurs() {
+  return axios_api_json("GET", "/users");
+}
+
+export function get_producteur(id) {
+  return axios_api_json("GET", `/users/${id}`);
+}
+
+//Customers
+export function get_all_customers() {
+  return axios_api_json("GET", "/customers");
+}
+
+export function get_customer(id) {
+  return axios_api_json("GET", `/customers/${id}`);
+}
+
+
+// Orders
+export function get_all_orders_users() {
+  return axios_api_json("GET", "/order_users");
+}
+
+export function get_order_user(id) {
+  return axios_api_json("GET", `/order_users/${id}`);
+}
 
 // Users
 export function get_all_users() {
@@ -151,12 +186,3 @@ function parseJwt(token) {
      return null;
    }
  };
-
-//Customers
-export function get_all_customers() {
-  return axios_api_json("GET", "/customers");
-}
-
-export function get_customer(id) {
-  return axios_api_json("GET", `/customers/${id}`);
-}
