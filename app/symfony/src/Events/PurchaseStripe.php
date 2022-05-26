@@ -29,13 +29,9 @@ class PurchaseStripe implements EventSubscriberInterface {
      * @inheritDoc
      */
     public static function getSubscribedEvents() {
-//        return[KernelEvents::VIEW=>['setOrder',EventPriorities::PRE_VALIDATE]];
         return [KernelEvents::VIEW => ['setOrder', EventPriorities::PRE_VALIDATE]];
     }
 
-
-//TODO affecer automatique au bon order seller rajouter le customer automatiquement dans la requete api
-// ajouter la date autolatiquement
     public function setOrder(ViewEvent $event) {
         $order = $event->getControllerResult();
         if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {

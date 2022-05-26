@@ -6,13 +6,15 @@ use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\OrderSeller;
 use App\Entity\OrderUser;
 use App\Entity\ProductsOrder;
+use App\Entity\Purchase;
 use App\Repository\OrderSellerRepository;
 use App\Repository\OrderUserRepository;
 use App\Repository\ProductsOrderRepository;
 use App\Repository\ProductsRepository;
-use JetBrains\PhpStorm\ArrayShape;
+
+use App\Repository\PurchaseRepository;
+use App\Services\StripeHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
@@ -26,13 +28,14 @@ class OrderUserSubscriber implements EventSubscriberInterface {
     private ProductsOrderRepository $productsOrderRepository;
     private ProductsRepository $productsRepository;
 
-    public function __construct(Security $security, OrderUserRepository $orderUserRepository, OrderSellerRepository $orderSellerRepository, ProductsRepository $productsRepository, ProductsOrderRepository $productsOrderRepository) {
+    public function __construct(Security $security, OrderUserRepository $orderUserRepository, OrderSellerRepository $orderSellerRepository, ProductsRepository $productsRepository, ProductsOrderRepository $productsOrderRepository, PurchaseRepository $purchaseRepository) {
 
         $this->security = $security;
         $this->productsRepository = $productsRepository;
         $this->productsOrderRepository = $productsOrderRepository;
         $this->orderUserRepository = $orderUserRepository;
         $this->orderSellerRepository = $orderSellerRepository;
+        $this->purchaseRepository = $purchaseRepository;
     }
 
     /**
@@ -41,49 +44,67 @@ class OrderUserSubscriber implements EventSubscriberInterface {
     public static function getSubscribedEvents() {
         return [
             KernelEvents::VIEW => [
-                ['setOrder', EventPriorities::POST_WRITE],
+                ['setOrder', EventPriorities::POST_VALIDATE],
+                ['addProductOrder', EventPriorities::POST_WRITE],
+                ['addPurchase', EventPriorities::POST_WRITE],
             ]
         ];
     }
 
-//TODO affecer automatique au bon order seller rajouter le customer automatiquement dans la requete api
-// ajouter la date autolatiquement
+    public function addProductOrder(ViewEvent $event) {
+        $order = $event->getControllerResult();
+        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
+            $products = $order->getProducts();
+            $date = new \DateTime();
+            foreach ($products as $productId => $qty) {
+                $product = $this->productsRepository->find((int)$productId);
+                $productOrder = (new ProductsOrder())
+                    ->setProduct($product)
+                    ->setQuantity($qty)
+                    ->setUpdatedAt($date)
+                    ->setStatus(ProductsOrder::STATUT_PENDING)
+                    ->setTotal($product->getPrice() * $qty)
+                    ->setPrixU($product->getPrice())->setUnit(2);
+                $order->addProductsOrder($productOrder);
+                $this->productsOrderRepository->add($productOrder);
+            }
+        }
+    }
+
     public function setOrder(ViewEvent $event) {
         $order = $event->getControllerResult();
         if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
-            dd($order);
-
+            $date = new \DateTime();
+            $total = 0;
+            $products = $order->getProducts();
+            $order->setCustomer($this->security->getUser());
+            foreach ($products as $productId => $qty) {
+                $product = $this->productsRepository->find((int)$productId);
+                $total += $product->getPrice() * $qty;
+            }
+            $order->setTotal((float)$total);
+            $order->setCreatedAt($date);
+            $order->setUpdatedAt($date);
         }
-//            $order->setCustomer($this->security->getUser());
-//            foreach ($order->getProducts() as $data) {
-//                self::checkOrderData($data);
-//
-//                if (!$this->productsRepository->find($id)) {
-//                    $event->setResponse(new Response("produit $id introuvable", 500));
-//                    $event->stopPropagation();
-//                }
-//            }
-//        }
     }
 
     /**
-     * Check du fichier JSON passé dans l'API
-     * @param array $data
-     * @return void
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Stripe\Exception\ApiErrorException
+     * @throws \Doctrine\ORM\ORMException
      */
-    public function checkOrderData(array $data): void {
-        $product = $this->productsRepository->find($data['product']);
-        unset($data['product']);
-        $productOrder = new ProductsOrder($data);
-        $productOrder->setUpdatedAt(new \DateTime());
-        $productOrder->setProduct($product);
-        $productOrder->setPrixU($product->getPrice());
-        $productOrder->setTotal($product->getPrice() * $productOrder->getQuantity());
-        $productOrder->setUnit($product->getUnit());
+    public function addPurchase(ViewEvent $event) {
+        $order = $event->getControllerResult();
+        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
+            $purchase = $this->purchaseRepository->findOneBy(['orderUser' => $order->getId()]);
+            if (!$purchase) {
+                $purchase = (new Purchase())
+                    ->setStatus(Purchase::STATUS_PENDING)
+                    ->setOrderUser($order);
+            }
+            $purchase->setStripeToken((new StripeHelper())->PaymentIntent($order));
+            $this->purchaseRepository->add($purchase);
 
-        if (!$this->productsRepository->find($id)) {
-            $event->setResponse(new Response("produit $id introuvable", 500));
-            $event->stopPropagation();
         }
     }
 }

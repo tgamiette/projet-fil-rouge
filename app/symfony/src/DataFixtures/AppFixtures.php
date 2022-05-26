@@ -72,7 +72,7 @@ class AppFixtures extends Fixture {
                     ->setDescription($faker->paragraph(1))
                     ->setCategory($category)
                     ->setSeller($user)
-                    ->setQuantity(100);
+                    ->setQuantity(100)->setUnit("gramme???");
                 $manager->persist($product);
 
                 $orderSeller = new OrderSeller();
@@ -95,7 +95,8 @@ class AppFixtures extends Fixture {
                     $orderUser->setDate(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                         ->setOrderSeller($orderSeller)
                         ->setCustomer($users)
-                        ->setTotal($product->getPrice());
+                        ->setTotal($product->getPrice())
+                    ->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());
 
 
                     $manager->persist($orderUser);

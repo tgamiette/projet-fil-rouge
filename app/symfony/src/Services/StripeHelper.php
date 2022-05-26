@@ -2,24 +2,32 @@
 
 namespace App\Services;
 
-use App\Entity\Purchase;
+use App\Entity\OrderUser;
+use App\Repository\PurchaseRepository;
+use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
-use Symfony\Bundle\MakerBundle\Str;
+use function Sodium\add;
 
 class StripeHelper {
 
     private mixed $privateKey;
+    private PurchaseRepository $purchaseRepository;
 
     public function __construct() {
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
     }
 
-    public function PaymentIntent(Purchase $purchase) {
+    /**
+     * @throws ApiErrorException
+     */
+    public static function PaymentIntent(OrderUser $order): ?string {
         $intent = PaymentIntent::create([
-            'amount' => $purchase->getTotal,
-            'currency' => 'eur'
+            'amount' => (int)$order->getTotal(),
+            'currency' => 'eur',
         ]);
+
+
         return $intent->client_secret;
     }
 }

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: ['GET', 'POST'],
-    itemOperations: ['GET', 'PUT', 'DELETE'],
+    itemOperations: ['GET', 'PUT'],
     attributes: ['order' => ['createdAt' => 'desc']],
     denormalizationContext: ['disable_type_enforcement' => true],
     normalizationContext: ['groups' => ['orderUser_read']])]
@@ -24,15 +24,10 @@ class OrderUser {
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'float',nullable: true)]
-    #[Assert\NotBlank(message: 'Total obligatoire')]
-    #[Assert\Type(type: 'integer', message: 'valeur incorrecte')]
+    #[ORM\Column(type: 'float',nullable: false)]
+    #[Assert\Type(type: 'float', message: 'valeur incorrecte')]
     #[Groups(['orderUser_read'])]
     private $total;
-
-    #[ORM\ManyToOne(targetEntity: OrderSeller::class)]
-    #[Groups(['orderUser_read'])]
-    private $orderSeller;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -55,6 +50,7 @@ class OrderUser {
     private $updatedAt;
 
     #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: ProductsOrder::class)]
+    #[Groups(['orderUser_read'])]
     private $productsOrders;
 
     public function __construct() {
@@ -72,26 +68,6 @@ class OrderUser {
 
     public function setTotal($total): self {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getOrderSeller(): ?OrderSeller {
-        return $this->orderSeller;
-    }
-
-    public function setOrderSeller(?OrderSeller $orderSeller): self {
-        $this->orderSeller = $orderSeller;
 
         return $this;
     }
