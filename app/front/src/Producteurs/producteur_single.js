@@ -16,7 +16,9 @@ export default function ProducteurSingle({}){
   useWaitFor(
     () => get_producteur(id),[],(res) => {
       console.log('res', res);
-      setProducteur(res);
+      if(res !== undefined){
+        setProducteur(res);
+      }
     }
   );
 
@@ -35,7 +37,7 @@ export default function ProducteurSingle({}){
 
       <div className="c-main_products">
         {
-          producteur['products'] !== undefined ?
+          producteur !== false ?
             producteur['products'].map((item) => {
               return(
                 <>

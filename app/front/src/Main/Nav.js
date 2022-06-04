@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
+import logo from '../assets/images/logo_bioz.png';
 import { Link } from "react-router-dom";
 import './style/Nav.css'
-import {getToken, unsetToken} from '../api';
+import {getCookie, eraseCookie} from '../api';
 import {ShoppingBasket} from '@styled-icons/remix-line/ShoppingBasket';
 import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
 
@@ -23,7 +23,7 @@ export default function Nav({logged, setLogged}){
           {
             logged ?
               <>
-                <a onClick={() => { setLogged(false); unsetToken();}}>Logout</a>
+                <a onClick={() => { setLogged(false); eraseCookie('user_token');}}>Logout</a>
                 <Link to="/panier"><ShoppingBasket size="40"/></Link>
                 <Link to="/account"><AccountCircle size="40"/></Link>
               </>

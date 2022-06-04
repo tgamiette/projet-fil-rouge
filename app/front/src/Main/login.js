@@ -9,6 +9,7 @@ export default function Login(){
    useEffect(() => {
       console.log('user', user);
       logIn(user.email, user.password);
+      
    }, [user]);
 
    const handleLogin = (e) => {

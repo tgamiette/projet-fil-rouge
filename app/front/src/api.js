@@ -1,15 +1,15 @@
 const DOMAIN_API = "http://localhost:8000/api";
 
-
 function axios_api_json(method, suffix_url) {
     let auth;
 
     if(loggedIn()){
-      auth = getToken();
+      auth = getCookie('user_token');
     }
 
+    console.log(auth);
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIwNDQwNDgsImV4cCI6MTY1NTA0NDA0OCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGdtYWlsLmNvbSJ9.j8p-2RSmCDJ7izvgd6zgETSUwcFfDGIbNbCjCtESU2P6OO_rMeeI43NRldvHFTqd57glUqjdAnbUjRL39Q2VV8SUAsNnJIxuW3oY1QCp2KzHXptmJWlBiuuMPOuKvrjGU9a-Z8Zw7-Skc6J0qG1g5RqcPxuqJcr6CZuJAngSLHwTpUM3WylLB269ljDfeLu0MFaF2etXKFGo3wHno7vzgKGMc4Nm9ZL4ajloTniIiSr4rFvYHUMXGuxCwiqYIb1kqEf8c0V9f8X9B9LTgcvltmBLHGru6bjui687WEDEKsaLEyUnjHU9Kix8wwgUpsNXdmnOoEMAp00BscoiEArMEw");
+    myHeaders.append("Authorization", `Bearer ${auth}`);
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({});
@@ -126,7 +126,10 @@ export function add_user(email, password, name) {
 
 
 export function logIn(email: String, password: String) {
-    const url = DOMAIN_API +"/login_check"
+
+    const url = DOMAIN_API +"/login_check";
+
+
     return fetch(url,{
         method:"POST",
         headers: {
@@ -140,8 +143,11 @@ export function logIn(email: String, password: String) {
     })
     .then(response => response.json())
     .then(res => {
+      console.log(res);
       setToken(res.token);
-      var token = getToken();
+
+      var token = getCookie("user_token");
+
       if(token !== "undefined" && token !== undefined){
         window.location.href = `http://localhost:3001/producteurs`;
       }
@@ -149,22 +155,36 @@ export function logIn(email: String, password: String) {
     .catch((error) => { console.error(error);return false;})
 }
 
-export function unsetToken() {
-  const token = getToken();
-  localStorage.removeItem('token', token);
-  window.location.href = `http://localhost:3001/login`;
+
+export function setToken(idToken) {
+  setCookie('user_token', idToken, 1);
 }
 
-function setToken(idToken) {
-   localStorage.setItem('token', idToken);
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-export function getToken() {
-  return localStorage.getItem('token');
+export function eraseCookie(cname) {
+    document.cookie = cname+'=; Max-Age=-99999999;';
+}
+
+export function getCookie(cname) {
+    var nameEQ = cname + "=";
+    var ca = document.cookie.split(';');
+
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }
 
 export function loggedIn() {
-   const token = getToken();
+   const token = getCookie("user_token");
    return !!token && !isTokenExpired(token);
 }
 

@@ -17,30 +17,35 @@ export default function Producteurs(){
   useWaitFor(
     () => get_all_producteurs(),[],(res) => {
       console.log('res', res['hydra:member']);
-      setProducteurs(res['hydra:member']);
-      setFilterDisplay(res['hydra:member']);
+      if(res !== undefined){
+        setProducteurs(res['hydra:member']);
+        setFilterDisplay(res['hydra:member']);
+      }
+
     }
   );
 
   return(
-    <>
+    <div className="c-container">
       <div className="c-producteurs">
-        <div className="c-filter">
-          <h2>Filtres</h2>
-          <div className="c-filter_input search">
-            <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay}/>
-          </div>
-          <div className="c-filter_input">
-            <label>Trier par proximité</label>
-            <input type="radio" name="kilometer" value="5"  placeholder=""/>
-            <input type="radio" name="kilometer" value="10" />
-            <input type="radio" name="kilometer" value="20" />
-            <input type="radio" name="kilometer" value="40" />
-            <input type="radio" name="kilometer" value="50" />
-          </div>
-          <div className="c-filter_input">
-            <label>Trier par produits</label>
-            <input type="radio" name="" value="" />
+        <div>
+          <div className="c-filter">
+            <h2>Filtres</h2>
+            <div className="c-filter_input search">
+              <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay}/>
+            </div>
+            <div className="c-filter_input">
+              <label>Trier par proximité</label>
+              <input type="radio" name="kilometer" value="5"  placeholder=""/>
+              <input type="radio" name="kilometer" value="10" />
+              <input type="radio" name="kilometer" value="20" />
+              <input type="radio" name="kilometer" value="40" />
+              <input type="radio" name="kilometer" value="50" />
+            </div>
+            <div className="c-filter_input">
+              <label>Trier par produits</label>
+              <input type="radio" name="" value="" />
+            </div>
           </div>
         </div>
 
@@ -69,6 +74,6 @@ export default function Producteurs(){
         }
         </div>
       </div>
-    </>
+    </div>
   )
 }

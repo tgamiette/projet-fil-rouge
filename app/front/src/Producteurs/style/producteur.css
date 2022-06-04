@@ -1,17 +1,35 @@
+.c-container{
+  width: 90%;
+  max-width: 1280px;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  grid-gap: 60px;
+  height: auto;
+  margin: 40px 0;
+}
+
+.c-container > div{
+  position: relative;
+  width: 100%;
+}
+
 .c-producteurs{
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  grid-gap: 30px;
+  height: 100%;
 }
 
 .c-filter{
-  position: absolute;
-  left: 0;
+  position: fixed;
   top: 0;
+  min-width: 20rem;
   padding: 20px;
-  width: 25rem;
+  height: auto;
   margin-top: 170px;
+  background: var(--primary-text-white);
+  box-shadow: 1px 1px 20px #00000010;
+  border-radius: 10px;
 }
 
 
