@@ -47,7 +47,7 @@ class OrderUser {
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['orderUser_read'])]
-    #[AssertCustom\OrderUserConstraint\MinimalProperties()]
+    #[AssertCustom\OrderUserConstraint\MinimalPropertiesValidator()]
     #[Assert\NotBlank()]
     private $products = [];
 

@@ -33,4 +33,7 @@ services:
 #  
     App\DataProvider\GetOrdersUserDataProvider:
         arguments:
+            $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.collection    
+    App\DataProvider\GetSelfProductsDataProvider:
+        arguments:
             $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.collection

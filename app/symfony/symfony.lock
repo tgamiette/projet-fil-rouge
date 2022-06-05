@@ -136,6 +136,9 @@
             "config/packages/lexik_jwt_authentication.yaml"
         ]
     },
+    "monolog/monolog": {
+        "version": "2.6.0"
+    },
     "namshi/jose": {
         "version": "7.2.3"
     },
@@ -193,6 +196,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "stella-maris/clock": {
+        "version": "0.1.4"
+    },
     "stripe/stripe-php": {
         "version": "v7.125.0"
     },
@@ -218,6 +224,18 @@
         },
         "files": [
             "bin/console"
+        ]
+    },
+    "symfony/debug-bundle": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "5aa8aa48234c8eb6dbdd7b3cd5d791485d2cec4b"
+        },
+        "files": [
+            "config/packages/debug.yaml"
         ]
     },
     "symfony/dependency-injection": {
@@ -310,6 +328,21 @@
     },
     "symfony/mime": {
         "version": "v6.0.7"
+    },
+    "symfony/monolog-bridge": {
+        "version": "v6.0.3"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.7",
+            "ref": "213676c4ec929f046dfde5ea8e97625b81bc0578"
+        },
+        "files": [
+            "config/packages/monolog.yaml"
+        ]
     },
     "symfony/password-hasher": {
         "version": "v6.0.3"

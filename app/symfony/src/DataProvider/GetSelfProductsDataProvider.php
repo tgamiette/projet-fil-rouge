@@ -6,25 +6,28 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensio
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\OrderUser;
+use App\Entity\Product;
 use App\Repository\OrderUserRepository;
+use App\Repository\ProductsRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class GetOrdersUserDataProvider extends AbstractDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
+class GetSelfProductsDataProvider extends AbstractDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
     private iterable $collectionExtensions;
-    private OrderUserRepository $orderUserRepository;
+    private ProductsRepository $productsRepository;
     private Security $security;
 
-    public function __construct(OrderUserRepository $orderUserRepository, Security $security, iterable $itemExtensions) {
+    public function __construct(ProductsRepository $productsRepository, Security $security, iterable $itemExtensions) {
         $this->collectionExtensions = $itemExtensions;
-        $this->orderUserRepository = $orderUserRepository;
+        $this->productsRepository = $productsRepository;
         $this->security = $security;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable {
         $user = $this->security->getUser();
-        $queryBuilder = $this->orderUserRepository->createQueryBuilder('o');
+
+
+        $queryBuilder = $this->productsRepository->createQueryBuilder('o');
         $queryNameGenerator = new QueryNameGenerator();
 
         $this->addWhere($queryBuilder);
@@ -43,7 +46,7 @@ class GetOrdersUserDataProvider extends AbstractDataProvider implements Restrict
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool {
 
-        return $resourceClass == OrderUser::class && $operationName == "GET";
+        return $resourceClass == Product::class && $operationName == "MANAGE";
     }
 
     private function addWhere(QueryBuilder $queryBuilder): void {

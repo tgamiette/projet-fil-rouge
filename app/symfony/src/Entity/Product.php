@@ -12,11 +12,21 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ProductsRepository::class)]
+#[
+    ORM\Entity(repositoryClass: ProductsRepository::class)]
 #[ApiResource(
     collectionOperations: [
         'GET',
-        'POST'=>[
+        'MANAGE' => [
+            'pagination_enabled' => false,
+            'pagination_client_enabled' => true,
+            'path' => 'products/self',
+            'method' => 'GET',
+            "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
+//            'security' => "is_granted('ROLE_SELLER')",
+//            'normalization_context' => ['groups' => '']
+        ],
+        'POST' => [
             "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
             "security" => "is_granted('ROLE_SELLER')"
         ]
@@ -40,7 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['disable_type_enforcement' => true],
     normalizationContext: ["groups" => ["products_read"]],
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial', 'category' => 'exact', 'seller' => 'exact'])]
 class Product {
     #[ORM\Id]
     #[ORM\GeneratedValue]
