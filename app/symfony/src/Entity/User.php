@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,12 +15,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    collectionOperations: ['GET', 'POST'],
-    itemOperations: [
+    collectionOperations: [
         'GET',
+        'POST'
+    ],
+    itemOperations: [
+        'GET' => [
+            "security_message" => "t ki ?",
+            "security" => "is_granted('ROLE_ADMIN') or object.id == user.id",
+        ],
         'PUT' => [
             "security_message" => "Tu n'as pas les droits pour modifier cet utilisateur.",
-            "security" => "is_granted('ROLE_ADMIN') and object.seller == user",
+            "security" => "is_granted('ROLE_ADMIN') or object.id == user.id",
         ],
     ],
     denormalizationContext: ['disable_type_enforcement' => true], normalizationContext: ["groups" => ['users_read']]
@@ -32,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[Groups(['users_read'])]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    public $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank(message: 'Email obligatoire')]

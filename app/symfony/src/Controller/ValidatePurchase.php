@@ -6,7 +6,9 @@ use App\Entity\ProductsOrder;
 use App\Entity\Purchase;
 use App\Repository\ProductsOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 
+#[AsController]
 class ValidatePurchase extends AbstractController {
     private Purchase $purchase;
     private ProductsOrderRepository $productsOrderRepository;

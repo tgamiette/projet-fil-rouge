@@ -12,6 +12,7 @@ class ProductsOrder extends AbstractEntity {
     public const STATUT_PAID = 'PAID';
     public const STATUT_RETURN = 'RETURN';
     public const STATUT_VALIDE = 'VALID';
+    public const STATUT_REFUSE = 'REFUSE';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

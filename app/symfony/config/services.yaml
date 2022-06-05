@@ -25,3 +25,12 @@ services:
     
     App\Serializer\PatchedDateTimeNormalizer:
         tags: [serializer.normalizer]
+    
+#    App\Doctrine\CurrentUserExtension:
+#        tags:
+#            - { name: api_platform.doctrine.orm.query_extension.collection }
+#            - { name: api_platform.doctrine.orm.query_extension.item }
+#  
+    App\DataProvider\GetOrdersUserDataProvider:
+        arguments:
+            $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.collection

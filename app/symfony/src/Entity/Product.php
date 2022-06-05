@@ -16,6 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: [
         'GET',
+        'POST'=>[
+            "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
+            "security" => "is_granted('ROLE_SELLER')"
+        ]
     ],
     itemOperations: [
         'GET',
@@ -46,7 +50,7 @@ class Product {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read','category_read'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
@@ -56,7 +60,7 @@ class Product {
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['products_read','category_read'])]
+    #[Groups(['products_read', 'category_read'])]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
@@ -72,7 +76,7 @@ class Product {
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Image()]
-    #[Groups(['products_read','category_read'])]
+    #[Groups(['products_read', 'category_read'])]
     private $image;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
