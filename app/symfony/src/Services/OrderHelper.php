@@ -42,4 +42,14 @@ class OrderHelper {
             $order->setStatus(ProductsOrder::STATUT_PAID);
         }
     }
+
+    //P
+    public function PickUppProductOrder($data): void {
+        $data->setStatus(Purchase::STATUS_PAID);
+        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+
+        foreach ($productOrders as $order) {
+            $order->setStatus(ProductsOrder::STATUT_PAID);
+        }
+    }
 }

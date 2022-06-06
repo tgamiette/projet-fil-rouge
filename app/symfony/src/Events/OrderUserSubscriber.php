@@ -101,9 +101,9 @@ class OrderUserSubscriber implements EventSubscriberInterface {
                 $purchase = (new Purchase())
                     ->setStatus(Purchase::STATUS_PENDING)
                     ->setOrderUser($order);
+                $purchase->setStripeToken((new StripeHelper())->CreatePaymentIntent($order));
+                $this->purchaseRepository->add($purchase);
             }
-            $purchase->setStripeToken((new StripeHelper())->PaymentIntent($order));
-            $this->purchaseRepository->add($purchase);
 
         }
     }
