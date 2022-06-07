@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     itemOperations: [
         'GET',
-        'POST',
         'PUT' => [
             "security_message" => "Tu n'as pas les droits sur ce produit ",
             "security" => "is_granted('ROLE_ADMIN') and object.seller == user",
