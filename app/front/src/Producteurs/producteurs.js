@@ -54,8 +54,11 @@ export default function Producteurs(){
           {
             filterDisplay !== false ?
               filterDisplay.map((item, index) => {
+                console.log(item["roles"][0]);
                 return(
                   <>
+                  {
+                    item["roles"][0] === 'ROLE_SELLER' ?
                     <div className="c-card_producteur">
                       <span className="c-producteur_img">
                         <img src="https://icons-for-free.com/download-icon-man+person+profile+user+worker+icon-1320190557331309792_512.png" alt="" />
@@ -66,6 +69,9 @@ export default function Producteurs(){
                         <Link to={`/producteur/${item['id']}`} className="c-btn">Découvrir</Link>
                       </div>
                     </div>
+                    :
+                    null
+                  }
                   </>
                 )
               })
