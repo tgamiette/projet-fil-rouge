@@ -9,11 +9,11 @@ export default function Stripe({}){
   const PRIVATE_KEY = "sk_test_51L3dOwBiGNmxgtVHZu8QF4WzeV5hI3v2Ql4PnW0OocNcF9F35VlTi77DffYbZIYSbbKK8lrQaYU7uRXKFyQwNIeK00VWr2MCBo";
 
 
-  const stripeTestPromise = loadStripe(PUBLIC_KEY);
+  const stripe = loadStripe("pk_test_oKhSR5nslBRnBZpjO6KuzZeX");
 
   return(
     <div>
-      <Elements stripe={stripeTestPromise}>
+      <Elements stripe={stripe}>
         <PayementForm />
       </Elements>
     </div>

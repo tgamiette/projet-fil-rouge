@@ -12,6 +12,7 @@ import Commande from "../Commande/commande";
 import Login from "../Main/login";
 import Account from "../Accounts/account";
 import Parametres from "../Accounts/parametres";
+import FormProduits from "../Accounts/formProduits";
 import Commandes from "../Accounts/commandes";
 import SignIn from "../Main/signIn";
 import Produits from "../Produits/produits";
@@ -62,6 +63,8 @@ export default function Router({}){
                <Route path="commandes" element={<Commandes />} />
                <Route path="paiement" element={<Parametres />} />
                <Route path="parametres" element={<Parametres />} />
+               <Route path="produits" element={<Parametres />} />
+               <Route path="produits/ajout" element={<FormProduits />} />
              </Route>
           </Routes>
         </CookiesProvider>

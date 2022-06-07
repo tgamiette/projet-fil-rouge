@@ -23,7 +23,7 @@ export default function Nav({logged, setLogged}){
           {
             logged ?
               <>
-                <a onClick={() => { setLogged(false); eraseCookie('user_token');}}>Logout</a>
+                <a onClick={() => { setLogged(false); eraseCookie('user_token');eraseCookie('user_role');}}>Logout</a>
                 <Link to="/panier"><ShoppingBasket size="40"/></Link>
                 <Link to="/account"><AccountCircle size="40"/></Link>
               </>

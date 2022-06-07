@@ -43,7 +43,7 @@ export function get_categorie(id) {
   return axios_api_json("GET", `/categories/${id}`);
 }
 
-export function add_product(title : String, price: Int, quantity: Int, description: String, category: String) {
+export function add_product(title : String, description: String, price: Int, quantity: Int, category: String) {
     const url = DOMAIN_API +"/products/"
     return fetch(url,{
         method:"POST",

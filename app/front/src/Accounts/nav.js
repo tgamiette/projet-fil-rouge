@@ -9,6 +9,10 @@ export default function SubNav({}){
         <Link to="commandes">Mes Commandes</Link>
         <Link to="paiements">Mes Paiements</Link>
         <Link to="parametres">Parametres</Link>
+
+        <Link to="produits">Mes produits</Link>
+        <Link to="produits/ajout">Ajoutés un produits</Link>
+
      </ul>
    </nav>
   </div>

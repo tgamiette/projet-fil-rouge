@@ -20,6 +20,10 @@
   height: 100%;
 }
 
+.c-producteurs img{
+  width: 100%;
+}
+
 .c-filter{
   position: fixed;
   top: 0;
@@ -82,4 +86,34 @@ input[type="search"], input[type="text"]{
 
 .c-producteur_infos{
   margin-left: 20px;
+}
+
+
+.single {
+  grid-template-columns: 1fr!important;
+}
+.c-products_row{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+  width: 100%
+}
+
+.c-products_row a{
+  color: var(--primary-text-black);
+  text-decoration: none;
+}
+
+.c-product_card{
+  background: var(--primary-text-white);
+  box-shadow: 1px 1px 20px #00000020;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.3s ease-in;
+}
+
+.c-product_card:hover{
+  transform: scale(1.03);
 }
