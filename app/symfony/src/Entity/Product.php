@@ -11,9 +11,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
-#[
-    ORM\Entity(repositoryClass: ProductsRepository::class)]
+#[ORM\Entity(repositoryClass: ProductsRepository::class)]
+#[Uploadable]
 #[ApiResource(
     collectionOperations: [
         'GET',
@@ -27,8 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 //            'normalization_context' => ['groups' => '']
         ],
         'POST' => [
+//            'input_formats' => [
+//                'multipart' => ['multipart/form-data']
+//            ],
             "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
-            "security" => "is_granted('ROLE_SELLER')"
+//            "security" => "is_granted('ROLE_SELLER')"
         ]
     ],
     itemOperations: [
@@ -65,7 +70,7 @@ class Product {
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message: 'Prix manquant')]
-    #[Assert\Type(type: 'integer', message: 'type incorrecte ')]
+//    #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
     #[Groups(['products_read', 'orderUser_read'])]
     private $price;
 
@@ -84,10 +89,6 @@ class Product {
     #[Groups(['products_read'])]
     private $quantity;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Image()]
-    #[Groups(['products_read', 'category_read'])]
-    private $image;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[Assert\NotBlank(message: 'vendeur manquant')]
@@ -104,8 +105,15 @@ class Product {
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $unit;
 
+    #[Assert\NotBlank(message: 'images manquantes')]
+    #[Groups(['products_read'])]
+    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath")]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaObject::class)]
+    private $images;
+
     public function __construct() {
         $this->productsOrders = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -235,6 +243,33 @@ class Product {
     public function setUnit(string $unit = null
     ): self {
         $this->unit = $unit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaObject>
+     */
+    public function getimages(): Collection {
+        return $this->images;
+    }
+
+    public function addimages(MediaObject $images): self {
+        if (!$this->images->contains($images)) {
+            $this->images[] = $images;
+            $images->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeimages(MediaObject $images): self {
+        if ($this->images->removeElement($images)) {
+            // set the owning side to null (unless already changed)
+            if ($images->getProduct() === $this) {
+                $images->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -11,17 +11,12 @@ use function Sodium\add;
 
 class StripeHelper {
 
-    private  $secretKey;
     private PurchaseRepository $purchaseRepository;
 
     public function __construct() {
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
     }
 
-//    public function __construct($secretKey , $publicKey) {
-//        $this->privateKey = $secretKey;
-//        $this->publicKey = $publicKey;
-//    }
 
     /**
      * @throws ApiErrorException
@@ -35,7 +30,14 @@ class StripeHelper {
             "metadata" => ["order" => $order->getId()]
         ]);
 
-
+        return $intent;
         return $intent->client_secret;
+    }
+
+    public static function GetPaymentIntent($clientSecret): ?string {
+
+        $intent = PaymentIntent::retrieve($clientSecret);
+
+        return $intent;
     }
 }
