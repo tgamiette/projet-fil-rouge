@@ -2,6 +2,7 @@
 
 namespace App\Encoder;
 
+use App\Entity\Product;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
@@ -14,7 +15,7 @@ final class MultipartDecoder implements DecoderInterface {
     /**
      * {@inheritdoc}
      */
-    public function decode(string $data, string $format, array $context = []): ?array {
+    public function decode(string $data, string $format, array $context = []) {
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$request) {
@@ -32,7 +33,6 @@ final class MultipartDecoder implements DecoderInterface {
      * {@inheritdoc}
      */
     public function supportsDecoding(string $format): bool {
-//        dd("support decode");
         return self::FORMAT === $format;
     }
 }

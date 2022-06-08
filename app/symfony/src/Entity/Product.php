@@ -5,15 +5,22 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\CreateMediaObjectAction;
+use App\Controller\CreateProductAction;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
+/**
+ * @Vich\Uploadable
+ */
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 #[Uploadable]
 #[ApiResource(
@@ -29,9 +36,12 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 //            'normalization_context' => ['groups' => '']
         ],
         'POST' => [
-//            'input_formats' => [
-//                'multipart' => ['multipart/form-data']
-//            ],
+            'validation_groups' => ['Default','products_write'],
+//            'controller' => CreateProductAction::class,
+//            'deserialize'=>false,
+            'input_formats' => [
+                'multipart' => ['multipart/form-data']
+            ],
             "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
 //            "security" => "is_granted('ROLE_SELLER')"
         ]
@@ -56,7 +66,7 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
     normalizationContext: ["groups" => ["products_read"]],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial', 'category' => 'exact', 'seller' => 'exact'])]
-class Product {
+class Product extends AbstractEntity {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -65,30 +75,30 @@ class Product {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write'])]
     private $title;
 
     #[ORM\Column(type: 'float')]
     #[Assert\NotBlank(message: 'Prix manquant')]
 //    #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
-    #[Groups(['products_read', 'orderUser_read'])]
+    #[Groups(['products_read', 'orderUser_read', 'products_write'])]
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['products_read', 'category_read'])]
+    #[Groups(['products_read', 'category_read', 'products_write'])]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     #[Assert\Type(Category::class)]
-    #[Groups(['products_read'])]
+    #[Groups(['products_read', 'products_write'])]
     private $category;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: 'quantité manquant')]
-    #[Assert\PositiveOrZero(message: 'Valeur négative')]
+//    #[Assert\PositiveOrZero(message: 'Valeur négative')]
+//    #[Assert\Type(type: 'integer', message: 'type incorrect ?')]
     #[Groups(['products_read'])]
     private $quantity;
-
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[Assert\NotBlank(message: 'vendeur manquant')]
@@ -105,13 +115,30 @@ class Product {
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $unit;
 
-    #[Assert\NotBlank(message: 'images manquantes')]
-    #[Groups(['products_read'])]
-    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath")]
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaObject::class)]
-    private $images;
+//    #[Assert\NotBlank(message: 'images manquantes')]
+//    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath")]
+//    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaObject::class)]
+//    private $images;
 
-    public function __construct() {
+//    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+//    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['products_read'])]
+    public ?string $contentUrl = null;
+
+    #[UploadableField(mapping: 'products_object ', fileNameProperty: 'filePath')]
+    #[Assert\NotBlank(message: 'file manquant')]
+    #[Groups(['products_write'])]
+    /**
+     * @Vich\UploadableField(mapping="products_object", fileNameProperty="filePath")
+     */
+    public ?File $file = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $filePath = null;
+
+
+    public function __construct($array) {
+        parent::__construct($array);
         $this->productsOrders = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
@@ -164,7 +191,7 @@ class Product {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self {
+    public function setQuantity( $quantity): self {
         $this->quantity = $quantity;
 
         return $this;

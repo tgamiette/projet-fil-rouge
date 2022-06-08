@@ -31,26 +31,25 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                     'content' => [
                         'multipart/form-data' =>
                             [
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'file' => [
-                                        'type' => 'string',
-                                        'format' => 'binary',
-                                    ],
-                                    'product'=>[
-                                        'type'=>'uri'
-                                    ]
+                                'schema' => [
+                                    'type' => 'object',
+                                    'properties' => [
+                                        'file' => [
+                                            'type' => 'string',
+                                            'format' => 'binary',
+                                        ],
+                                        'product' => [
+                                            'type' => 'uri'
+                                        ]
 
+                                    ],
                                 ],
                             ],
-                        ],
                     ],
                 ],
             ],
         ],
     ],
-//    iri: 'http://schema.org/MediaObject',
     itemOperations: ['get'],
     normalizationContext: ['groups' => ['media_object:read']]
 )]
@@ -58,19 +57,19 @@ class MediaObject {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
 
-//    #[ApiProperty(iri: 'http://schema.org/contentUrl')]
-    #[Groups(['media_object:read','products_read'])]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'images')]
+    #[Groups(['media_object:read', 'products_read'])]
     public ?string $contentUrl = null;
 
     /**
      * @Vich\UploadableField(mapping="products_object", fileNameProperty="filePath")
      */
     #[Assert\NotNull(message: "Image manquante", groups: ['media_object_create'])]
-    #[Assert\Type(File::class,message: 'Type file incorecte')]
+    #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'], mimeTypesMessage: "Type de fichier incorect")]
     public ?File $file = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'images')]
-    #[Assert\NotNull(groups: ['media_object_create'],message: 'Produit manquant')]
+    #[Assert\NotNull(message: 'Produit manquant', groups: ['media_object_create'])]
     #[Assert\Type(Product::class)]
     #[Groups(['media_object:read'])]
     public ?Product $product;
@@ -78,19 +77,15 @@ class MediaObject {
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
-
-
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getProduct(): ?Product
-    {
+    public function getProduct(): ?Product {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
-    {
+    public function setProduct(?Product $product): self {
         $this->product = $product;
 
         return $this;

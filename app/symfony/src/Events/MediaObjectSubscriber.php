@@ -53,10 +53,7 @@ class MediaObjectSubscriber implements EventSubscriberInterface {
     }
 
     public function postValidate(ViewEvent $event) {
-//        dd('post');
-
         if ($event->getRequest()->isMethod("POST")) {
-            echo "";
         }
     }
 }
