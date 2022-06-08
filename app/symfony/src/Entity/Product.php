@@ -57,6 +57,10 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial', 'category' => 'exact', 'seller' => 'exact'])]
 class Product {
+
+    public const PATH = '../public/images/';
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

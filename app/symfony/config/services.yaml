@@ -37,7 +37,3 @@ services:
     App\DataProvider\GetSelfProductsDataProvider:
         arguments:
             $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
-    App\Services\StripeHelper:
-        arguments:
-#            $secretKey:  fdfd
-#            $publicKey: fdfdf
