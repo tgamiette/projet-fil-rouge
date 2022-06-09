@@ -9,6 +9,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
@@ -60,7 +61,6 @@ class Product {
 
     public const PATH = '../public/images/';
 
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -106,16 +106,13 @@ class Product {
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $unit;
-
     #[Assert\NotBlank(message: 'images manquantes')]
     #[Groups(['products_read'])]
-    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath")]
+    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath",)]
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaObject::class)]
     private $images;
 
-    public function __construct() {
+    #[Pure] public function __construct() {
         $this->productsOrders = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
@@ -232,21 +229,6 @@ class Product {
                 $productsOrder->setProduct(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUnit(): mixed {
-        return $this->unit;
-    }
-
-
-    public function setUnit(string $unit = null
-    ): self {
-        $this->unit = $unit;
 
         return $this;
     }

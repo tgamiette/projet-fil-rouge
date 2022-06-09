@@ -10,28 +10,27 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 class ImageController extends AbstractController {
 
 
-    public function __construct(private $secretKey, private ProductsRepository $productsRepository, private ParameterBagInterface $bag) {
+    public function __construct(private StorageInterface $storage, private ProductsRepository $productsRepository, private ParameterBagInterface $bag) {
     }
 
     /**
-     * @Route("/image/{id}", name="index")
+     * @Route("/image/{name}", name="index")
      */
-    public function index(string $id, Request $request, Security $security) {
+    public function index(string $name, Request $request, Security $security) {
 
-        if ($request->headers->get('hetic') !== $_ENV['JWT_PASSPHRASE']) {
-            throw new AccessDeniedHttpException("access ??");
+        if ($request->headers->get('hetic') !== $this->bag->get('lexik_jwt_authentication.pass_phrase')) {
+            throw new AccessDeniedHttpException("access  ?? nan je quoi pas nhan");
         }
 
-        dd($this->getParameter('upload_destination'));
-        $this->productsRepository->findBy();
+//        $object= $this->productsRepository->findBy(['image'=>$name]);
+//        $file =$this->storage->resolveUri($object, 'file');
 
-        $this->storage->resolveUri($object, 'file');
-
-        $file = "../public/images/$id";
+        $file = "../public/images/$name";
         return $this->file($file, 'product', ResponseHeaderBag::DISPOSITION_INLINE);
     }
 }
