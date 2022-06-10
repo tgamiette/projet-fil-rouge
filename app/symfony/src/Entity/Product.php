@@ -191,7 +191,7 @@ class Product extends AbstractEntity {
         return $this->quantity;
     }
 
-    public function setQuantity( $quantity): self {
+    public function setQuantity(float $quantity): self {
         $this->quantity = $quantity;
 
         return $this;
@@ -255,21 +255,6 @@ class Product extends AbstractEntity {
                 $productsOrder->setProduct(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUnit(): mixed {
-        return $this->unit;
-    }
-
-
-    public function setUnit(string $unit = null
-    ): self {
-        $this->unit = $unit;
 
         return $this;
     }
