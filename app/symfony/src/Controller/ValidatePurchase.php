@@ -20,7 +20,7 @@ class ValidatePurchase extends AbstractController {
 //TODO commande validé
     public function __invoke(Purchase $data): Purchase {
         $data->setStatus(Purchase::STATUS_PAID);
-        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+        $productOrders = $this->productsOrderRepository->findBy(['order' => $data->getOrderUser()]);
         foreach ($productOrders as $order) {
             $order->setStatus(ProductsOrder::STATUT_PAID);
         }

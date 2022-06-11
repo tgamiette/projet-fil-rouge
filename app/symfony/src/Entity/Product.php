@@ -112,9 +112,6 @@ class Product extends AbstractEntity {
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $unit;
-
 //    #[Assert\NotBlank(message: 'images manquantes')]
 //    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath")]
 //    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaObject::class)]
@@ -137,7 +134,7 @@ class Product extends AbstractEntity {
     public ?string $filePath = null;
 
 
-    public function __construct($array) {
+    public function __construct($array =null ) {
         parent::__construct($array);
         $this->productsOrders = new ArrayCollection();
         $this->images = new ArrayCollection();

@@ -20,7 +20,7 @@ class ProductsOrder extends AbstractEntity {
     private $id;
 
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'productsOrders')]
-    private $orderId;
+    private $order;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productsOrders')]
     private $product;
@@ -48,12 +48,12 @@ class ProductsOrder extends AbstractEntity {
         return $this->id;
     }
 
-    public function getOrderId(): ?OrderUser {
-        return $this->orderId;
+    public function getorder(): ?OrderUser {
+        return $this->order;
     }
 
-    public function setOrderId(?OrderUser $orderId): self {
-        $this->orderId = $orderId;
+    public function setorder(?OrderUser $order): self {
+        $this->order = $order;
 
         return $this;
     }

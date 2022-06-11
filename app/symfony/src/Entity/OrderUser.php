@@ -40,11 +40,6 @@ class OrderUser {
     #[Groups(['orderUser_read', 'selfOrder_read'])]
     private $total;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['orderUser_read'])]
-    private $customer;
-
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['orderUser_read'])]
     #[AssertCustom\OrderUserConstraint\MinimalPropertiesValidator()]
@@ -60,7 +55,7 @@ class OrderUser {
     #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: ProductsOrder::class)]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
     #[Groups(['orderUser_read'])]
     private $productsOrders;
 
@@ -159,7 +154,7 @@ class OrderUser {
     public function addProductsOrder(ProductsOrder $productsOrder): self {
         if (!$this->productsOrders->contains($productsOrder)) {
             $this->productsOrders[] = $productsOrder;
-            $productsOrder->setOrderId($this);
+            $productsOrder->setorder($this);
         }
 
         return $this;
@@ -168,8 +163,8 @@ class OrderUser {
     public function removeProductsOrder(ProductsOrder $productsOrder): self {
         if ($this->productsOrders->removeElement($productsOrder)) {
             // set the owning side to null (unless already changed)
-            if ($productsOrder->getOrderId() === $this) {
-                $productsOrder->setOrderId(null);
+            if ($productsOrder->getorder() === $this) {
+                $productsOrder->setorder(null);
             }
         }
 

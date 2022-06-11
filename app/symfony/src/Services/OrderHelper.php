@@ -19,7 +19,7 @@ class OrderHelper {
 
     public function ValidatePurchaseOrder(Purchase $data): void {
         $data->setStatus(Purchase::STATUS_PAID);
-        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+        $productOrders = $this->productsOrderRepository->findBy(['order' => $data->getOrderUser()]);
 
         foreach ($productOrders as $order) {
             $order->setStatus(ProductsOrder::STATUT_PAID);
@@ -27,7 +27,7 @@ class OrderHelper {
     }
     public function ReffusePurchaseOrder(Purchase $data): void {
         $data->setStatus(Purchase::STATUS_ERROR);
-        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+        $productOrders = $this->productsOrderRepository->findBy(['order' => $data->getOrderUser()]);
 
         foreach ($productOrders as $order) {
             $order->setStatus(ProductsOrder::STATUT_PENDING);
@@ -36,7 +36,7 @@ class OrderHelper {
 
     public function PickUpProductOrder($data): void {
         $data->setStatus(Purchase::STATUS_PAID);
-        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+        $productOrders = $this->productsOrderRepository->findBy(['order' => $data->getOrderUser()]);
 
         foreach ($productOrders as $order) {
             $order->setStatus(ProductsOrder::STATUT_PAID);
@@ -46,7 +46,7 @@ class OrderHelper {
     //P
     public function PickUppProductOrder($data): void {
         $data->setStatus(Purchase::STATUS_PAID);
-        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+        $productOrders = $this->productsOrderRepository->findBy(['order' => $data->getOrderUser()]);
 
         foreach ($productOrders as $order) {
             $order->setStatus(ProductsOrder::STATUT_PAID);
