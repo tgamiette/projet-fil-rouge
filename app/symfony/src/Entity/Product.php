@@ -108,7 +108,7 @@ class Product extends AbstractEntity {
     #[Groups(['products_read'])]
     public $seller;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','products_write'])]
     #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
     private $objective;
 
@@ -124,7 +124,6 @@ class Product extends AbstractEntity {
     /**
      * @Vich\UploadableField(mapping="products_object", fileNameProperty="filePath")
      */
-    #[Assert\NotBlank(message: 'file manquant')]
     #[Groups(['products_write'])]
     public ?File $file = null;
 

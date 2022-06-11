@@ -13,7 +13,6 @@ final class CreateProductAction extends AbstractController {
     public function __invoke(Request $request) {
 
         $data = $request->attributes->get('data');
-
         if ($data instanceof Product) {
 
             if (is_numeric($data->getPrice())) {

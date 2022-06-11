@@ -77,6 +77,7 @@ class AppFixtures extends Fixture {
 
                 $orderSeller = new OrderSeller();
                 $orderSeller->setProduct($product)
+                    ->setUser($user)
                     ->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                     ->setQuantity(5)
                     ->setTotal(5 * $product->getPrice());

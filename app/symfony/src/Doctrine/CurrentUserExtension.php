@@ -3,35 +3,59 @@
 namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use App\Entity\OrderSeller;
 use App\Entity\OrderUser;
+use App\Entity\Product;
+use App\Entity\User;
+use App\Repository\ProductsRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
+
 //methode de customisation de requepet non prioritaire sur un custom data provider !!!!
-final class CurrentUserExtension implements QueryCollectionExtensionInterface, RestrictedDataProviderInterface
-{
+final class CurrentUserExtension implements QueryCollectionExtensionInterface ,QueryItemExtensionInterface {
     private Security $security;
 
-    public function __construct(Security $security) {
+    public function __construct(Security $security,ProductsRepository $productsRepository) {
         $this->security = $security;
+        $this->productsRepository = $productsRepository;
     }
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null): void {
-        if (OrderUser::class == $resourceClass) {
-            {
-                $this->addWhere($queryBuilder, $resourceClass);
+        if ($operationName === "MANAGE") {
+            switch ($resourceClass) {
+                case Product::class :
+                    $this->addWhereCurrentUser($queryBuilder,'seller_id');
+                    break;
             }
+        }
+//        TODO à remplir
+        switch ($resourceClass) {
+            case OrderUser::class :
+                $this->addWhereCurrentUser($queryBuilder,'');
+                break;
+            case OrderSeller::class :
+                $this->addWhereCurrentUser($queryBuilder,'');
+                break;
+            case User::class:
+                $this->addWhereCurrentUser($queryBuilder,'');
+                break;
         }
     }
 
-    private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void {
+    private function addWhereCurrentUser(QueryBuilder $queryBuilder, $columName = 'customer'): void {
+
+        if ($this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
+            return;
+        }
+
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
-        $queryBuilder->setParameter(':current_user', $this->security->getUser()->getId());
+        $queryBuilder->andWhere(sprintf('%s.%s = :current_user', $rootAlias, $columName));
+        $queryBuilder->setParameter(':current_user', $user->getId());
     }
 
-    public function supports(string $resourceClass, string $operationName = null, array $context = []): bool {
-        dd($context);
+    public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = []) {
+
     }
 }
