@@ -21,12 +21,13 @@ final class MultipartDecoder implements DecoderInterface {
         if (!$request) {
             return null;
         }
-        $result = array_map(static function (string $element) {
-            // Multipart form values will be encoded in JSON.
-            $decoded = json_decode($element, true);
-            return \is_array($decoded) ? $decoded : $element;
-        }, $request->request->all() + $request->files->all());
-        return $result;
+
+        return array_map(static function (string $element) {
+                // Multipart form values will be encoded in JSON.
+                $decoded = json_decode($element, true);
+
+                return \is_array($decoded) ? $decoded : $element;
+            }, $request->request->all()) + $request->files->all();
     }
 
     /**

@@ -59,6 +59,9 @@ class OrderUser {
     #[Groups(['orderUser_read'])]
     private $productsOrders;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
+    private $buyer;
+
     public function __construct() {
         $this->purchases = new ArrayCollection();
         $this->productsOrders = new ArrayCollection();
@@ -167,6 +170,18 @@ class OrderUser {
                 $productsOrder->setorder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBuyer(): ?User
+    {
+        return $this->buyer;
+    }
+
+    public function setBuyer(?User $buyer): self
+    {
+        $this->buyer = $buyer;
 
         return $this;
     }

@@ -11,7 +11,7 @@ use App\Repository\OrderUserRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class GetOrdersUserDataProvider extends AbstractDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
+class GetOrdersUserDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
     private iterable $collectionExtensions;
     private OrderUserRepository $orderUserRepository;
     private Security $security;
@@ -31,8 +31,7 @@ class GetOrdersUserDataProvider extends AbstractDataProvider implements Restrict
 
         foreach ($this->collectionExtensions as $extension) {
             $extension->applyToCollection($queryBuilder, $queryNameGenerator, $resourceClass, $operationName, $context);
-
-//            Pagination
+//           Pagination
             if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName, $context)) {
                 return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
             }

@@ -36,9 +36,8 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 //            'normalization_context' => ['groups' => '']
         ],
         'POST' => [
-            'validation_groups' => ['Default','products_write'],
-//            'controller' => CreateProductAction::class,
-//            'deserialize'=>false,
+            'controller' => CreateProductAction::class,
+//            'deserialize'=> false,
             'input_formats' => [
                 'multipart' => ['multipart/form-data']
             ],
@@ -62,7 +61,10 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
         'pagination_enabled' => true,
         'pagination_items_per_page' => 20,
     ],
-    denormalizationContext: ['disable_type_enforcement' => true],
+    denormalizationContext: [
+        'disable_type_enforcement' => true,
+        'groups' => ['products_write']
+    ],
     normalizationContext: ["groups" => ["products_read"]],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.title' => 'partial', 'category' => 'exact', 'seller' => 'exact'])]
@@ -78,9 +80,9 @@ class Product extends AbstractEntity {
     #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write'])]
     private $title;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: 'Prix manquant')]
-//    #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
+    #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
     #[Groups(['products_read', 'orderUser_read', 'products_write'])]
     private $price;
 
@@ -89,15 +91,16 @@ class Product extends AbstractEntity {
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
-    #[Assert\Type(Category::class)]
+    #[Assert\Type(Category::class, message: 'object incorrect ?')]
+    #[Assert\NotBlank(message: 'category obligatoire')]
     #[Groups(['products_read', 'products_write'])]
-    private $category;
+    public $category;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: 'quantité manquant')]
-//    #[Assert\PositiveOrZero(message: 'Valeur négative')]
-//    #[Assert\Type(type: 'integer', message: 'type incorrect ?')]
-    #[Groups(['products_read'])]
+    #[Assert\Positive(message: 'Valeur positive??')]
+    #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
+    #[Groups(['products_read', 'products_write'])]
     private $quantity;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
@@ -112,32 +115,26 @@ class Product extends AbstractEntity {
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
 
-//    #[Assert\NotBlank(message: 'images manquantes')]
-//    #[UploadableField(mapping: "products_object", fileNameProperty: "filePath")]
-//    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaObject::class)]
-//    private $images;
 
 //    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
 //    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['products_read'])]
     public ?string $contentUrl = null;
 
-    #[UploadableField(mapping: 'products_object ', fileNameProperty: 'filePath')]
-    #[Assert\NotBlank(message: 'file manquant')]
-    #[Groups(['products_write'])]
     /**
      * @Vich\UploadableField(mapping="products_object", fileNameProperty="filePath")
      */
+    #[Assert\NotBlank(message: 'file manquant')]
+    #[Groups(['products_write'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
 
-    public function __construct($array =null ) {
+    public function __construct($array = null) {
         parent::__construct($array);
         $this->productsOrders = new ArrayCollection();
-        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -154,7 +151,7 @@ class Product extends AbstractEntity {
         return $this;
     }
 
-    public function getPrice(): ?float {
+    public function getPrice() {
         return $this->price;
     }
 
@@ -184,11 +181,11 @@ class Product extends AbstractEntity {
         return $this;
     }
 
-    public function getQuantity(): ?float {
+    public function getQuantity() {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): self {
+    public function setQuantity($quantity): self {
         $this->quantity = $quantity;
 
         return $this;

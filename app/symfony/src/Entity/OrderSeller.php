@@ -53,6 +53,10 @@ class OrderSeller {
     #[Groups(['orderSeller_read'])]
     private ?Delivery $delivery;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderSellers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $seller;
+
     public function getId(): ?int {
         return $this->id;
     }
@@ -103,6 +107,18 @@ class OrderSeller {
 
     public function setCreatedAt($createdAt): self {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getSeller(): ?User
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?User $user): self
+    {
+        $this->seller = $user;
 
         return $this;
     }

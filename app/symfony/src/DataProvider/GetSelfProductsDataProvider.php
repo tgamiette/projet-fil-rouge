@@ -12,7 +12,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class GetSelfProductsDataProvider extends AbstractDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
+class GetSelfProductsDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
     private iterable $collectionExtensions;
     private ProductsRepository $productsRepository;
     private Security $security;
@@ -25,8 +25,6 @@ class GetSelfProductsDataProvider extends AbstractDataProvider implements Restri
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable {
         $user = $this->security->getUser();
-
-
         $queryBuilder = $this->productsRepository->createQueryBuilder('o');
         $queryNameGenerator = new QueryNameGenerator();
 

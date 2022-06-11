@@ -15,10 +15,10 @@ class ProductSubscriber implements EventSubscriberInterface {
     private Security $security;
     private ProductsRepository $productsRepository;
 
-    public function __construct(Security $security ,ProductsRepository $productsRepository) {
+    public function __construct(Security $security, ProductsRepository $productsRepository) {
 
-        $this->security= $security;
-        $this->productsRepository= $productsRepository;
+        $this->security = $security;
+        $this->productsRepository = $productsRepository;
     }
 
     /**
@@ -30,7 +30,7 @@ class ProductSubscriber implements EventSubscriberInterface {
 
     public function setProduct(ViewEvent $event) {
         $product = $event->getControllerResult();
-        if($event->getRequest()->isMethod("POST") && $product instanceof Product){
+        if ($event->getRequest()->isMethod("POST") && $product instanceof Product) {
             $product->setSeller($this->security->getUser());
         }
     }
