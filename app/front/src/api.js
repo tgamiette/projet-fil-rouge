@@ -44,12 +44,19 @@ export function get_categorie(id) {
 }
 
 export function add_product(title : String, description: String, price: Int, quantity: Int, category: String) {
-    const url = DOMAIN_API +"/products/"
+    const url = DOMAIN_API +"/products";
+    let auth;
+
+    if(loggedIn()){
+      auth = getCookie('user_token');
+    }
+
     return fetch(url,{
         method:"POST",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth}`
         },
         body: JSON.stringify({
             title: title,
@@ -60,7 +67,7 @@ export function add_product(title : String, description: String, price: Int, qua
         })
     }).then((response) => {
         if(response.status===200){
-            return response.json();
+            window.location.href = `http://localhost:3001/account`;
         }else{
             return false;
         }

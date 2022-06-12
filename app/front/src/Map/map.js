@@ -17,7 +17,7 @@ import Geocoder from 'react-map-gl-geocoder'
 
 export default function Maps(){
 
-  const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 12})
+  const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 20})
   const [popupInfo, setPopupInfo] = useState(null);
 
   const TOKEN = "pk.eyJ1IjoibWFtYTA1IiwiYSI6ImNsMzhvY2owZDAxczIzanIzcGVoNG40Z28ifQ.avQ6w6qf5IdFBhR9FwHPJg";
@@ -65,7 +65,7 @@ export default function Maps(){
   return(
     <div className="c-section">
       <div ref={geocoderContainerRef} style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }} />
-        <Map ref={mapRef} {...viewport} onViewportChange={() => console.log("change")} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
+        <Map ref={mapRef} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={() => console.log("change")} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
             <GeolocateControl position="top-right" />
             <FullscreenControl position="top-right" />
             <NavigationControl position="top-right" />

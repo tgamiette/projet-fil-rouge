@@ -7,7 +7,7 @@ import './style/account.css';
 export default function FormmProduits({}){
 
   const [categories, setCategories] = useState([]);
-  const [formInput, setFormInput] = useState({title: "", description: "", category:[], price: "", quantity: "", objective: ""})
+  const [formInput, setFormInput] = useState({title: "", description: "", category:[], price: null, quantity: null, objective: ""})
   const [product, setProduct] = useState(false);
 
   useWaitFor(
@@ -25,8 +25,8 @@ export default function FormmProduits({}){
   }), [formInput];
 
   useEffect(() => {
-    add_product(product.title, product.description, product.price, product.quantity, product.category);
-  }), [product];
+    add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category);
+  }, [product]);
 
   const handleChange = ({target}) =>{
     setFormInput(prev => ({
@@ -39,7 +39,6 @@ export default function FormmProduits({}){
   const handleSubmit = (e) => {
     e.preventDefault();
     setProduct(formInput);
-    console.log(product);
   }
 
   return(
