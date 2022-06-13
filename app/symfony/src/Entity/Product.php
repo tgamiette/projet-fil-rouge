@@ -26,10 +26,7 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 #[ApiResource(
     collectionOperations: [
         'GET',
-<<<<<<< HEAD
-=======
         'POST',
->>>>>>> 428a36702deb7226c0b740c7b6215a8a8bd2f968
         'MANAGE' => [
             'pagination_enabled' => false,
             'pagination_client_enabled' => true,
