@@ -12,6 +12,7 @@ class ProductsOrder extends AbstractEntity {
     public const STATUT_PAID = 'PAID';
     public const STATUT_RETURN = 'RETURN';
     public const STATUT_VALIDE = 'VALID';
+    public const STATUT_REFUSE = 'REFUSE';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,7 +20,7 @@ class ProductsOrder extends AbstractEntity {
     private $id;
 
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'productsOrders')]
-    private $orderId;
+    private $order;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productsOrders')]
     private $product;
@@ -42,17 +43,20 @@ class ProductsOrder extends AbstractEntity {
     #[ORM\Column(type: 'integer')]
     private $total;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getOrderId(): ?OrderUser {
-        return $this->orderId;
+    public function getorder(): ?OrderUser {
+        return $this->order;
     }
 
-    public function setOrderId(?OrderUser $orderId): self {
-        $this->orderId = $orderId;
+    public function setorder(?OrderUser $order): self {
+        $this->order = $order;
 
         return $this;
     }
@@ -123,6 +127,18 @@ class ProductsOrder extends AbstractEntity {
 
     public function setTotal(int $total): self {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

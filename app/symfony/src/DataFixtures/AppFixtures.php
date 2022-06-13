@@ -22,7 +22,7 @@ class AppFixtures extends Fixture {
     protected $userPasswordHasher;
     protected $encoder;
 
-    public function __construct(SluggerInterface $slugger, UserPasswordHasherInterface $encoder, PasswordHasherFactoryInterface $passwordHasherFactory) {
+    public function __construct(SluggerInterface $slugger, UserPasswordHasherInterface $encoder) {
         $this->slugger = $slugger;
         $this->encoder = $encoder;
     }
@@ -72,11 +72,12 @@ class AppFixtures extends Fixture {
                     ->setDescription($faker->paragraph(5))
                     ->setCategory($category)
                     ->setSeller($user)
-                    ->setQuantity(100)->setUnit("gramme???");
+                    ->setQuantity(100);
                 $manager->persist($product);
 
                 $orderSeller = new OrderSeller();
                 $orderSeller->setProduct($product)
+                    ->setUser($user)
                     ->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                     ->setQuantity(5)
                     ->setTotal(5 * $product->getPrice());
@@ -92,8 +93,7 @@ class AppFixtures extends Fixture {
                         ->setRoles(['ROLE_USER']);
                     $manager->persist($users);
                     $orderUser = new OrderUser();
-                    $orderUser->setDate(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
-                        ->setOrderSeller($orderSeller)
+                    $orderUser->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                         ->setCustomer($users)
                         ->setTotal($product->getPrice())
                     ->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());

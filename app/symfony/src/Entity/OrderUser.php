@@ -2,41 +2,47 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use App\Repository\OrderUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Validator\Constraints as AssertCustom; // A custom constraint
+use App\Validator\Constraints\OrderUserConstraint as AssertCustom;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
-#[ApiResource(collectionOperations: ['GET', 'POST'],
+#[ApiResource(collectionOperations: [
+    'GET',
+    'POST'
+],
     itemOperations: ['GET', 'PUT'],
-    attributes: ['order' => ['createdAt' => 'desc']],
+    attributes: [
+        'order' => ['createdAt' => 'desc'],
+        'pagination_client_enabled' => true,
+        'pagination_items_per_page' => 20,
+    ],
     denormalizationContext: ['disable_type_enforcement' => true],
     normalizationContext: ['groups' => ['orderUser_read']])]
+//todo filter par status de commande
+#[ApiFilter(RangeFilter::class, properties: ['total'])]
 class OrderUser {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'float',nullable: false)]
+    #[ORM\Column(type: 'float', nullable: false)]
     #[Assert\Type(type: 'float', message: 'valeur incorrecte')]
-    #[Groups(['orderUser_read'])]
+    #[Groups(['orderUser_read', 'selfOrder_read'])]
     private $total;
-
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['orderUser_read'])]
-    private $customer;
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['orderUser_read'])]
-    #[AssertCustom\OrderUserConstraint\MinimalProperties()]
+    #[AssertCustom\MinimalProperties(options: [])]
     #[Assert\NotBlank()]
     private $products = [];
 
@@ -49,9 +55,12 @@ class OrderUser {
     #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'orderId', targetEntity: ProductsOrder::class)]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
     #[Groups(['orderUser_read'])]
     private $productsOrders;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
+    private $buyer;
 
     public function __construct() {
         $this->purchases = new ArrayCollection();
@@ -68,16 +77,6 @@ class OrderUser {
 
     public function setTotal($total): self {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getCustomer(): ?User {
-        return $this->customer;
-    }
-
-    public function setCustomer(?User $customer): self {
-        $this->customer = $customer;
 
         return $this;
     }
@@ -118,25 +117,21 @@ class OrderUser {
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
+    public function getCreatedAt(): ?\DateTimeInterface {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
+    public function setCreatedAt(\DateTimeInterface $createdAt): self {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
+    public function getUpdatedAt(): ?\DateTimeInterface {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self {
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -145,29 +140,36 @@ class OrderUser {
     /**
      * @return Collection<int, ProductsOrder>
      */
-    public function getProductsOrders(): Collection
-    {
+    public function getProductsOrders(): Collection {
         return $this->productsOrders;
     }
 
-    public function addProductsOrder(ProductsOrder $productsOrder): self
-    {
+    public function addProductsOrder(ProductsOrder $productsOrder): self {
         if (!$this->productsOrders->contains($productsOrder)) {
             $this->productsOrders[] = $productsOrder;
-            $productsOrder->setOrderId($this);
+            $productsOrder->setorder($this);
         }
 
         return $this;
     }
 
-    public function removeProductsOrder(ProductsOrder $productsOrder): self
-    {
+    public function removeProductsOrder(ProductsOrder $productsOrder): self {
         if ($this->productsOrders->removeElement($productsOrder)) {
             // set the owning side to null (unless already changed)
-            if ($productsOrder->getOrderId() === $this) {
-                $productsOrder->setOrderId(null);
+            if ($productsOrder->getorder() === $this) {
+                $productsOrder->setorder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBuyer(): ?User {
+        return $this->buyer;
+    }
+
+    public function setBuyer(?User $buyer): self {
+        $this->buyer = $buyer;
 
         return $this;
     }
