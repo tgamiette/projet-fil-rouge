@@ -26,9 +26,7 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 #[ApiResource(
     collectionOperations: [
         'GET',
-<<<<<<< HEAD
         'POST',
-=======
         'MANAGE' => [
             'pagination_enabled' => false,
             'pagination_client_enabled' => true,
@@ -47,7 +45,6 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
             "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
 //            "security" => "is_granted('ROLE_SELLER')"
         ]
->>>>>>> 38e56b15195bd5af8ebe41929ac378a27469d42b
     ],
     itemOperations: [
         'GET',
