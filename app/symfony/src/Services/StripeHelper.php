@@ -21,7 +21,7 @@ class StripeHelper {
     /**
      * @throws ApiErrorException
      */
-    public static function CreatePaymentIntent(OrderUser $order): ?string {
+    public static function CreatePaymentIntent(OrderUser $order): PaymentIntent {
 
         $intent = PaymentIntent::create([
             'amount' => (int)$order->getTotal(),
@@ -31,7 +31,7 @@ class StripeHelper {
         ]);
 
         return $intent;
-        return $intent->client_secret;
+//        return $intent->client_secret;
     }
 
     public static function GetPaymentIntent($clientSecret): ?string {

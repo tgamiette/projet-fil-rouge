@@ -43,6 +43,9 @@ class ProductsOrder extends AbstractEntity {
     #[ORM\Column(type: 'integer')]
     private $total;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
 
     public function getId(): ?int {
         return $this->id;
@@ -124,6 +127,18 @@ class ProductsOrder extends AbstractEntity {
 
     public function setTotal(int $total): self {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

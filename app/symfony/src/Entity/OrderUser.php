@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Validator\Constraints as AssertCustom;
+use App\Validator\Constraints\OrderUserConstraint as AssertCustom;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
@@ -42,7 +42,7 @@ class OrderUser {
 
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['orderUser_read'])]
-    #[AssertCustom\OrderUserConstraint\MinimalPropertiesValidator()]
+    #[AssertCustom\MinimalProperties(options: [])]
     #[Assert\NotBlank()]
     private $products = [];
 
@@ -174,13 +174,11 @@ class OrderUser {
         return $this;
     }
 
-    public function getBuyer(): ?User
-    {
+    public function getBuyer(): ?User {
         return $this->buyer;
     }
 
-    public function setBuyer(?User $buyer): self
-    {
+    public function setBuyer(?User $buyer): self {
         $this->buyer = $buyer;
 
         return $this;

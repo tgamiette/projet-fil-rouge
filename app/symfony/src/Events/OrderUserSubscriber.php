@@ -62,6 +62,7 @@ class OrderUserSubscriber implements EventSubscriberInterface {
                     ->setProduct($product)
                     ->setQuantity($qty)
                     ->setUpdatedAt($date)
+                    ->setCreatedAt($date)
                     ->setStatus(ProductsOrder::STATUT_PENDING)
                     ->setTotal($product->getPrice() * $qty)
                     ->setPrixU($product->getPrice())->setUnit(2);
@@ -72,19 +73,19 @@ class OrderUserSubscriber implements EventSubscriberInterface {
     }
 
     public function setOrder(ViewEvent $event) {
-        $order = $event->getControllerResult();
-        if ($event->getRequest()->isMethod("POST") && $order instanceof OrderUser) {
+        $orderUser = $event->getControllerResult();
+        if ($event->getRequest()->isMethod("POST") && $orderUser instanceof OrderUser) {
             $date = new \DateTime();
             $total = 0;
-            $products = $order->getProducts();
-            $order->setCustomer($this->security->getUser());
+            $products = $orderUser->getProducts();
+            $orderUser->setCustomer($this->security->getUser());
             foreach ($products as $productId => $qty) {
                 $product = $this->productsRepository->find((int)$productId);
                 $total += $product->getPrice() * $qty;
             }
-            $order->setTotal((float)$total);
-            $order->setCreatedAt($date);
-            $order->setUpdatedAt($date);
+            $orderUser->setTotal((float)$total);
+            $orderUser->setCreatedAt($date);
+            $orderUser->setUpdatedAt($date);
         }
     }
 
@@ -101,7 +102,7 @@ class OrderUserSubscriber implements EventSubscriberInterface {
                 $purchase = (new Purchase())
                     ->setStatus(Purchase::STATUS_PENDING)
                     ->setOrderUser($order);
-                $purchase->setStripeToken((new StripeHelper())->CreatePaymentIntent($order));
+                $purchase->setStripeToken(((new StripeHelper())->CreatePaymentIntent($order))->client_secret);
                 $this->purchaseRepository->add($purchase);
             }
 
