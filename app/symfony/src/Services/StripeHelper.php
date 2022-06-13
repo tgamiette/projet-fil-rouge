@@ -22,7 +22,7 @@ class StripeHelper {
      */
     public static function CreatePaymentIntent(OrderUser $order): PaymentIntent {
 
-        dd($order->getBuyer());
+//        dd($order->getBuyer());
         $intent = PaymentIntent::create([
             'amount' => (int)$order->getTotal(),
             'currency' => 'eur',

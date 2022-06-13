@@ -4,6 +4,7 @@ namespace App\Controller\WebHook;
 
 use App\Entity\ProductsOrder;
 use App\Entity\Purchase;
+use App\Repository\PurchaseRepository;
 use App\Services\OrderHelper;
 use App\Services\ProductsOrderHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +16,7 @@ class StripeController extends AbstractController {
 
     private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em, private ProductsOrderHelper $productsOrderHelper) {
+    public function __construct(EntityManagerInterface $em, private ProductsOrderHelper $productsOrderHelper, private PurchaseRepository $purchaseRepository) {
         $this->em = $em;
     }
 
@@ -42,10 +43,14 @@ class StripeController extends AbstractController {
         switch ($event->type) {
             case 'payment_intent.succeeded':
                 $paymentIntent = $event->data->object;
-                $data = $paymentIntent->charges->data[0];
-                $order = $data->order;
+//                $data = $paymentIntent->charges->data[0];
+                $metadata = $paymentIntent->metadata;
+                $purchase = $this->purchaseRepository->findOneBy(['stripeToken'=>$paymentIntent->client_secret]);
 
-                return $this->json($data, 200); die();
+
+                var_dump($purchase,"toto");
+
+                return $this->json($metadata, 400); die();
 
                 self::success($purchase);
                 $this->json('coucou', 400);
