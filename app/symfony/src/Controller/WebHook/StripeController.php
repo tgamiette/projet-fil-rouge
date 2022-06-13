@@ -44,10 +44,12 @@ class StripeController extends AbstractController {
                 $paymentIntent = $event->data->object;
                 $data = $paymentIntent->charges->data[0];
                 $order = $data->order;
-                //TODO trouver la purchase
-                $purchase = new Purchase();
+
+                return $this->json($data, 200); die();
+
                 self::success($purchase);
-                $this->json($paymentIntent, 200);
+                $this->json('coucou', 400);
+                $this->json($paymentIntent, 400);
             // ... handle other event types
             default:
                 echo 'Received unknown event type ' . $event->type;

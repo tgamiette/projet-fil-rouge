@@ -81,16 +81,6 @@ class OrderUser {
         return $this;
     }
 
-    public function getCustomer(): ?User {
-        return $this->customer;
-    }
-
-    public function setCustomer(?User $customer): self {
-        $this->customer = $customer;
-
-        return $this;
-    }
-
     public function getProducts(): ?array {
         return $this->products;
     }

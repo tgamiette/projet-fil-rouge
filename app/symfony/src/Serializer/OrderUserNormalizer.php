@@ -17,15 +17,12 @@ final class OrderUserNormalizer implements ContextAwareNormalizerInterface, Norm
     public function __construct(private PurchaseRepository $purchaseRepository) {
     }
 
-
-
     private const ALREADY_CALLED = 'ORDER_USER_NORMALIZER_ALREADY_CALLED';
 
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null {
         $context[self::ALREADY_CALLED] = true;
-//        $object = new OrderUser();
-        $purchase = $this->purchaseRepository->findOneBy(['orderUser'=>$object->getId()]);
-//        dd($purchase);
+        $purchase = $this->purchaseRepository->findOneBy(['orderUser' => $object->getId()]);
+
         return $this->normalizer->normalize([['token' => $purchase->getStripeToken()]], $format, $context);
 //return $this->normalizer->normalize($object, $format, $context);
     }

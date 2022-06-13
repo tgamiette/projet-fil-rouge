@@ -17,21 +17,23 @@ class StripeHelper {
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
     }
 
-
     /**
      * @throws ApiErrorException
      */
     public static function CreatePaymentIntent(OrderUser $order): PaymentIntent {
 
+        dd($order->getBuyer());
         $intent = PaymentIntent::create([
             'amount' => (int)$order->getTotal(),
             'currency' => 'eur',
-            'description' => "Paiement de la commande " . $order->getId(),
-            "metadata" => ["order" => $order->getId()]
+            'description' => "Paiement de la commande " . $order->getId() . " de " ,
+            "metadata" => [
+                "orderId" => $order->getId(),
+//                "userId" => $order->getBuyer(),
+            ]
         ]);
 
         return $intent;
-//        return $intent->client_secret;
     }
 
     public static function GetPaymentIntent($clientSecret): ?string {
