@@ -6,7 +6,6 @@ use App\Repository\ProductsRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-#[\Attribute]
 class MinimalPropertiesValidator extends ConstraintValidator {
 
     private ProductsRepository $productsRepository;
@@ -16,6 +15,7 @@ class MinimalPropertiesValidator extends ConstraintValidator {
     }
 
     public function validate(mixed $value, Constraint $constraint) {
+
         foreach ($value as $productId => $qty) {
             if (gettype($productId) != 'integer' ){
                 $this->context->buildViolation("produit incorrect (id requit) $productId")->addViolation();

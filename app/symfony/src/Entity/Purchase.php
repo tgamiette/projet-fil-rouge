@@ -27,7 +27,6 @@ use Doctrine\ORM\Mapping as ORM;
     ],
 )]
 class Purchase {
-
     public const STATUS_PENDING = 'PENDING';
     public const STATUS_PAID = 'PAID';
     public const STATUS_ERROR = 'ERROR';

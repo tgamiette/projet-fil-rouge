@@ -6,7 +6,9 @@ use App\Entity\ProductsOrder;
 use App\Entity\Purchase;
 use App\Repository\ProductsOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 
+#[AsController]
 class ValidatePurchase extends AbstractController {
     private Purchase $purchase;
     private ProductsOrderRepository $productsOrderRepository;
@@ -18,7 +20,7 @@ class ValidatePurchase extends AbstractController {
 //TODO commande validé
     public function __invoke(Purchase $data): Purchase {
         $data->setStatus(Purchase::STATUS_PAID);
-        $productOrders = $this->productsOrderRepository->findBy(['orderId' => $data->getOrderUser()]);
+        $productOrders = $this->productsOrderRepository->findBy(['order' => $data->getOrderUser()]);
         foreach ($productOrders as $order) {
             $order->setStatus(ProductsOrder::STATUT_PAID);
         }

@@ -1,4 +1,11 @@
 api_platform:
+    defaults:
+        pagination_enabled: false
+#        pagination_client_enabled: true
+#        pagination_items_per_page: 20
+    collection:
+        pagination:
+            
     title: 'API Projet HETIC'
     mapping:
         paths: [ '%kernel.project_dir%/src/Entity' ]

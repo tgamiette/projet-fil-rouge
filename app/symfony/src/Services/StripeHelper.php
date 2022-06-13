@@ -11,7 +11,6 @@ use function Sodium\add;
 
 class StripeHelper {
 
-    private mixed $privateKey;
     private PurchaseRepository $purchaseRepository;
 
     public function __construct() {
@@ -21,13 +20,26 @@ class StripeHelper {
     /**
      * @throws ApiErrorException
      */
-    public static function PaymentIntent(OrderUser $order): ?string {
+    public static function CreatePaymentIntent(OrderUser $order): PaymentIntent {
+
+        dd($order->getBuyer());
         $intent = PaymentIntent::create([
             'amount' => (int)$order->getTotal(),
             'currency' => 'eur',
+            'description' => "Paiement de la commande " . $order->getId() . " de " ,
+            "metadata" => [
+                "orderId" => $order->getId(),
+//                "userId" => $order->getBuyer(),
+            ]
         ]);
 
+        return $intent;
+    }
 
-        return $intent->client_secret;
+    public static function GetPaymentIntent($clientSecret): ?string {
+
+        $intent = PaymentIntent::retrieve($clientSecret);
+
+        return $intent;
     }
 }
