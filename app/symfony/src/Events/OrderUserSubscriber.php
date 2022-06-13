@@ -78,7 +78,7 @@ class OrderUserSubscriber implements EventSubscriberInterface {
             $date = new \DateTime();
             $total = 0;
             $products = $orderUser->getProducts();
-            $orderUser->setCustomer($this->security->getUser());
+            $orderUser->setBuyer($this->security->getUser());
             foreach ($products as $productId => $qty) {
                 $product = $this->productsRepository->find((int)$productId);
                 $total += $product->getPrice() * $qty;

@@ -21,8 +21,6 @@ class StripeHelper {
      * @throws ApiErrorException
      */
     public static function CreatePaymentIntent(OrderUser $order): PaymentIntent {
-
-        dd($order->getBuyer());
         $intent = PaymentIntent::create([
             'amount' => (int)$order->getTotal(),
             'currency' => 'eur',
