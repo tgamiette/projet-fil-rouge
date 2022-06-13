@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-
+import {set_order_user} from '../api';
+import {useWaitFor} from '../shared/hooks';
 import CheckoutForm from "./checkoutForm";
 
 
@@ -12,16 +13,12 @@ export default function Stripes({}){
 
   const [clientSecret, setClientSecret] = useState("");
 
-  useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch("/order_users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ products: [{ 151: 5 }] }),
-      })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+  useWaitFor(
+    () => set_order_user(),[id],(res) => {
+      console.log('order', res);
+      setClientSecret(res.clientSecret);
+    }
+  );
 
   const appearance = {
     theme: 'stripe',

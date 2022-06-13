@@ -77,7 +77,7 @@ class AppFixtures extends Fixture {
 
                 $orderSeller = new OrderSeller();
                 $orderSeller->setProduct($product)
-                    ->setUser($user)
+                    ->setSeller($user)
                     ->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                     ->setQuantity(5)
                     ->setTotal(5 * $product->getPrice());
@@ -94,7 +94,7 @@ class AppFixtures extends Fixture {
                     $manager->persist($users);
                     $orderUser = new OrderUser();
                     $orderUser->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
-                        ->setCustomer($users)
+                        ->setBuyer($users)
                         ->setTotal($product->getPrice())
                     ->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());
 

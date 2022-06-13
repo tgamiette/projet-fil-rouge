@@ -21,6 +21,7 @@ import Stripes from "../Panier/stripes";
 import {loggedIn} from "../api";
 import { CookiesProvider } from 'react-cookie';
 import {useSelector, useDispatch } from 'react-redux';
+
 export default function Router({}){
 
   const [logged, setLogged] = useState(false);

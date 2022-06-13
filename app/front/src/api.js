@@ -102,6 +102,33 @@ export function get_order_user(id) {
   return axios_api_json("GET", `/order_users/${id}`);
 }
 
+export function set_order_user(){
+  const url = DOMAIN_API +"/order_user";
+  let auth;
+
+  if(loggedIn()){
+    auth = getCookie('user_token');
+  }
+
+  return fetch(url,{
+      method:"POST",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth}`
+      },
+      body: JSON.stringify({
+          product: [
+            40: 5,
+            45: 2
+          ]
+      })
+  })
+  .then((res) => res.json())
+  .then((data) => data)
+  .catch((error) => { console.error(error);return false;})
+}
+
 // Users
 export function get_all_users() {
   return axios_api_json("GET", "/users");
@@ -135,8 +162,6 @@ export function add_user(email, password, name) {
 export function logIn(email: String, password: String) {
 
     const url = DOMAIN_API +"/login_check";
-
-
     return fetch(url,{
         method:"POST",
         headers: {
