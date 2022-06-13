@@ -22,7 +22,7 @@ export default function FormmProduits({}){
 
   useEffect(() => {
     setFormInput(formInput);
-  }), [formInput];
+  },[formInput] );
 
   useEffect(() => {
     add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category);

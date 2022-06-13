@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../index.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NeedAuth from '../Components/Auth/needAuth'
@@ -20,7 +20,7 @@ import Panier from "../Panier/panier";
 import Stripes from "../Panier/stripes";
 import {loggedIn} from "../api";
 import { CookiesProvider } from 'react-cookie';
-
+import {useSelector, useDispatch } from 'react-redux';
 export default function Router({}){
 
   const [logged, setLogged] = useState(false);

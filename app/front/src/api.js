@@ -149,16 +149,7 @@ export function logIn(email: String, password: String) {
         })
     })
     .then(response => response.json())
-    .then(res => {
-      console.log(res);
-      setToken(res.token);
-
-      var token = getCookie("user_token");
-
-      if(token !== "undefined" && token !== undefined){
-        window.location.href = `http://localhost:3001/producteurs`;
-      }
-    })
+    .then(res => res)
     .catch((error) => { console.error(error);return false;})
 }
 

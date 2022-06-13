@@ -3,9 +3,12 @@ import {useWaitFor} from '../shared/hooks';
 import { useParams } from "react-router-dom";
 import {get_product, get_all_categories} from '../api';
 import { Link } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {addCart} from "../redux/userCart";
+import {selectCart} from "../redux/userCart";
+
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
 import './style/produit.css'
 
 
@@ -14,6 +17,8 @@ export default function Produits({}){
   const {id} = useParams();
   const [product, setProduct] = useState(false);
   const [category, setCategory] = useState(false);
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCart);
 
   const objective = Math.floor(Math.random() * (300 - 105) + 105);
 
@@ -31,19 +36,24 @@ export default function Produits({}){
     }
   );
 
+  const handleProduct = (e) => {
+    e.preventDefault();
+    dispatch(addCart({
+      id: product['@id'],
+      name: product['title'],
+      quantity: e.target.quantity.value,
+      price: product['price']
+    }));
+  }
+
   return(
 
     <div className="c-produits">
       <div className="c-produit_add">
-        <form action="">
+        <form onSubmit={handleProduct}>
+
           <input type="number" name="quantity" min="1" max={product['quantity']} placeholder="Quantité"/>
 
-          <select placeholder="Unité">
-            <option value="1">kg</option>
-            <option value="2">g</option>
-            <option value="3">L</option>
-            <option value="4">cl</option>
-          </select>
           <input type="text" name="nom" placeholder="Nom"/>
           <input type="text" name="prenom" placeholder="Prénom"/>
           <button type="button" type="submit" className="c-btn">Ajouter</button>

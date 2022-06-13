@@ -1,3 +1,4 @@
+import React from 'react';
 import SubNav from './nav'
 export default function Parametres({}){
 

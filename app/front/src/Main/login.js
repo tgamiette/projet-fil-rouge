@@ -1,15 +1,32 @@
 import React, {useState, useEffect} from 'react';
-import { Link } from "react-router-dom";
-import {logIn} from '../api';
+import { Link, useNavigate } from "react-router-dom";
+import {logIn,setToken} from '../api';
+import {useDispatch} from "react-redux";
+import {login} from "../redux/userSlice";
 
 export default function Login(){
 
    const [user, setUser] = useState(false);
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    useEffect(() => {
       console.log('user', user);
-      logIn(user.email, user.password);
-      
+      if(user !== false){
+         logIn(user.email, user.password)
+         .then(data => {
+           console.log(data);
+           if(data.code !== 401){
+               console.log(data);
+               dispatch(login({
+                 email: user.email,
+                 token: data.token
+               }));
+               setToken(data.token);
+               navigate('/');
+           }
+         });
+      }
    }, [user]);
 
    const handleLogin = (e) => {

@@ -22,9 +22,6 @@ export default function ProducteurSingle({}){
     }
   );
 
-
-
-
   return(
     <div className="c-container single">
         <div>

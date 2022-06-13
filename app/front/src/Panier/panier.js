@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-
 import './style/panier.css';
-
 import {CloseCircle}  from '@styled-icons/evaicons-solid/CloseCircle';
+import {useDispatch, useSelector} from "react-redux";
+import {selectCart} from "../redux/userCart";
 
 export default function Panier({}){
 
   const purchases = [1, 2, 3 , 4];
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCart);
+
+
+  console.log('cart', cart);
 
   return(
     <div className="c-container">
@@ -25,13 +30,13 @@ export default function Panier({}){
           </thead>
           <tbody>
           {
-            purchases.map((item, index) => {
+            cart.map((item, index) => {
               return(
                 <tr className="c-commande_card">
-                  <td><span></span> <p>Le produit</p></td>
-                  <td><span>3€/k</span></td>
-                  <td><span>3kg</span></td>
-                  <td><p>36€</p></td>
+                  <td><span></span> <p>{item.name}</p></td>
+                  <td><span>{item.price}</span></td>
+                  <td><span>{item.quantity}</span></td>
+                  <td><p>{item.quantity * item.price}</p></td>
                   <td className="remove"><CloseCircle width="25" fill="red"/></td>
                 </tr>
               )
