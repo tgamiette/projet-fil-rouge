@@ -2,6 +2,7 @@
 
 namespace App\Controller\WebHook;
 
+use App\Entity\Product;
 use App\Entity\ProductsOrder;
 use App\Entity\Purchase;
 use App\Repository\PurchaseRepository;
@@ -42,35 +43,35 @@ class StripeController extends AbstractController {
 
         switch ($event->type) {
             case 'payment_intent.succeeded':
-                $paymentIntent = $event->data->object;
-//                $data = $paymentIntent->charges->data[0];
-                $metadata = $paymentIntent->metadata;
-                $purchase = $this->purchaseRepository->findOneBy(['stripeToken'=>$paymentIntent->client_secret]);
+                try {
+                    $paymentIntent = $event->data->object;
+                    $purchase = $this->purchaseRepository->findOneBy(['stripeToken' => $paymentIntent->client_secret]);
+                    if (!$purchase) {
+                        throw new \Exception("Purchase non trouvé", 500);
+                    }
+                    //$metadata = $paymentIntent->metadata;
+                    self::successPayment($purchase);
 
+                }
+                catch (\Exception $exception) {
+                    return $this->json($exception, 500);
+                }
 
-                var_dump($purchase,"toto");
-
-                return $this->json($metadata, 400); die();
-
-                self::success($purchase);
-                $this->json('coucou', 400);
                 $this->json($paymentIntent, 400);
-            // ... handle other event types
             default:
-                echo 'Received unknown event type ' . $event->type;
+                echo 'reception evenement inconnu' . $event->type;
         }
         return $this->json($paymentIntent, 200);
     }
 
     /*
-     * check la commande duu paiment et verifier si
+     * Valide la commande
      */
-    private function success(Purchase $purchase) {
-        $purchase->setStatus(Purchase::STATUS_PAID);
+    private function successPayment(Purchase $purchase) {
 
+        $purchase->setStatus(Purchase::STATUS_PAID);
         $OrderUser = $purchase->getOrderUser();
         $productsOrder = $OrderUser->getProductsOrders();
-
         foreach ($productsOrder as $productOrder) {
             $productOrder->setStatus(ProductsOrder::STATUT_PAID);
             $this->productsOrderHelper->checkObjective($productOrder);
