@@ -53,14 +53,14 @@ export default function Router({}){
                <Route path="stripe" element={<Stripes />} />
             </Route>
             <Route path="/commandes" element={
-                  <NeedAuth logged={logged} children={<Commande />}></NeedAuth>
+                  <NeedAuth children={<Commande />}></NeedAuth>
             }/>
             <Route path="/calendrier" element={
-                  <NeedAuth logged={logged} children={<Calendrier />}></NeedAuth>
+                  <NeedAuth children={<Calendrier />}></NeedAuth>
             }/>
 
             <Route path="/account/*">
-               <Route index element={<NeedAuth logged={logged} children={<Account />}></NeedAuth>} />
+               <Route index element={<NeedAuth children={<Account />}></NeedAuth>} />
                <Route path="commandes" element={<Commandes />} />
                <Route path="paiement" element={<Parametres />} />
                <Route path="parametres" element={<Parametres />} />

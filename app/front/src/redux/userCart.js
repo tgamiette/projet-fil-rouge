@@ -7,11 +7,11 @@ export const userCart = createSlice({
     },
     reducers:{
         addCart: (state, action) => {
-            const {id, quantity, price} = action.payload;
-            state.cart.push({id, quantity, price});
+            const {id, quantity, name, price} = action.payload;
+            state.cart.push({id, quantity, name, price});
         },
         removeCart: (state, action) => {
-            const {id} = action.payload;
+            const { id } = action.payload;
             return state.cart.filter(item => item.id !== id);
         },
         emptyCart: (state) => {

@@ -103,7 +103,7 @@ export function get_order_user(id) {
 }
 
 export function set_order_user(){
-  const url = DOMAIN_API +"/order_user";
+  const url = DOMAIN_API +"/order_users";
   let auth;
 
   if(loggedIn()){
@@ -118,11 +118,11 @@ export function set_order_user(){
           'Authorization': `Bearer ${auth}`
       },
       body: JSON.stringify({
-          product: [
-            40: 5,
-            45: 2
-          ]
-      })
+        "products": {
+          "40": 3,
+          "45": 2
+        }}
+      )
   })
   .then((res) => res.json())
   .then((data) => data)
