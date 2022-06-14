@@ -70,6 +70,11 @@ export default function FormmProduits({}){
           </div>
 
           <div className="c-form_wrapper">
+            <label className="">Image de votre produits</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg" data-max-size="2048"/>
+          </div>
+
+          <div className="c-form_wrapper">
             <label className="">Prix</label>
             <input type="number" name="price" onChange={handleChange} value={formInput.price}/>
           </div>

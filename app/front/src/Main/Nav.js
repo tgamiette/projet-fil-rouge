@@ -17,11 +17,12 @@ export default function Nav({logged, setLogged}){
   const navigate = useNavigate();
 
   const onLogout = () => {
-     console.log('lapin');
-     setLogged(false);
+
      eraseCookie('user_token');
      dispatch(logout());
-     navigate('/');
+     dispatch(emptyCart());
+     window.location.href = "/login";
+     console.log('lapin');
   }
 
   return (
@@ -33,11 +34,10 @@ export default function Nav({logged, setLogged}){
           <Link to="/producteurs">Nos producteurs</Link>
           <Link to="/map">Carte</Link>
           <Link to="/calendrier">Calendrier</Link>
-          <Link to="/panier"><ShoppingBasket size="40"/></Link>
         </ul>
         <ul>
           {
-            user ?
+            user !== null ?
               <>
                 <a onClick={onLogout}>Logout</a>
                 <Link to="/panier"><ShoppingBasket size="40"/></Link>

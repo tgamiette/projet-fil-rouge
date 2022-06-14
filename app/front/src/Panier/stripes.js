@@ -13,15 +13,16 @@ export default function Stripes({}){
 
   const [clientSecret, setClientSecret] = useState("");
 
-  useEffect(() => {
-    setClientSecret("pi_3LACJcJH5pyW7Jph1Zu4k5Wf_secret_pKRGGeSmCsSHTdSDUXSlk3gv2");
-  });
-
+  useWaitFor(
+    () => set_order_user(),[],(res) => {
+      console.log('order', res[0].token);
+      setClientSecret(res[0].token);
+    }
+  );
 
   const appearance = {
     theme: 'stripe',
   };
-
   const options = {
     clientSecret,
     appearance,
@@ -32,7 +33,7 @@ export default function Stripes({}){
     <div className="App">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
+          <CheckoutForm/>
         </Elements>
       )}
     </div>
