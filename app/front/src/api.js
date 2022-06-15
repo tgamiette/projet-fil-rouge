@@ -35,12 +35,8 @@ export function get_product(id) {
   return axios_api_json("GET", `/products/${id}`);
 }
 
-export function get_all_categories() {
-  return axios_api_json("GET", `/categories/`);
-}
-
-export function get_categorie(id) {
-  return axios_api_json("GET", `/categories/${id}`);
+export function get_product_by_seller(id) {
+  return axios_api_json("GET", `/products?seller=${id}`);
 }
 
 export function add_product(title : String, description: String, price: Int, quantity: Int, category: String) {
@@ -73,6 +69,17 @@ export function add_product(title : String, description: String, price: Int, qua
         }
     }).catch((error) => { console.error(error);return false;})
 }
+
+// Categories
+
+export function get_all_categories() {
+  return axios_api_json("GET", `/categories/`);
+}
+
+export function get_categorie(id) {
+  return axios_api_json("GET", `/categories/${id}`);
+}
+
 
 // Producteurs
 export function get_all_producteurs() {

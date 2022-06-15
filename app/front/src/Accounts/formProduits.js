@@ -39,6 +39,16 @@ export default function FormmProduits({}){
   const handleSubmit = (e) => {
     e.preventDefault();
     setProduct(formInput);
+
+    const { title, body, image } = fields;
+
+   var formData = new FormData();
+   formData.append('title', title);
+   formData.append('body', body);
+   formData.append('image', image);
+
+   console.log(title, body, image);
+
   }
 
   return(

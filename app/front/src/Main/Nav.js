@@ -31,9 +31,11 @@ export default function Nav({logged, setLogged}){
       <nav>
         <ul>
           <Link to="/commandes">Les commandes</Link>
+          <Link to="/produits">Les produits</Link>
           <Link to="/producteurs">Nos producteurs</Link>
           <Link to="/map">Carte</Link>
           <Link to="/calendrier">Calendrier</Link>
+
         </ul>
         <ul>
           {

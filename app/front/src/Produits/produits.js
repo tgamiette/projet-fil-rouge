@@ -1,111 +1,73 @@
-import React, {useState, useEffect} from 'react';
-import {useWaitFor} from '../shared/hooks';
-import { useParams } from "react-router-dom";
-import {get_product, get_all_categories} from '../api';
+import React, {useState} from 'react';
+import {get_all_product} from '../api';
 import { Link } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {addCart} from "../redux/userCart";
-import {selectCart} from "../redux/userCart";
-
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import './style/produit.css'
-
+import SearchBar from '../Components/SearchBar/searchBar'
+import {useWaitFor} from '../shared/hooks';
 
 export default function Produits({}){
 
-  const {id} = useParams();
-  const [product, setProduct] = useState(false);
-  const [category, setCategory] = useState(false);
-  const dispatch = useDispatch();
-  const cart = useSelector(selectCart);
+  const [produits, setProduits] = useState([]);
+  const [filterDisplay, setFilterDisplay] = useState(false);
+  const [search ,setSearch] = useState("");
 
-  const objective = Math.floor(Math.random() * (300 - 105) + 105);
 
   useWaitFor(
-    () => get_product(id),[id],(res) => {
-      setProduct(res);
-      console.log('res', res);
+    () => get_all_product(),[],(res) => {
+      console.log('res', res['hydra:member']);
+      if(res !== undefined){
+        setProduits(res['hydra:member']);
+        setFilterDisplay(res['hydra:member']);
+      }
+
     }
   );
-
-  useWaitFor(
-    () => get_all_categories(),[id],(res) => {
-      setCategory(res['hydra:member']);
-      console.log('cat', res['hydra:member']);
-    }
-  );
-
-  const handleProduct = (e) => {
-    e.preventDefault();
-    dispatch(addCart({
-      id: product['@id'],
-      name: product['title'],
-      quantity: e.target.quantity.value,
-      price: product['price']
-    }));
-  }
 
   return(
-
-    <div className="c-produits">
-      <div className="c-produit_add">
-        <form onSubmit={handleProduct}>
-
-          <input type="number" name="quantity" min="1" max={product['quantity']} placeholder="Quantité"/>
-
-          <input type="text" name="nom" placeholder="Nom"/>
-          <input type="text" name="prenom" placeholder="Prénom"/>
-          <button type="button" type="submit" className="c-btn">Ajouter</button>
-        </form>
-
-      </div>
-
-      <div className="c-produits_infos">
-        <div>
-          <h2>{product['title']}</h2>
-          <div className="c-produit_single">
-            <div className="c-produit_img">
-              <div className="c-img_circle">
-                <CircularProgressbar value={(product['quantity']* 100 )/objective} />
-                <img className="c-img_produit" src="https://static.greenweez.com/images/products/127000/600/fruits-legumes-du-marche-bio-pomme-regal-you-candine.jpg" alt="" />
-              </div>
-              <span>{product['quantity']}kg restant</span>
-              <span>{objective}kg disponible</span>
-            </div>
-            <div className="c-produit_infos">
-              <span>{product['price']} € le kilos</span>
-              <span>Vendu par {}</span>
-              <p>{product['description']} </p>
-              <Link to={`/producteur/1`} className="c-btn">Voir le producteur</Link>
-            </div>
+    <div className="c-container">
+      <div>
+        <div className="c-filter">
+          <h2>Filtres</h2>
+          <div className="c-filter_input search">
+            <SearchBar dataList={produits} setFilterDisplay={setFilterDisplay}/>
+          </div>
+          <div className="c-filter_input">
+            <label>Trier par proximité</label>
+            <input type="radio" name="kilometer" value="5"  placeholder=""/>
+            <input type="radio" name="kilometer" value="10" />
+            <input type="radio" name="kilometer" value="20" />
+            <input type="radio" name="kilometer" value="40" />
+            <input type="radio" name="kilometer" value="50" />
+          </div>
+          <div className="c-filter_input">
+            <label>Trier par produits</label>
+            <input type="radio" name="" value="" />
           </div>
         </div>
-
-        <div className="c-produit_other">
-          <h2>Nos autres produits</h2>
-          {
-            category !== false ?
-              category.map((item, index) => {
-                if(index < 5){
-                  return(
-                    <Link to={`/produits/${index}`} >
-                      <div className="c-produit_img">
-                        <div className="c-img_circle">
-                          <CircularProgressbar value={Math.floor(Math.random() * (100 - 0) + 0)} />
-                          <img className="c-img_produit" src="https://static.greenweez.com/images/products/127000/600/fruits-legumes-du-marche-bio-pomme-regal-you-candine.jpg" alt="" />
-                        </div>
-                        <span>{item['title']}</span>
-                      </div>
-                    </Link>
-                  )
-                }
-              })
-            :
-            null
-          }
-        </div>
       </div>
+
+      <div>
+        <h1>Tout les produits</h1>
+        {
+          filterDisplay !== false ?
+            filterDisplay.map((item, index) => {
+              return(
+                <div>
+                  <img src="" alt="" />
+                  <div>
+                    <p>{item.title}</p>
+                    <div>
+                      <p>{item.price} € le kilos</p>
+                      <p>Vendu par {item.seller.fullName}</p>
+                    </div>
+                  </div>
+                    <Link to={`/produits/${item.id}`} className="c-btn">Voir le produits</Link>
+                </div>
+              )
+            })
+          : "rien"
+        }
+      </div>
+
     </div>
   )
 }
