@@ -2,14 +2,15 @@ import React, { useRef, useEffect, useState, useMemo, useCallback  } from 'react
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Link } from "react-router-dom";
-// import Map, {
-//   Marker,
-//   Popup,
-//   NavigationControl,
-//   FullscreenControl,
-//   ScaleControl,
-//   GeolocateControl
-// } from 'react-map-gl';
+import Map, {
+  Marker,
+  Popup,
+  NavigationControl,
+  FullscreenControl,
+  ScaleControl,
+  GeolocateControl
+} from 'react-map-gl';
+import Geocode from "react-geocode";
 import PRODUCTEURS from "./producteurs.json";
 import './style/map.css';
 
@@ -23,6 +24,20 @@ export default function Maps(){
 
   const TOKEN = "pk.eyJ1IjoibWFtYTA1IiwiYSI6ImNsMzhvY2owZDAxczIzanIzcGVoNG40Z28ifQ.avQ6w6qf5IdFBhR9FwHPJg";
 
+  Geocode.setLanguage("fr");
+  Geocode.setRegion("fr");
+  Geocode.setLocationType("ROOFTOP");
+  Geocode.enableDebug();
+
+  Geocode.fromAddress("Eiffel Tower").then(
+    (response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      console.log(lat, lng);
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
 
   function Pin({}) {
     return (
@@ -33,7 +48,7 @@ export default function Maps(){
    );
   }
 
-  {/*const pins = useMemo(
+  const pins = useMemo(
     () =>
       PRODUCTEURS.map((city, index) => (
         <Marker
@@ -52,7 +67,7 @@ export default function Maps(){
         </Marker>
       )),
     []
-  );*/}
+  );
 
   const geocoderContainerRef = useRef();
   const mapRef = useRef();
@@ -66,19 +81,19 @@ export default function Maps(){
   return(
     <div className="c-section">
       <div ref={geocoderContainerRef} style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }} />
-        {/*<Map ref={mapRef} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={() => console.log("change")} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
+        <Map ref={mapRef} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={() => console.log("change")} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
             <GeolocateControl position="top-right" />
             <FullscreenControl position="top-right" />
             <NavigationControl position="top-right" />
             <ScaleControl />
 
-            <Geocoder
+            {/*<Geocoder
               mapRef={mapRef}
               containerRef={geocoderContainerRef}
               onViewportChange={handleViewportChange}
               mapboxApiAccessToken={TOKEN}
               position="top-left"
-            />
+            />*/}
 
             {pins}
             {popupInfo && (
@@ -96,7 +111,7 @@ export default function Maps(){
 
               </Popup>
             )}
-       </Map>*/}
+       </Map>
     </div>
   )
 }

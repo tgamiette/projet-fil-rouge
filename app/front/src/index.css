@@ -157,3 +157,13 @@ input{
   width: auto;
   border: 1px solid #dfdfdf;
 }
+
+.c-background_img{
+  background: url('./assets/images/pattern-light.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100px;
+  width: 100%;
+  margin: 30px 0;
+}
