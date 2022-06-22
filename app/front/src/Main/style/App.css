@@ -43,7 +43,14 @@
   }
 }
 
-
+.c-container_app{
+  width: 95%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin: 40px auto;
+}
 
 .c-presentation{
   display: grid;
@@ -63,4 +70,19 @@
   width: 100%;
   min-width: 100px;
   min-height: 150px;
+}
+
+.c-last_product{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 20px;
+  height: 100%;
+}
+
+.c-produtcs{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
 }

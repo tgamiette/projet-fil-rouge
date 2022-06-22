@@ -39,7 +39,11 @@ export function get_product_by_seller(id) {
   return axios_api_json("GET", `/products?seller=${id}`);
 }
 
-export function add_product(title : String, description: String, price: Int, quantity: Int, category: String) {
+export function get_product_by_category(id) {
+  return axios_api_json("GET", `/products?category=${id}`);
+}
+
+export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: File) {
     const url = DOMAIN_API +"/products";
     let auth;
 
@@ -47,23 +51,27 @@ export function add_product(title : String, description: String, price: Int, qua
       auth = getCookie('user_token');
     }
 
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('price', price);
+    formData.append('quantity', quantity);
+    formData.append('category', category);
+    formData.append('file', file);
+
     return fetch(url,{
         method:"POST",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth}`
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${auth}`,
+            "Access-Control-Allow-Origin": "*"
         },
-        body: JSON.stringify({
-            title: title,
-            price: price,
-            quantity: quantity,
-            description: description,
-            category: category
-        })
+        body: formData
     }).then((response) => {
+        console.log(response);
         if(response.status===200){
-            window.location.href = `http://localhost:3001/account`;
+            window.location.href = `http://localhost:3001/account/produits`;
         }else{
             return false;
         }
