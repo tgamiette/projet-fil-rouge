@@ -22,48 +22,59 @@ export default function Maps(){
   const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 20})
   const [popupInfo, setPopupInfo] = useState(null);
 
+
+
   const TOKEN = "pk.eyJ1IjoibWFtYTA1IiwiYSI6ImNsMzhvY2owZDAxczIzanIzcGVoNG40Z28ifQ.avQ6w6qf5IdFBhR9FwHPJg";
 
+  Geocode.setApiKey("AIzaSyA5IRiB_nXYM292tyLH1syvdWMhB1o9gVQ");
   Geocode.setLanguage("fr");
   Geocode.setRegion("fr");
   Geocode.setLocationType("ROOFTOP");
   Geocode.enableDebug();
-
-  Geocode.fromAddress("Eiffel Tower").then(
-    (response) => {
-      const { lat, lng } = response.results[0].geometry.location;
-      console.log(lat, lng);
-    },
-    (error) => {
-      console.error(error);
-    }
-  );
 
   function Pin({}) {
     return (
       <div className="c-pin">
         <span className="c-pin_circle"></span>
       </div>
-
    );
   }
 
+  {/*function setAddress(city){
+    let Data = () => {
+      return Geocode.fromAddress(city).then((response) => {
+        return response.results[0].geometry.location;
+      });
+    }
+
+    let dataLocation = Data();
+
+    return dataLocation
+    .then((result) {
+       result;// "Some User token"
+    }).then((res) => {
+      return res;
+    })
+  }*/}
+
+  console.log(setAddress("Eiffel Tower"));
+
   const pins = useMemo(
     () =>
-      PRODUCTEURS.map((city, index) => (
-        <Marker
-          key={`marker-${index}`}
-          longitude={viewport.longitude}
-          latitude={viewport.latitude}
-          anchor="bottom"
-          onClick={e => {
-            // If we let the click event propagates to the map, it will immediately close the popup
-            // with `closeOnClick: true`
-            e.originalEvent.stopPropagation();
-            setPopupInfo(city);
-          }}
-        >
-          <Pin />
+      PRODUCTEURS.map((item, index) => (
+          <Marker
+            key={`marker-${index}`}
+            longitude={0}
+            latitude={0}
+            anchor="bottom"
+            onClick={e => {
+              // If we let the click event propagates to the map, it will immediately close the popup
+              // with `closeOnClick: true`
+              e.originalEvent.stopPropagation();
+              setPopupInfo(item);
+            }}
+          >
+            <Pin />
         </Marker>
       )),
     []

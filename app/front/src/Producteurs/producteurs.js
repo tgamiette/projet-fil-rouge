@@ -16,7 +16,6 @@ export default function Producteurs(){
 
   useWaitFor(
     () => get_all_producteurs(),[],(res) => {
-      console.log('res', res['hydra:member']);
       if(res !== undefined){
         setProducteurs(res['hydra:member']);
         setFilterDisplay(res['hydra:member']);

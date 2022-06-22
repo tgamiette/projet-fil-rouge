@@ -27,9 +27,12 @@ export default function Nav({logged, setLogged}){
 
   return (
     <header>
-      <img src={logo} alt="" />
+      <Link to="/">
+        <img src={logo} alt="" />
+      </Link>
       <nav>
         <ul>
+          <Link to="/">Accueil</Link>
           <Link to="/commandes">Les commandes</Link>
           <Link to="/produits">Les produits</Link>
           <Link to="/producteurs">Nos producteurs</Link>
