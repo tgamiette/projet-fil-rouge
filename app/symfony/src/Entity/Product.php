@@ -131,6 +131,7 @@ class Product extends AbstractEntity {
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
+    #[Groups(['products_write'])]
     #[ORM\Column(type: 'integer')]
     private $objective;
 
