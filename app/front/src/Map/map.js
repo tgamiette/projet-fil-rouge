@@ -82,7 +82,7 @@ export default function Maps(){
 
   const handleGeocoderViewportChange = useCallback(
     (newViewport) => {
-      const geocoderDefaultOverrides = { transitionDuration: 1000, transitionInterpolator: new FlyToInterpolator()};
+      const geocoderDefaultOverrides = { transitionDuration: 1000};
 
       return handleViewportChange({
         ...newViewport,

@@ -28,8 +28,9 @@ export default function FormmProduits({}){
   useEffect(() => {
     if(product !== false){
       const files = [...product.file];
-      add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category, files[0]);
+      add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category, files[0], parseInt(product.objective));
     }
+    console.log(formInput);
   }, [product]);
 
   const handleChange = ({target}) =>{

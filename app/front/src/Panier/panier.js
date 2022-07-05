@@ -13,10 +13,11 @@ export default function Panier({}){
 
   const handleRemove = (id) => {
     console.log(id);
-    console.log(dispatch(removeCart({
-      id: id
-    })));
+    console.log(cart.filter(item => item.id !== id));
+    console.log(dispatch(removeCart({id: id})));
   }
+
+  console.log('cart', cart);
 
   return(
     <div className="c-container">

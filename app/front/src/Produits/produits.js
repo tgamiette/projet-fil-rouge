@@ -52,7 +52,7 @@ export default function Produits({}){
             filterDisplay.map((item, index) => {
               return(
                 <div>
-                  <img src="" alt="" />
+                  <img src={`http://localhost:8000/${item.contentUrl}`} alt="Image Produits" />
                   <div>
                     <p>{item.title}</p>
                     <div>

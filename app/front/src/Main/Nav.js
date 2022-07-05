@@ -5,7 +5,8 @@ import './style/Nav.css'
 import {getCookie, eraseCookie} from '../api';
 import {ShoppingBasket} from '@styled-icons/remix-line/ShoppingBasket';
 import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
-import logout from "../redux/userSlice";
+import {logout} from "../redux/userSlice";
+import {emptyCart} from "../redux/userCart";
 import {useSelector, useDispatch} from 'react-redux';
 import {selectUser} from "../redux/userSlice";
 import { persistor } from "../redux/store";
@@ -17,12 +18,9 @@ export default function Nav({logged, setLogged}){
   const user = useSelector(selectUser);
   const navigate = useNavigate();
 
-  console.log(user);
-
   const onLogout = () => {
-     eraseCookie('user_token');
      dispatch(logout());
-
+     eraseCookie('user_token');
      window.location.href = "/login";
   }
 
