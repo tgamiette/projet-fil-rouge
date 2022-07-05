@@ -3,9 +3,13 @@ import SubNav from './nav'
 export default function Parametres({}){
 
   return(
-    <>
+    <div className="c-account">
       <SubNav />
-      <h1>Paramètres</h1>
-    </>
+      <div className="c-parameters">
+        <h1>Paramètres</h1>
+
+      </div>
+
+    </div>
   )
 }

@@ -17,13 +17,14 @@ export default function Login(){
          .then(data => {
            console.log(data);
            if(data.code !== 401){
-               console.log(data);
+               setToken(data.token);
                dispatch(login({
-                 email: user.email,
+                 email: data.data.username,
+                 id: data.data.id,
+                 role: data.data.roles[0],
                  token: data.token
                }));
-               setToken(data.token);
-               navigate('/');
+               navigate('/commandes');
            }
          });
       }

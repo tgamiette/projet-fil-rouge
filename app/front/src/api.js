@@ -35,6 +35,51 @@ export function get_product(id) {
   return axios_api_json("GET", `/products/${id}`);
 }
 
+export function get_product_by_seller(id) {
+  return axios_api_json("GET", `/products?seller=${id}`);
+}
+
+export function get_product_by_category(id) {
+  return axios_api_json("GET", `/products?category=${id}`);
+}
+
+export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: File) {
+    const url = DOMAIN_API +"/products";
+    let auth;
+
+    if(loggedIn()){
+      auth = getCookie('user_token');
+    }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('price', price);
+    formData.append('quantity', quantity);
+    formData.append('category', category);
+    formData.append('file', file);
+
+    return fetch(url,{
+        method:"POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${auth}`,
+            "Access-Control-Allow-Origin": "*"
+        },
+        body: formData
+    }).then((response) => {
+        console.log(response);
+        if(response.status===200){
+            window.location.href = `http://localhost:3001/account/produits`;
+        }else{
+            return false;
+        }
+    }).catch((error) => { console.error(error);return false;})
+}
+
+// Categories
+
 export function get_all_categories() {
   return axios_api_json("GET", `/categories/`);
 }
@@ -43,36 +88,6 @@ export function get_categorie(id) {
   return axios_api_json("GET", `/categories/${id}`);
 }
 
-export function add_product(title : String, description: String, price: Int, quantity: Int, category: String) {
-    const url = DOMAIN_API +"/products";
-    let auth;
-
-    if(loggedIn()){
-      auth = getCookie('user_token');
-    }
-
-    return fetch(url,{
-        method:"POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth}`
-        },
-        body: JSON.stringify({
-            title: title,
-            price: price,
-            quantity: quantity,
-            description: description,
-            category: category
-        })
-    }).then((response) => {
-        if(response.status===200){
-            window.location.href = `http://localhost:3001/account`;
-        }else{
-            return false;
-        }
-    }).catch((error) => { console.error(error);return false;})
-}
 
 // Producteurs
 export function get_all_producteurs() {
@@ -103,7 +118,7 @@ export function get_order_user(id) {
 }
 
 export function set_order_user(){
-  const url = DOMAIN_API +"/order_user";
+  const url = DOMAIN_API +"/order_users";
   let auth;
 
   if(loggedIn()){
@@ -118,11 +133,11 @@ export function set_order_user(){
           'Authorization': `Bearer ${auth}`
       },
       body: JSON.stringify({
-          product: [
-            40: 5,
-            45: 2
-          ]
-      })
+        "products": {
+          "40": 3,
+          "45": 2
+        }}
+      )
   })
   .then((res) => res.json())
   .then((data) => data)

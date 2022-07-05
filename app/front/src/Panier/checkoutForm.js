@@ -5,9 +5,15 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
+import {useSelector} from 'react-redux';
+import {selectCart} from '../redux/userCart';
+
+
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+
+  const cart = useSelector(selectCart);
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -78,15 +84,38 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <PaymentElement id="payment-element" />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
-      </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
-    </form>
+    <div className="c-container container_second">
+      <div className="c-card">
+        <h2>Résumé de cotre commande</h2>
+        <div>
+          {
+            cart.map((item, index) => {
+              return(
+                <div className="c-product">
+                  <p>{item.name}</p>
+                  <p>{item.quantity} kg</p>
+                  <p>{item.quantity * item.price} €</p>
+                </div>
+              )
+            })
+          }
+        </div>
+
+      </div>
+
+      <div className='c-card'>
+        <h2>Choississez voter méthode de payement</h2>
+        <form id="payment-form" onSubmit={handleSubmit}>
+          <PaymentElement id="payment-element" />
+          <button disabled={isLoading || !stripe || !elements} id="submit" className='c-btn is__yellow'>
+            <span id="button-text">
+              {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+            </span>
+          </button>
+          {/* Show any error or success messages */}
+          {message && <div id="payment-message">{message}</div>}
+        </form>
+      </div>
+    </div>
   );
 }

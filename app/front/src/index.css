@@ -43,6 +43,7 @@ code {
   --primary-text-black: #000000;
   --primary-text-white: #FFFFFF;
   --primary-text-yellow: #FDD46D;
+  --primary-text-yellow-40: #FDD46D40;
 
 
   /* FONTS */
@@ -156,4 +157,14 @@ input{
   border: none;
   width: auto;
   border: 1px solid #dfdfdf;
+}
+
+.c-background_img{
+  background: url('./assets/images/pattern-light.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100px;
+  width: 100%;
+  margin: 30px 0;
 }

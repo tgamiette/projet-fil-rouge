@@ -1,10 +1,9 @@
 .c-produits{
   display: grid;
-  grid-template-columns: 0.75fr 1fr;
+  grid-template-columns: 1fr 0.5fr;
   grid-gap: 30px;
   height: 100%;
 }
-
 
 .c-produit_single{
   display: flex;
@@ -24,12 +23,22 @@
 }
 .c-img_circle{
   position: relative;
-  width: 70%;
+  width: 200px;
+  height: 200px;
+}
+
+.c-img_circle_2{
+  position: relative;
+  width: 100px;
+  height: 100px;
 }
 
 .CircularProgressbar {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 5;
+  width: 100%;
 }
 
 .CircularProgressbar .CircularProgressbar-trail{
@@ -40,10 +49,107 @@
   stroke: var(--primary-text-yellow);
 }
 
+.c-product_number{
+  background: var(--primary-text-yellow-40);
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.c-product_number span{
+  margin: 5px 0;
+  font-weight: bold;
+}
+
 .c-img_produit{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 70%;
+}
+
+.c-other{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 20px;
+}
+
+.c-produit_add{
+  position: sticky;
+  top: 50px;
+  background: var(--primary-text-white);
+  box-shadow: 1px 1px 20px #00000020;
+  padding: 30px;
+  border-radius: 10px;
+  height: fit-content;
+}
+.c-produit_add h3{
+  margin: 0 0 20px 0;
+}
+
+input{
+  margin: 10px 0;
+  width: 90%;
+}
+
+.c-popup_bg{
+  overflow: hidden;
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  background: #00000020;
+  width: 100vw;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-popup_bg.active{
+  display: flex;
+}
+
+.c-popup_buy{
+  background: var(--primary-text-white);
   width: 50%;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.c-popup_buy div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-popup_buy .c-infos{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.c-infos p{
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.c-infos span{
+  font-weight: bold;
+}
+.c-btn_grp{
+  margin: 30px 0;
+}
+.c-btn_grp > button{
+  margin-right: 10px;
+}
+
+.c-btn_grp > a{
+  margin-left: 10px;
 }

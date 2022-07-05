@@ -14,7 +14,9 @@ import Account from "../Accounts/account";
 import Parametres from "../Accounts/parametres";
 import FormProduits from "../Accounts/formProduits";
 import Commandes from "../Accounts/commandes";
+import Products from "../Accounts/products";
 import SignIn from "../Main/signIn";
+import ProduitSingle from "../Produits/produitSingle";
 import Produits from "../Produits/produits";
 import Panier from "../Panier/panier";
 import Stripes from "../Panier/stripes";
@@ -44,7 +46,8 @@ export default function Router({}){
             <Route path="/commandes" element={<Commande />} />
             <Route path="/producteurs" element={<Producteurs />} />
             <Route path="/producteur/:id" element={<ProducteurSingle />} />
-            <Route path="/produits/:id" element={<Produits />} />
+            <Route path="/produits/:id" element={<ProduitSingle />} />
+            <Route path="/produits" element={<Produits/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signIn" element={<SignIn />} />
 
@@ -53,18 +56,17 @@ export default function Router({}){
                <Route path="stripe" element={<Stripes />} />
             </Route>
             <Route path="/commandes" element={
-                  <NeedAuth logged={logged} children={<Commande />}></NeedAuth>
+                  <NeedAuth children={<Commande />}></NeedAuth>
             }/>
             <Route path="/calendrier" element={
-                  <NeedAuth logged={logged} children={<Calendrier />}></NeedAuth>
+                  <NeedAuth children={<Calendrier />}></NeedAuth>
             }/>
 
             <Route path="/account/*">
-               <Route index element={<NeedAuth logged={logged} children={<Account />}></NeedAuth>} />
+               <Route index element={<NeedAuth children={<Account />}></NeedAuth>} />
                <Route path="commandes" element={<Commandes />} />
-               <Route path="paiement" element={<Parametres />} />
                <Route path="parametres" element={<Parametres />} />
-               <Route path="produits" element={<Parametres />} />
+               <Route path="produits" element={<Products />} />
                <Route path="produits/ajout" element={<FormProduits />} />
              </Route>
           </Routes>

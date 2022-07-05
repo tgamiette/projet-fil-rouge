@@ -7,7 +7,7 @@ import './style/account.css';
 export default function FormmProduits({}){
 
   const [categories, setCategories] = useState([]);
-  const [formInput, setFormInput] = useState({title: "", description: "", category:[], price: null, quantity: null, objective: ""})
+  const [formInput, setFormInput] = useState({title: "", description: "", category:[], price: null, quantity: null, objective: "", file: ""})
   const [product, setProduct] = useState(false);
 
   useWaitFor(
@@ -22,23 +22,33 @@ export default function FormmProduits({}){
 
   useEffect(() => {
     setFormInput(formInput);
+
   },[formInput] );
 
   useEffect(() => {
-    add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category);
+    add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category, product.file);
+    console.log(product);
   }, [product]);
 
   const handleChange = ({target}) =>{
-    setFormInput(prev => ({
-        ...prev,
-        [target.name]: target.value
-    }));
 
+    if(target.name === "file"){
+      setFormInput(prev => ({
+          ...prev,
+          [target.name]: target.files[0].name
+      }));
+    }else{
+      setFormInput(prev => ({
+          ...prev,
+          [target.name]: target.value
+      }));
+    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setProduct(formInput);
+
   }
 
   return(
@@ -46,7 +56,7 @@ export default function FormmProduits({}){
      <SubNav />
     <div className="c-form">
         <h1>Ajout d'un produit</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} enctype="multipart/form-data">
           <div className="c-form_wrapper">
             <label className="">Titre</label>
             <input type="text" name="title" onChange={handleChange} value={formInput.tilte}/>
@@ -67,6 +77,11 @@ export default function FormmProduits({}){
               })
             }
           </select>
+          </div>
+
+          <div className="c-form_wrapper">
+            <label className="">Image de votre produits</label>
+            <input type="file" id="file" name="file" onChange={handleChange} accept="image/png, image/jpeg" data-max-size="2048"/>
           </div>
 
           <div className="c-form_wrapper">

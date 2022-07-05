@@ -17,27 +17,32 @@ export default function Nav({logged, setLogged}){
   const navigate = useNavigate();
 
   const onLogout = () => {
-     console.log('lapin');
-     setLogged(false);
+
      eraseCookie('user_token');
      dispatch(logout());
-     navigate('/');
+     dispatch(emptyCart());
+     window.location.href = "/login";
+     console.log('lapin');
   }
 
   return (
     <header>
-      <img src={logo} alt="" />
+      <Link to="/">
+        <img src={logo} alt="" />
+      </Link>
       <nav>
         <ul>
+          <Link to="/">Accueil</Link>
           <Link to="/commandes">Les commandes</Link>
+          <Link to="/produits">Les produits</Link>
           <Link to="/producteurs">Nos producteurs</Link>
           <Link to="/map">Carte</Link>
           <Link to="/calendrier">Calendrier</Link>
-          <Link to="/panier"><ShoppingBasket size="40"/></Link>
+
         </ul>
         <ul>
           {
-            user ?
+            user !== null ?
               <>
                 <a onClick={onLogout}>Logout</a>
                 <Link to="/panier"><ShoppingBasket size="40"/></Link>
