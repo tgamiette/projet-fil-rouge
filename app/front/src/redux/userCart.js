@@ -15,7 +15,7 @@ export const userCart = createSlice({
             return state.cart.filter(item => item.id !== id);
         },
         emptyCart: (state) => {
-            state.cart = null;
+            state.cart = [];
         },
     },
 });

@@ -8,6 +8,7 @@ import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
 import logout from "../redux/userSlice";
 import {useSelector, useDispatch} from 'react-redux';
 import {selectUser} from "../redux/userSlice";
+import { persistor } from "../redux/store";
 
 
 export default function Nav({logged, setLogged}){
@@ -16,13 +17,13 @@ export default function Nav({logged, setLogged}){
   const user = useSelector(selectUser);
   const navigate = useNavigate();
 
-  const onLogout = () => {
+  console.log(user);
 
+  const onLogout = () => {
      eraseCookie('user_token');
      dispatch(logout());
-     dispatch(emptyCart());
+
      window.location.href = "/login";
-     console.log('lapin');
   }
 
   return (

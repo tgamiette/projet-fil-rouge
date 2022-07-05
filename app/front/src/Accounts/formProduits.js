@@ -10,6 +10,7 @@ export default function FormmProduits({}){
   const [formInput, setFormInput] = useState({title: "", description: "", category:[], price: null, quantity: null, objective: "", file: ""})
   const [product, setProduct] = useState(false);
 
+
   useWaitFor(
     () => get_all_categories(),[],(res) => {
       console.log('res', res);
@@ -22,12 +23,13 @@ export default function FormmProduits({}){
 
   useEffect(() => {
     setFormInput(formInput);
-
   },[formInput] );
 
   useEffect(() => {
-    add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category, product.file);
-    console.log(product);
+    if(product !== false){
+      const files = [...product.file];
+      add_product(product.title, product.description, parseInt(product.price), parseInt(product.quantity), product.category, files[0]);
+    }
   }, [product]);
 
   const handleChange = ({target}) =>{
@@ -35,7 +37,7 @@ export default function FormmProduits({}){
     if(target.name === "file"){
       setFormInput(prev => ({
           ...prev,
-          [target.name]: target.files[0].name
+          [target.name]: target.files
       }));
     }else{
       setFormInput(prev => ({

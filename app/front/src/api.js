@@ -43,7 +43,7 @@ export function get_product_by_category(id) {
   return axios_api_json("GET", `/products?category=${id}`);
 }
 
-export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: File) {
+export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: Arr) {
     const url = DOMAIN_API +"/products";
     let auth;
 
@@ -56,26 +56,34 @@ export function add_product(title : String, description: String, price: Int, qua
     formData.append('description', description);
     formData.append('price', price);
     formData.append('quantity', quantity);
+    formData.append("file", file, "cap.png");
     formData.append('category', category);
-    formData.append('file', file);
+
+    console.log(formData);
+
 
     return fetch(url,{
         method:"POST",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${auth}`,
-            "Access-Control-Allow-Origin": "*"
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin,Content-Type, Authorization, X-Requested-With'
         },
-        body: formData
-    }).then((response) => {
-        console.log(response);
-        if(response.status===200){
+        body: formData,
+        redirect: 'follow'
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+        if(result.status===200){
             window.location.href = `http://localhost:3001/account/produits`;
         }else{
             return false;
         }
-    }).catch((error) => { console.error(error);return false;})
+    })
+    .catch(error => console.log('error', error));
 }
 
 // Categories

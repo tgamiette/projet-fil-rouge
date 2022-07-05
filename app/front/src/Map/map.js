@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState, useMemo, useCallback  } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
+// import mapboxgl from 'mapbox-gl';
 import { Link } from "react-router-dom";
 import Map, {
+  FlyToInterpolator,
   Marker,
   Popup,
   NavigationControl,
@@ -11,18 +11,16 @@ import Map, {
   GeolocateControl
 } from 'react-map-gl';
 import Geocode from "react-geocode";
+import Geocoder from "react-map-gl-geocoder";
 import PRODUCTEURS from "./producteurs.json";
 import './style/map.css';
-
-
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 
 export default function Maps(){
 
-  const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 20})
+  const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 13, transitionDuration: 1000, transitionInterpolator: new FlyToInterpolator()})
   const [popupInfo, setPopupInfo] = useState(null);
-
-
 
   const TOKEN = "pk.eyJ1IjoibWFtYTA1IiwiYSI6ImNsMzhvY2owZDAxczIzanIzcGVoNG40Z28ifQ.avQ6w6qf5IdFBhR9FwHPJg";
 
@@ -32,7 +30,7 @@ export default function Maps(){
   Geocode.setLocationType("ROOFTOP");
   Geocode.enableDebug();
 
-  function Pin({}) {
+  function Pin({}){
     return (
       <div className="c-pin">
         <span className="c-pin_circle"></span>
@@ -40,22 +38,17 @@ export default function Maps(){
    );
   }
 
-  {/*function setAddress(city){
-    let Data = () => {
-      return Geocode.fromAddress(city).then((response) => {
-        return response.results[0].geometry.location;
-      });
-    }
-
-    let dataLocation = Data();
-
-    return dataLocation
-    .then((result) {
-       result;// "Some User token"
-    }).then((res) => {
-      return res;
-    })
-  }*/}
+  function setAddress(city){
+    Geocode.fromAddress(city).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log(lat, lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
   console.log(setAddress("Eiffel Tower"));
 
@@ -83,28 +76,40 @@ export default function Maps(){
   const geocoderContainerRef = useRef();
   const mapRef = useRef();
 
-  const handleViewportChange = useCallback(
-    (newViewport) => setViewport(newViewport),
+  const handleViewportChange = useCallback((newViewport) => {
+      setViewport(newViewport)
+      console.log(newViewport);
+    },[]);
+
+  const handleGeocoderViewportChange = useCallback(
+    (newViewport) => {
+      const geocoderDefaultOverrides = { transitionDuration: 1000, transitionInterpolator: new FlyToInterpolator()};
+
+      return handleViewportChange({
+        ...newViewport,
+        ...geocoderDefaultOverrides
+      });
+    },
     []
   );
 
 
   return(
     <div className="c-section">
-      <div ref={geocoderContainerRef} style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }} />
-        <Map ref={mapRef} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={() => console.log("change")} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
+      <div ref={geocoderContainerRef} style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }}></div>
+        <Map ref={mapRef} {...viewport} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={handleViewportChange} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
             <GeolocateControl position="top-right" />
             <FullscreenControl position="top-right" />
             <NavigationControl position="top-right" />
             <ScaleControl />
 
-            {/*<Geocoder
+            <Geocoder
               mapRef={mapRef}
               containerRef={geocoderContainerRef}
-              onViewportChange={handleViewportChange}
+              onViewportChange={handleGeocoderViewportChange}
               mapboxApiAccessToken={TOKEN}
               position="top-left"
-            />*/}
+            />
 
             {pins}
             {popupInfo && (
