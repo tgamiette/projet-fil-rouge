@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OrderSellerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: OrderSellerRepository::class)]
 //#[ApiResource(collectionOperations: ['GET', 'POST'],
 //    itemOperations: ['GET', 'PUT', 'DELETE'],
@@ -43,12 +47,6 @@ class OrderSeller {
     #[Groups(['orderSeller_read'])]
     private ?float $total;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\NotBlank(message: 'Date manquante')]
-    #[Assert\DateTime(message: 'la date doit être auformat YYY/MM/DD (hh:min:sec)')]
-    #[Groups(['orderSeller_read'])]
-    private ?\DateTimeImmutable $createdAt;
-
     #[ORM\OneToOne(targetEntity: Delivery::class, cascade: ['persist', 'remove'])]
     #[Groups(['orderSeller_read'])]
     private ?Delivery $delivery;
@@ -56,6 +54,16 @@ class OrderSeller {
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderSellers')]
     #[ORM\JoinColumn(nullable: false)]
     private $seller;
+
+    #[ORM\OneToMany(mappedBy: 'orderSeller', targetEntity: ProductsOrder::class)]
+    private $productsOrders;
+
+    public function __construct()
+    {
+        $this->productsOrders = new ArrayCollection();
+    }
+
+    use TimestampableTrait;
 
     public function getId(): ?int {
         return $this->id;
@@ -101,16 +109,6 @@ class OrderSeller {
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt($createdAt): self {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getSeller(): ?User
     {
         return $this->seller;
@@ -119,6 +117,36 @@ class OrderSeller {
     public function setSeller(?User $user): self
     {
         $this->seller = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductsOrder>
+     */
+    public function getProductsOrders(): Collection
+    {
+        return $this->productsOrders;
+    }
+
+    public function addProductsOrder(ProductsOrder $productsOrder): self
+    {
+        if (!$this->productsOrders->contains($productsOrder)) {
+            $this->productsOrders[] = $productsOrder;
+            $productsOrder->setOrderSeller($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductsOrder(ProductsOrder $productsOrder): self
+    {
+        if ($this->productsOrders->removeElement($productsOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($productsOrder->getOrderSeller() === $this) {
+                $productsOrder->setOrderSeller(null);
+            }
+        }
 
         return $this;
     }

@@ -37,41 +37,41 @@ class ProductsOrderRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param ProductsOrder $value
+     * @param ProductsOrder $productsOrder
      * @return ProductsOrder[] Returns an array of ProductsOrder objects
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function sumProductOrderByOrderPaid(ProductsOrder $productsOrder): array {
+    public function sumProductOrderByOrderPaid(ProductsOrder $productsOrder) {
 
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.product_id = :product_id')
+        $result = $this->createQueryBuilder('p')
+            ->andWhere('p.product = :product_id')
             ->andWhere('p.status = :status')
             ->setParameters([
                 'product_id' => $productsOrder->getProduct()->getId(),
                 'status' => ProductsOrder::STATUT_PAID
             ])
-            ->orderBy('p.created_at', 'ASC')
+            ->orderBy('p.createdAt', 'ASC')
             ->select('SUM(p.quantity) as quantity_total')
             ->getQuery()
             ->getSingleScalarResult();
+        return $result;
     }
-
 
     /**
      * @param ProductsOrder $productsOrder
-     * @return Collection
+     * @return float|int|mixed|string
      */
-    public function findProductsOrderPending(ProductsOrder $productsOrder): Collection {
-
+    public function findProductsOrderPendingByProduct(ProductsOrder $productsOrder) {
+// récuperer la quantité du produit commandé
         return $this->createQueryBuilder('p')
-            ->andWhere('p.product_id = :product_id')
+            ->andWhere('p.product = :product_id')
             ->andWhere('p.status = :status')
             ->setParameters([
                 'product_id' => $productsOrder->getProduct()->getId(),
                 'status' => ProductsOrder::STATUT_PAID
             ])
-            ->orderBy('p.created_at', 'ASC')
+            ->orderBy('p.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -2,17 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\ProductsOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ProductsOrderRepository::class)]
 class ProductsOrder extends AbstractEntity {
     public const STATUT_PENDING = 'PENDING';
     public const STATUT_PENDING_RETURN = 'PENDING_RETURN';
     public const STATUT_PAID = 'PAID';
     public const STATUT_RETURN = 'RETURN';
-    public const STATUT_VALIDE = 'VALID';
+    public const STATUT_VALIDE = 'VALIDE';
     public const STATUT_REFUSE = 'REFUSE';
+
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,9 +32,6 @@ class ProductsOrder extends AbstractEntity {
     #[ORM\Column(type: 'string')]
     private $status;
 
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
-
     #[ORM\Column(type: 'float')]
     private $quantity;
 
@@ -43,19 +44,18 @@ class ProductsOrder extends AbstractEntity {
     #[ORM\Column(type: 'integer')]
     private $total;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
+    #[ORM\ManyToOne(targetEntity: OrderSeller::class, inversedBy: 'productsOrders')]
+    private $orderSeller;
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getorder(): ?OrderUser {
+    public function getOrder(): ?OrderUser {
         return $this->order;
     }
 
-    public function setorder(?OrderUser $order): self {
+    public function setOrder(?OrderUser $order): self {
         $this->order = $order;
 
         return $this;
@@ -77,16 +77,6 @@ class ProductsOrder extends AbstractEntity {
 
     public function setStatus(string $status): self {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -131,15 +121,16 @@ class ProductsOrder extends AbstractEntity {
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getOrderSeller(): ?OrderSeller
     {
-        return $this->createdAt;
+        return $this->orderSeller;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setOrderSeller(?OrderSeller $orderSeller): self
     {
-        $this->createdAt = $createdAt;
+        $this->orderSeller = $orderSeller;
 
         return $this;
     }
+
 }

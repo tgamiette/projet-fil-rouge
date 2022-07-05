@@ -109,9 +109,9 @@ class Product extends AbstractEntity {
     #[Groups(['products_read'])]
     public $seller;
 
-    #[Groups(['products_read','products_write'])]
-    #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
-    private $objective;
+//    #[Groups(['products_read','products_write'])]
+//    #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
+//    private $objective;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
@@ -130,6 +130,9 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
+
+    #[ORM\Column(type: 'integer')]
+    private $objective;
 
 
     public function __construct($array = null) {
@@ -211,21 +214,6 @@ class Product extends AbstractEntity {
         return $this;
     }
 
-    public function getObjective(): ?Objective {
-        return $this->objective;
-    }
-
-    public function setObjective(Objective $objective): self {
-        // set the owning side of the relation if necessary
-        if ($objective->getProduct() !== $this) {
-            $objective->setProduct($this);
-        }
-
-        $this->objective = $objective;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, ProductsOrder>
      */
@@ -276,6 +264,18 @@ class Product extends AbstractEntity {
                 $images->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getObjective(): ?int
+    {
+        return $this->objective;
+    }
+
+    public function setObjective(int $objective): self
+    {
+        $this->objective = $objective;
 
         return $this;
     }

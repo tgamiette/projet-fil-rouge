@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OrderUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Constraints\OrderUserConstraint as AssertCustom;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: [
@@ -49,18 +51,14 @@ class OrderUser {
     #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]
     private $purchases;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
-
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
     #[Groups(['orderUser_read'])]
     private $productsOrders;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
     private $buyer;
+
+    use TimestampableTrait;
 
     public function __construct() {
         $this->purchases = new ArrayCollection();
@@ -113,26 +111,6 @@ class OrderUser {
                 $purchase->setOrderUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
