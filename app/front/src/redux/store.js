@@ -18,10 +18,12 @@ const persistConfig = {
     key: 'root_key_in_localstorage',
     storage,
     stateReconciler: hardSet,
+    blacklist: ['user']
 };
 
 const reducers = combineReducers({ user: userReducer, cart: cartReducer });
 const persistedReducer = persistReducer(persistConfig, reducers);
+
 
 
 export default configureStore({

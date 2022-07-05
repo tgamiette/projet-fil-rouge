@@ -2,7 +2,6 @@ import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
 // import mapboxgl from 'mapbox-gl';
 import { Link } from "react-router-dom";
 import Map, {
-  FlyToInterpolator,
   Marker,
   Popup,
   NavigationControl,
@@ -19,7 +18,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 export default function Maps(){
 
-  const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 13, transitionDuration: 1000, transitionInterpolator: new FlyToInterpolator()})
+  const [viewport, setViewport] = useState({longitude: 2.2593178,latitude: 48.9242932, zoom: 13, transitionDuration: 1000})
   const [popupInfo, setPopupInfo] = useState(null);
 
   const TOKEN = "pk.eyJ1IjoibWFtYTA1IiwiYSI6ImNsMzhvY2owZDAxczIzanIzcGVoNG40Z28ifQ.avQ6w6qf5IdFBhR9FwHPJg";
@@ -97,7 +96,7 @@ export default function Maps(){
   return(
     <div className="c-section">
       <div ref={geocoderContainerRef} style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }}></div>
-        <Map ref={mapRef} {...viewport} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={handleViewportChange} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
+      {/*  <Map ref={mapRef} {...viewport} initialViewState={{longitude: 2.2593178, latitude: 48.9242932, zoom: 12}} onViewportChange={handleViewportChange} style={{width: 1280, height: 700}} mapStyle="mapbox://styles/mapbox/streets-v9" mapboxAccessToken={TOKEN}>
             <GeolocateControl position="top-right" />
             <FullscreenControl position="top-right" />
             <NavigationControl position="top-right" />
@@ -127,7 +126,7 @@ export default function Maps(){
 
               </Popup>
             )}
-       </Map>
+       </Map>*/}
     </div>
   )
 }

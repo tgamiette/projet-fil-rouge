@@ -66,10 +66,8 @@ export function add_product(title : String, description: String, price: Int, qua
         method:"POST",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth}`,
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin,Content-Type, Authorization, X-Requested-With'
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${auth}`
         },
         body: formData,
         redirect: 'follow'
