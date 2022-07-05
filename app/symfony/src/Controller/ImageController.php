@@ -19,7 +19,7 @@ class ImageController extends AbstractController {
     }
 
     /**
-     * @Route("/image/{name}", name="index")
+     * @Route("/public/asset/images/product/{name}", name="index")
      */
     public function index(string $name, Request $request, Security $security) {
 
