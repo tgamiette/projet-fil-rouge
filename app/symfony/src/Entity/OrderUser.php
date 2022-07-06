@@ -6,14 +6,14 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
-use App\Controller\PickUpProduct;
+use App\Controller\api\PickUpProduct;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OrderUserRepository;
+use App\Validator\Constraints\OrderUserConstraint as AssertCustom;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Validator\Constraints\OrderUserConstraint as AssertCustom;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\HasLifecycleCallbacks]
@@ -26,13 +26,14 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: [
         'GET',
         'PICKUP' => [
-            'path' => 'order/{id}/pickup',
+            'path' => 'order_users/{id}/pickup',
             'method' => 'PUT',
 //            'read' => false,
-            "security_message" => "ROLE_SELLER ?? // ",
-            'validate' =>false,
+            'validate' => true,
             'security_post_denormalize' => "is_granted('ORDER_USER_PICKUP', previous_object)",
-            'controller' => PickUpProduct::class
+            'controller' => PickUpProduct::class,
+            'validation_groups' => [''],
+//            'denormalization_context' => ['groups' => ['']]
         ]
     ],
     attributes: [
@@ -75,6 +76,8 @@ class OrderUser {
 
     #[ORM\OneToMany(mappedBy: 'orderUserTest', targetEntity: ProductsOrder::class)]
     private $ProductOrdertest;
+
+    public ?string $token;
 
     use TimestampableTrait;
 
@@ -174,13 +177,11 @@ class OrderUser {
     /**
      * @return Collection<int, ProductsOrder>
      */
-    public function getProductOrdertest(): Collection
-    {
+    public function getProductOrdertest(): Collection {
         return $this->ProductOrdertest;
     }
 
-    public function addProductOrdertest(ProductsOrder $productOrdertest): self
-    {
+    public function addProductOrdertest(ProductsOrder $productOrdertest): self {
         if (!$this->ProductOrdertest->contains($productOrdertest)) {
             $this->ProductOrdertest[] = $productOrdertest;
             $productOrdertest->setOrderUserTest($this);
@@ -189,8 +190,7 @@ class OrderUser {
         return $this;
     }
 
-    public function removeProductOrdertest(ProductsOrder $productOrdertest): self
-    {
+    public function removeProductOrdertest(ProductsOrder $productOrdertest): self {
         if ($this->ProductOrdertest->removeElement($productOrdertest)) {
             // set the owning side to null (unless already changed)
             if ($productOrdertest->getOrderUserTest() === $this) {

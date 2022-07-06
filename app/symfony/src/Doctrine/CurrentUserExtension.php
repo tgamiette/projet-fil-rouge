@@ -66,7 +66,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
     private function addWhereCurrentSeller(QueryBuilder $queryBuilder,) {
 
         if (
-//            $this->security->isGranted('ROLE_ADMIN')||
+            $this->security->isGranted('ROLE_ADMIN')||
             null === $user = $this->security->getUser()
         ) {
             return;

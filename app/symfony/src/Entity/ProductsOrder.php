@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\PickUpProduct;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\ProductsOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,8 +14,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     subresourceOperations: [
         'api_order_users_products_orders_get_subresource' => [
             'method' => 'GET',
-//            'security_post_denormalize' => "is_granted('ORDER_USER_SUBRESOURCE',object)",
-//            'security_message' => "aie aie aie",
             'normalization_context' => [
                 'groups' => ['order_users_subresource_product_order'],
             ],

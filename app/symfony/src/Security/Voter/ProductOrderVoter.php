@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductOrderVoter extends Voter {
-    public const SUBRESOURCE = 'ORDER_USER_SUBRESOURCE';
+    public const PICKUP = 'ORDER_USER_PICKUP';
 
     public function __construct(private readonly Security $security, private ProductsOrderRepository $productsOrderRepository) {
     }
@@ -21,9 +21,8 @@ class ProductOrderVoter extends Voter {
     protected function supports(string $attribute, $subject): bool {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        dd($subject);
-        return in_array($attribute, [self::SUBRESOURCE])
-            && is_array($subject);
+        return in_array($attribute, [self::PICKUP])
+            && $subject instanceof ProductsOrder;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
@@ -35,7 +34,6 @@ class ProductOrderVoter extends Voter {
             return false;
         }
 
-
         // ... (check conditions and return true to grant permission) ...
         return match ($attribute) {
             self::PICKUP => self::canPickup($subject, $user),
@@ -45,9 +43,7 @@ class ProductOrderVoter extends Voter {
         return false;
     }
 
-    private function canPickup(OrderUser $subject, UserInterface $user): bool {
-        $query = $this->productsOrderRepository->findProductsPickUp($user, $subject);
-        //TODO mettre la négation
-        return empty($query);
+    private function canPickup(ProductsOrder $subject, UserInterface $user): bool {
+        return $subject->getProduct()->getSeller() === $user || $this->security->isGranted('ROLE_ADMIN');
     }
 }
