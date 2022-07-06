@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\api;
 
 use App\Entity\MediaObject;
 use App\Repository\ProductsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 #[AsController]
 //le but est de retourner l'object

@@ -5,8 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Controller\CreateMediaObjectAction;
-use App\Controller\CreateProductAction;
+use App\Controller\api\CreateProductAction;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +15,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 /**
  * @Vich\Uploadable
@@ -78,7 +76,7 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write','order_users_subresource_product_order'])]
     private $title;
 
     #[ORM\Column(type: 'integer')]

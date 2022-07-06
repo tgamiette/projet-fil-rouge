@@ -2,11 +2,9 @@
 
 namespace App\Controller\WebHook;
 
-use App\Entity\Product;
 use App\Entity\ProductsOrder;
 use App\Entity\Purchase;
 use App\Repository\PurchaseRepository;
-use App\Services\OrderHelper;
 use App\Services\ProductsOrderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

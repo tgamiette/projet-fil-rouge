@@ -5,11 +5,9 @@ import './style/Nav.css'
 import {getCookie, eraseCookie} from '../api';
 import {ShoppingBasket} from '@styled-icons/remix-line/ShoppingBasket';
 import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
-import {logout} from "../redux/userSlice";
-import {emptyCart} from "../redux/userCart";
+import logout from "../redux/userSlice";
 import {useSelector, useDispatch} from 'react-redux';
 import {selectUser} from "../redux/userSlice";
-import { persistor } from "../redux/store";
 
 
 export default function Nav({logged, setLogged}){
@@ -19,9 +17,12 @@ export default function Nav({logged, setLogged}){
   const navigate = useNavigate();
 
   const onLogout = () => {
-     dispatch(logout());
+
      eraseCookie('user_token');
+     dispatch(logout());
+     dispatch(emptyCart());
      window.location.href = "/login";
+     console.log('lapin');
   }
 
   return (

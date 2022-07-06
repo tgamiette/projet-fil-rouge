@@ -1,15 +1,6 @@
-.c-container_items{
-  width: 90%;
-  max-width: 1400px;
-  display: grid;
-  grid-template-columns: 1fr 0.25fr;
-  grid-gap: 60px;
-  height: auto;
-  margin: 40px auto;
-}
 .c-produits{
   display: grid;
-  grid-template-columns: 1fr 0.25fr;
+  grid-template-columns: 1fr 0.5fr;
   grid-gap: 30px;
   height: 100%;
 }
@@ -22,22 +13,12 @@
   gap: 30px;
 }
 
-.c-container_products{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 30px;
-}
-
-.c-container_products p{
-  font-size: 1.2rem;
-  margin: 0;
-}
 
 .c-produit_img, .c-produit_infos{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 .c-img_circle{
@@ -140,40 +121,6 @@ input{
   border-radius: 20px;
 }
 
-.c-product_card{
-  background: var(--primary-text-white);
-  padding: 30px;
-  text-align: center;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 250px;
-}
-
-.c-product_card img{
-  min-width: 200px;
-  border-radius: 10px;
-}
-
-.c-container_bottom{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: flex-start;
-
-}
-.c-container_bottom p{
-  font-weight: 700;
-  margin-right: 30px;
-}
-.c-product_card span{
-  color: #494949;
-  font-size: 0.8rem;
-}
-
-
 .c-popup_buy div{
   display: flex;
   flex-direction: row;
@@ -190,7 +137,7 @@ input{
 
 .c-infos p{
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .c-infos span{

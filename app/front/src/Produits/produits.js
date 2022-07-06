@@ -23,33 +23,7 @@ export default function Produits({}){
   );
 
   return(
-    <div className="c-container_items">
-      <div>
-        <h1>Tout les produits</h1>
-        <div className="c-container_products">
-        {
-          filterDisplay !== false ?
-            filterDisplay.map((item, index) => {
-              return(
-                <div className="c-product_card">
-                  <img src={`http://localhost:8000${item.contentUrl}`} alt="Image Produits" />
-                  <div>
-                    <p>{item.title}</p>
-                    <span>Vendu par {item.seller.fullName}</span>
-                  </div>
-                  <div className="c-container_bottom">
-                    <p>{item.price}€/kg</p>
-                    <Link to={`/produits/${item.id}`} className="c-btn">Voir le produits</Link>
-                  </div>
-                </div>
-              )
-            })
-          : "rien"
-        }
-        </div>
-      </div>
-
-
+    <div className="c-container">
       <div>
         <div className="c-filter">
           <h2>Filtres</h2>
@@ -69,6 +43,29 @@ export default function Produits({}){
             <input type="radio" name="" value="" />
           </div>
         </div>
+      </div>
+
+      <div>
+        <h1>Tout les produits</h1>
+        {
+          filterDisplay !== false ?
+            filterDisplay.map((item, index) => {
+              return(
+                <div>
+                  <img src="" alt="" />
+                  <div>
+                    <p>{item.title}</p>
+                    <div>
+                      <p>{item.price} € le kilos</p>
+                      <p>Vendu par {item.seller.fullName}</p>
+                    </div>
+                  </div>
+                    <Link to={`/produits/${item.id}`} className="c-btn">Voir le produits</Link>
+                </div>
+              )
+            })
+          : "rien"
+        }
       </div>
 
     </div>
