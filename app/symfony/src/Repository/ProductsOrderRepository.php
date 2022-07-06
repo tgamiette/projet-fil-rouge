@@ -10,6 +10,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method ProductsOrder|null find($id, $lockMode = null, $lockVersion = null)
@@ -105,4 +106,18 @@ class ProductsOrderRepository extends ServiceEntityRepository {
         ;
     }
     */
+    public function findProductsPickUp(UserInterface $user, OrderUser $orderUser) {
+        $ql = $this->createQueryBuilder('po')
+            ->andWhere('po.status = :status')
+            ->andWhere('po.order = :order')
+            ->setParameter('status', ProductsOrder::STATUT_VALIDE)
+            ->setParameter('order', $orderUser->getId())
+            ->innerjoin('po.product', 'product')
+            ->andWhere('product.seller = :current_user')
+            ->setParameter('current_user', $user->getUserIdentifier())
+            ->getQuery()
+//        dd($ql->getSQL(),$ql->getParameters());
+            ->getResult();
+        return $ql;
+    }
 }

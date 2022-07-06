@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use App\Controller\PickUpProduct;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OrderUserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +23,18 @@ use Symfony\Component\Validator\Constraints as Assert;
     'GET',
     'POST'
 ],
-    itemOperations: ['GET', 'PUT'],
+    itemOperations: [
+        'GET',
+        'PICKUP' => [
+            'path' => 'order/{id}/pickup',
+            'method' => 'PUT',
+//            'read' => false,
+            "security_message" => "ROLE_SELLER ?? // ",
+            'validate' =>false,
+            'security_post_denormalize' => "is_granted('ORDER_USER_PICKUP', previous_object)",
+            'controller' => PickUpProduct::class
+        ]
+    ],
     attributes: [
         'order' => ['createdAt' => 'desc'],
         'pagination_client_enabled' => true,
@@ -52,17 +65,23 @@ class OrderUser {
     private $purchases;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
+    #[ApiSubresource]
     #[Groups(['orderUser_read'])]
     private $productsOrders;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
+    #[Groups(['orderUser_read'])]
     private $buyer;
+
+    #[ORM\OneToMany(mappedBy: 'orderUserTest', targetEntity: ProductsOrder::class)]
+    private $ProductOrdertest;
 
     use TimestampableTrait;
 
     public function __construct() {
         $this->purchases = new ArrayCollection();
         $this->productsOrders = new ArrayCollection();
+        $this->ProductOrdertest = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -148,6 +167,36 @@ class OrderUser {
 
     public function setBuyer(?User $buyer): self {
         $this->buyer = $buyer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductsOrder>
+     */
+    public function getProductOrdertest(): Collection
+    {
+        return $this->ProductOrdertest;
+    }
+
+    public function addProductOrdertest(ProductsOrder $productOrdertest): self
+    {
+        if (!$this->ProductOrdertest->contains($productOrdertest)) {
+            $this->ProductOrdertest[] = $productOrdertest;
+            $productOrdertest->setOrderUserTest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductOrdertest(ProductsOrder $productOrdertest): self
+    {
+        if ($this->ProductOrdertest->removeElement($productOrdertest)) {
+            // set the owning side to null (unless already changed)
+            if ($productOrdertest->getOrderUserTest() === $this) {
+                $productOrdertest->setOrderUserTest(null);
+            }
+        }
 
         return $this;
     }
