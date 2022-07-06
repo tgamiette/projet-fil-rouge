@@ -1,3 +1,9 @@
+.c-container_map{
+ width: 90%;
+ max-width: 1400px;
+ margin: 40px auto;
+}
+
 .calendar-container{
  position: relative;
 }
@@ -43,4 +49,13 @@
 /* Calendar */
 .rbc-header{
   height: 60px;
+}
+
+.rbc-event, .rbc-day-slot .rbc-background-event{
+ background-color: var(--primary-text-yellow)!important;
+ color: #00000070;
+}
+
+.rbc-today{
+ background-color: #FDD46D45!important;
 }

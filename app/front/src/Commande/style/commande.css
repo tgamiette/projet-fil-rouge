@@ -1,3 +1,8 @@
+.c-container_commande{
+  width: 90%;
+  max-width: 1400px;
+  margin: 40px auto;
+}
 .c-commandes{
   display: flex;
   flex-direction: column;
