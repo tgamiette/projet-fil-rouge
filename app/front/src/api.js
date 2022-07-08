@@ -18,7 +18,7 @@ function axios_api_json(method, suffix_url) {
     var raw = JSON.stringify({});
 
     var requestOptions = {
-      method: 'GET',
+      method: method,
       headers: myHeaders,
       redirect: 'follow'
     };
@@ -30,8 +30,8 @@ function axios_api_json(method, suffix_url) {
 }
 
 // Products
-export function get_all_product() {
-  return axios_api_json("GET", "/products?page=3");
+export function get_all_product(page) {
+  return axios_api_json("GET", `/products?page=${page}`);
 }
 
 export function get_product(id) {
@@ -44,6 +44,10 @@ export function get_product_by_seller(id) {
 
 export function get_product_by_category(id) {
   return axios_api_json("GET", `/products?category=${id}`);
+}
+
+export function delete_product(id) {
+  return axios_api_json("DELETE", `/products/${id}`);
 }
 
 export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: Arr, objective: Int) {
@@ -161,7 +165,7 @@ export function get_user(id) {
   return axios_api_json("GET", `/users/${id}`);
 }
 
-export function add_user(email, password, name) {
+export function add_user(email, password, name, roles) {
     const url = DOMAIN_API +"/users"
     console.log('email', password);
     return fetch(url,{
@@ -173,7 +177,8 @@ export function add_user(email, password, name) {
         body: JSON.stringify({
             email: email,
             password: password,
-            fullName: name
+            fullName: name,
+            roles: [roles]
         })
     })
     .then(response => response.json())

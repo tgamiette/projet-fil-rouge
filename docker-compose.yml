@@ -1,15 +1,6 @@
 version: '3'
 
 services:
-  reverse-proxy:
-    build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
-    volumes:
-      - .:/var/www/html:ro,cached
-    ports:
-      - "80:80"
-      - "443:443"
   php:
     build: ./docker/apache/
     depends_on:
@@ -25,21 +16,19 @@ services:
       DATABASE_URL: mysql://root:azerty@db:3306/app
     ports:
       - "8000:80"
-  
-  #  node:
-  #    build:
-  #      context: .
-  #      dockerfile: ./docker/node/Dockerfile
-  #    restart: always
-  #    volumes:
-  #      - ./app/front:/app
-  #      - /app/node_modules
-  #    ports:
-  #      - "3001:3000"
-  #    environment:
-  #      - CHOKIDAR_USEPOLLING=true
-  #      - FAST_REFRESH=false
-
+  node:
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    restart: always
+    volumes:
+      - ./app/front:/app
+      - /app/node_modules
+    ports:
+      - "3001:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - FAST_REFRESH=false
   db:
     image: mariadb:latest
     restart: always
@@ -51,23 +40,16 @@ services:
       MYSQL_DATABASE: app
       MYSQL_USER: root
       MYSQL_PASSWORD: azerty
-
   phpmyadmin:
     image: phpmyadmin:latest
     depends_on:
       - db
     ports:
       - "8001:80"
-
   maildev:
     image: maildev/maildev
     ports:
       - "1080:80"
-  
-  whoami:
-    image: containous/whoami
-    container_name: whoami
-
 volumes:
   #  app-vendor:
   db-data:

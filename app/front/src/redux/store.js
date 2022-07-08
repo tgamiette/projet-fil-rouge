@@ -2,7 +2,6 @@ import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 import userReducer from "./userSlice";
 import cartReducer from "./userCart";
 import storage from 'redux-persist/lib/storage';
-import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { combineReducers } from 'redux';
 import {
     persistReducer,
@@ -16,8 +15,7 @@ import {
 
 const persistConfig = {
     key: 'root_key_in_localstorage',
-    storage,
-    stateReconciler: hardSet,
+    storage
 };
 
 const reducers = combineReducers({ user: userReducer, cart: cartReducer });

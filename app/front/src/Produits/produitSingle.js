@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addCart} from "../redux/userCart";
 import {selectCart} from "../redux/userCart";
-
+import {selectUser} from "../redux/userSlice";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import './style/produit.css'
@@ -20,6 +20,7 @@ export default function ProduitSingle({}){
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
+  const user = useSelector(selectUser);
 
   const objective = Math.floor(Math.random() * (300 - 105) + 105);
 
@@ -59,7 +60,7 @@ export default function ProduitSingle({}){
             <div className="c-produit_img">
               <div className="c-img_circle">
                 <CircularProgressbar value={(product.quantity* 100 )/objective}/>
-                <img className="c-img_produit" src="https://static.greenweez.com/images/products/127000/600/fruits-legumes-du-marche-bio-pomme-regal-you-candine.jpg" alt="" />
+                <img className="c-img_produit" src={`http://localhost:8000${product.contentUrl}`} alt="" />
               </div>
               <div className="c-product_number">
                 <span>{product.quantity}kg restant</span>
@@ -87,7 +88,7 @@ export default function ProduitSingle({}){
                         <div className="c-produit_img">
                           <div className="c-img_circle_2">
                             <CircularProgressbar value={Math.floor(Math.random() * (100 - 0) + 0)} />
-                            <img className="c-img_produit" src="https://static.greenweez.com/images/products/127000/600/fruits-legumes-du-marche-bio-pomme-regal-you-candine.jpg" alt="" />
+                            <img className="c-img_produit" src={`http://localhost:8000${item.contentUrl}`}  alt="" />
                           </div>
                           <span>{item['title']}</span>
                         </div>
@@ -102,14 +103,27 @@ export default function ProduitSingle({}){
         </div>
       </div>
 
+
       <div className="c-produit_add card">
-        <h3>Vous souhaitez ajouter ce produits à votre panier ?</h3>
-        <form onSubmit={handleProduct}>
-          <input type="text" name="nom" placeholder="Nom"/>
-          <input type="text" name="prenom" placeholder="Prénom"/>
-          <input type="number" name="quantity" min="1" max={product['quantity']} placeholder="Quantité"/>
-          <button type="button" type="submit" className="c-btn">Ajouter au panier</button>
-        </form>
+      {
+        user !== null ?
+          <>
+            <h3>Vous souhaitez ajouter ce produits à votre panier ?</h3>
+            <form onSubmit={handleProduct}>
+              <input type="text" name="nom" placeholder="Nom"/>
+              <input type="text" name="prenom" placeholder="Prénom"/>
+              <input type="number" name="quantity" min="1" max={product['quantity']} placeholder="Quantité"/>
+              <button type="button" type="submit" className="c-btn">Ajouter au panier</button>
+            </form>
+          </>
+        :
+        <>
+          <h3>Vous devez être connecter pour pouvoir commander se produits </h3>
+          <Link to={`/login`} className="c-btn">Me connecter</Link>
+
+        </>
+      }
+
       </div>
 
       <div className={`c-popup_bg ${active ? "active" : ""}`}>
