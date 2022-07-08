@@ -86,6 +86,7 @@ class OrderUser {
     #[ORM\OneToMany(mappedBy: 'orderUserTest', targetEntity: ProductsOrder::class)]
     private $ProductOrdertest;
 
+    #[Groups(['orderUser_read'])]
     public ?string $token;
 
     use TimestampableTrait;
