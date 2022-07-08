@@ -61,8 +61,6 @@ class OrderUserSubscriber implements EventSubscriberInterface {
                 $productOrder = (new ProductsOrder())
                     ->setProduct($product)
                     ->setQuantity($qty)
-                    ->setUpdatedAt($date)
-                    ->setCreatedAt($date)
                     ->setStatus(ProductsOrder::STATUT_PENDING)
                     ->setTotal($product->getPrice() * $qty)
                     ->setPrixU($product->getPrice())->setUnit(2);
@@ -84,8 +82,6 @@ class OrderUserSubscriber implements EventSubscriberInterface {
                 $total += $product->getPrice() * $qty;
             }
             $orderUser->setTotal((float)$total);
-            $orderUser->setCreatedAt($date);
-            $orderUser->setUpdatedAt($date);
         }
     }
 
