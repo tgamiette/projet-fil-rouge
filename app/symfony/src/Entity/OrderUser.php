@@ -21,6 +21,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: [
     'GET',
+    'MANAGE' => [
+        'pagination_enabled' => false,
+        'pagination_client_enabled' => true,
+        'path' => 'order_users/self',
+        'method' => 'GET',
+        "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
+//            'security' => "is_granted('ROLE_SELLER')",
+//            'normalization_context' => ['groups' => '']
+    ],
     'POST'
 ],
     itemOperations: [

@@ -76,7 +76,7 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write','order_users_subresource_product_order'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write', 'order_users_subresource_product_order'])]
     private $title;
 
     #[ORM\Column(type: 'integer')]
@@ -129,7 +129,7 @@ class Product extends AbstractEntity {
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
-    #[Groups(['products_write'])]
+    #[Groups(['products_write', 'products_read'])]
     #[ORM\Column(type: 'integer')]
     private $objective;
 
@@ -267,13 +267,11 @@ class Product extends AbstractEntity {
         return $this;
     }
 
-    public function getObjective(): ?int
-    {
+    public function getObjective(): ?int {
         return $this->objective;
     }
 
-    public function setObjective(int $objective): self
-    {
+    public function setObjective(int $objective): self {
         $this->objective = $objective;
 
         return $this;

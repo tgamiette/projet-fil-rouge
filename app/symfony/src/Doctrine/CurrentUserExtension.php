@@ -29,6 +29,9 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
                 case Product::class :
                     $this->addWhereCurrentUser($queryBuilder, 'seller_id');
                     break;
+                case OrderUser::class :
+                    $this->addWhereCurrentUser($queryBuilder, 'buyer');
+                    break;
             }
         }
         elseif ($operationName === 'api_order_users_products_orders_get_subresource') {
@@ -66,7 +69,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
     private function addWhereCurrentSeller(QueryBuilder $queryBuilder,) {
 
         if (
-            $this->security->isGranted('ROLE_ADMIN')||
+            $this->security->isGranted('ROLE_ADMIN') ||
             null === $user = $this->security->getUser()
         ) {
             return;
