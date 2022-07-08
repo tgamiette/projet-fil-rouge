@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use App\Controller\api\CheckOrderUser;
 use App\Controller\api\PickUpProduct;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OrderUserRepository;
@@ -44,6 +45,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             'controller' => PickUpProduct::class,
             'validation_groups' => [''],
 //            'denormalization_context' => ['groups' => ['']]
+        ],
+        'CHECK' => [
+            'path' => 'order_users/{id}/check',
+            'method' => 'GET',
+            'security_post_denormalize' => "is_granted('ORDER_USER_CHECK', previous_object)",
+            'controller' => CheckOrderUser::class,
+            'normalization_context' => ['groups' => ['orderUser_check']]
         ]
     ],
     attributes: [
@@ -70,14 +78,14 @@ class OrderUser {
 
     #[AssertCustom\MinimalProperties(options: [])]
     #[Assert\NotBlank()]
-    private array $products ;
+    private array $products;
 
     #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]
     private $purchases;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
     #[ApiSubresource]
-    #[Groups(['orderUser_read'])]
+    #[Groups(['orderUser_read','orderUser_check'])]
     private $productsOrders;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
