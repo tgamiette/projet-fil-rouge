@@ -1,0 +1,170 @@
+/* FONT-FACE */
+
+@font-face {
+ font-family: "Jost-light";
+ src: url("./assets/fonts/Jost-Light.woff2") format("woff2"),
+      url("./assets/fonts/Jost-Light.woff") format("woff");
+}
+
+@font-face {
+ font-family: "Jost-regular";
+ src: url("./assets/fonts/Jost-Regular.woff2") format("woff2"),
+      url("./assets/fonts/Jost-Regular.woff") format("woff");
+}
+
+@font-face {
+ font-family: "Jost-SemiBold";
+ src: url("./assets/fonts/Jost-SemiBold.woff2") format("woff2"),
+      url("./assets/fonts/Jost-SemiBold.woff") format("woff");
+}
+
+
+
+/* MAIN */
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+:root {
+
+  /* COLOR */
+  --primary-text-black: #000000;
+  --primary-text-white: #FFFFFF;
+  --primary-text-yellow: #FDD46D;
+  --primary-text-yellow-40: #FDD46D40;
+
+
+  /* FONTS */
+  --font-title: Jost-SemiBold;
+  --font-text: Jost-Regular;
+  --font-span: Jost-Light;
+
+}
+
+p{
+  font-family: var(--font-text);
+  font-size: 24px;
+}
+
+a{
+  font-family: var(--font-text);
+  font-size: 1rem;
+}
+
+h1
+{
+  font-family: var(--font-title);
+  font-size: 36px;
+}
+
+h2
+{
+  font-family: var(--font-text);
+  font-size: 30px;
+}
+
+#root{
+  height: calc(100vh - 105px);
+}
+
+
+.c-btn{
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-text);
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: var(--primary-text-yellow);
+  border: 2px solid var(--primary-text-yellow);
+  color:var(--primary-text-white);
+  cursor: pointer;
+  transition: 0.3s ease-in;
+}
+
+.c-btn:hover{
+  background: transparent;
+  color:var(--primary-text-yellow);
+  border: 2px solid var(--primary-text-yellow);
+  cursor: pointer;
+}
+
+.c-bg{
+  width: 100%;
+  height: 100%;
+  background: #313232;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.c-container{
+  width: 90%;
+  height: 100%;
+  padding: 20px 40px;
+  max-width: 1280px;
+}
+.c-form{
+  width: 50%;
+  margin: auto;
+  background-color: var(--primary-text-white);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+  margin: auto;
+}
+
+.c-form_wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 10px 0;
+  width: 100%
+}
+
+input{
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  box-shadow: none;
+  border: none;
+  width: auto;
+  border: 1px solid #dfdfdf;
+}
+
+.c-background_img{
+  background: url('./assets/images/pattern-light.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100px;
+  width: 100%;
+  margin: 30px 0;
+}

@@ -1,0 +1,64 @@
+.c-container{
+  width: 90%;
+  max-width: 1280px;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  grid-gap: 60px;
+  height: auto;
+  margin: 40px 0;
+}
+
+.container_second{
+  grid-template-columns: 1fr 1fr;
+}
+table {
+  border-collapse:separate;
+  border-spacing: 0 20px;;
+  width: 100%;
+}
+
+table p{
+  margin: 0;
+  font-size: 1rem;
+}
+
+tbody tr{
+  margin: 10px 0;
+}
+.c-commande_card, .c-card{
+  box-shadow: 1px 1px 20px #00000015;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.c-commande_card td:first-child, .c-product{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px auto;
+
+}
+
+.c-commande_card td:first-child > span{
+  width: 40px;
+  height: 40px;
+  background: var(--primary-text-yellow);
+}
+
+.resume{
+  padding: 10px 30px;
+  height: auto;
+}
+
+.remove svg{
+  cursor: pointer;
+}
+#payment-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}

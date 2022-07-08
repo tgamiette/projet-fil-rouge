@@ -1,0 +1,28 @@
+.c-container_commande{
+  width: 90%;
+  max-width: 1400px;
+  margin: 40px auto;
+}
+.c-commandes{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.CircularProgressbar{
+  width: 100px!important;
+}
+
+
+.c-commande_row{
+  border: 2px solid #efefef;
+  width: 100%;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
