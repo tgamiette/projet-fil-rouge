@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use App\Controller\api\PickUpProduct;
 use App\Entity\Traits\TimestampableTrait;
@@ -54,6 +55,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['orderUser_read']])]
 //todo filter par status de commande
 #[ApiFilter(RangeFilter::class, properties: ['total'])]
+#[ApiFilter(NumericFilter::class, properties: ['id'])]
 class OrderUser {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -65,11 +67,10 @@ class OrderUser {
     #[Groups(['orderUser_read', 'selfOrder_read'])]
     private $total;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['orderUser_read'])]
+
     #[AssertCustom\MinimalProperties(options: [])]
     #[Assert\NotBlank()]
-    private $products = [];
+    private array $products ;
 
     #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]
     private $purchases;

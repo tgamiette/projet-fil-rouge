@@ -29,3 +29,4 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+/assets/react/node_modules/

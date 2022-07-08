@@ -40,7 +40,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
 //        TODO à remplir
         switch ($resourceClass) {
             case OrderUser::class :
-                $this->addWhereCurrentUser($queryBuilder, '');
+                $this->addWhereCurrentUser($queryBuilder, 'buyer');
                 break;
             case OrderSeller::class :
                 $this->addWhereCurrentUser($queryBuilder, '');
