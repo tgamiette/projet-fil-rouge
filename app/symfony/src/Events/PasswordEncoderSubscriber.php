@@ -30,7 +30,6 @@ class PasswordEncoderSubscriber implements EventSubscriberInterface {
     public function encodePassword(ViewEvent $event) {
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
-//        dd($user,$method);
         if ($user instanceof  User && $method ==='POST'){
             $hash = $this->encoder->hashPassword($user,$user->getPassword());
             $user->setPassword($hash);

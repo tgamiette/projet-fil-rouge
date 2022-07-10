@@ -42,7 +42,6 @@ class GetSelfProductsOrderUserDataProvider implements RestrictedDataProviderInte
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool {
-dd($operationName);
         return $resourceClass == Product::class && $operationName == "MANAGE";
     }
 
