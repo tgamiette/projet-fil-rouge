@@ -17,6 +17,8 @@ export default function Nav({logged, setLogged}){
   const user = useSelector(selectUser);
   const navigate = useNavigate();
 
+  const [link, setLink] =  useState("accueil");
+
   const onLogout = () => {
 
      eraseCookie('user_token');
@@ -44,7 +46,7 @@ export default function Nav({logged, setLogged}){
           {
             user !== null ?
               <>
-                <a onClick={onLogout}>Logout</a>
+                <a onClick={onLogout} className="logout">Logout</a>
                 <Link to="/panier"><ShoppingBasket size="40"/></Link>
                 <Link to="/account"><AccountCircle size="40"/></Link>
               </>

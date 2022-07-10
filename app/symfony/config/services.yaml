@@ -34,10 +34,13 @@ services:
     App\DataProvider\GetSelfProductsDataProvider:
         arguments:
             $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
+    App\DataProvider\GetSelfProductsOrderUserDataProvider:
+        arguments:
+            $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
     App\Services\StripeHelper:
         arguments:
-#            $secretKey:  fdfd
-#            $publicKey: fdfdf
+    #            $secretKey:  fdfd
+    #            $publicKey: fdfdf
 #    custom auhtentification success
     App\Events\AuthenticationSuccessListener:
         tags:

@@ -1,7 +1,6 @@
-
-.c-container_items{
-  display: grid;
-  grid-template-columns: 1fr 0.25fr;
+.c-container_items, .c-produits{
+  display: grid!important;
+  grid-template-columns: 1fr 0.25fr!important;
   grid-gap: 30px;
   height: 100%;
 

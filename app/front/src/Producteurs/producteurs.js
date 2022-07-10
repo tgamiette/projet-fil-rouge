@@ -33,8 +33,6 @@ export default function Producteurs(){
             <div className="c-filter_input search">
               <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay} type="producteurs"/>
             </div>
-
-
           </div>
         </div>
 
