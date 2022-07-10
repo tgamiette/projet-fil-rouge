@@ -8,6 +8,7 @@ import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
 import {logout} from "../redux/userSlice";
 import {useSelector, useDispatch} from 'react-redux';
 import {selectUser} from "../redux/userSlice";
+import {emptyCart} from "../redux/userCart";
 
 
 export default function Nav({logged, setLogged}){

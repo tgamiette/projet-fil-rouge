@@ -76,7 +76,7 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write', 'order_users_subresource_product_order'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write', 'order_users_subresource_product_order', 'orderUser_check'])]
     private $title;
 
     #[ORM\Column(type: 'integer')]

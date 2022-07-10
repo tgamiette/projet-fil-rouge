@@ -47,7 +47,6 @@ class MediaObjectSubscriber implements EventSubscriberInterface {
     }
 
     public function prevalidate(ViewEvent $event) {
-//        dd($event->getControllerResult());
         if ($event->getRequest()->isMethod("POST") ) {
         }
     }
