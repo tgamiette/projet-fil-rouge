@@ -122,6 +122,7 @@ input{
 
 .c-popup_bg.active{
   display: flex;
+  position: fixed;
 }
 
 .c-popup_buy{

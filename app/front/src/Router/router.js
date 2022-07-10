@@ -12,6 +12,7 @@ import Login from "../Main/login";
 import Account from "../Accounts/account";
 import Parametres from "../Accounts/parametres";
 import FormProduits from "../Accounts/formProduits";
+import Commandes from "../Accounts/commandes";
 import Products from "../Accounts/products";
 import SignIn from "../Main/signIn";
 import ProduitSingle from "../Produits/produitSingle";
@@ -52,14 +53,13 @@ export default function Router({}){
                <Route index element={<Panier />} />
                <Route path="stripe" element={<Stripes />} />
             </Route>
-
             <Route path="/calendrier" element={
                   <NeedAuth children={<Calendrier />}></NeedAuth>
             }/>
 
             <Route path="/account/*">
                <Route index element={<NeedAuth children={<Account />}></NeedAuth>} />
-              
+               <Route path="commandes" element={<Commandes />} />
                <Route path="parametres" element={<Parametres />} />
                <Route path="produits" element={<Products />} />
                <Route path="produits/ajout" element={<FormProduits />} />

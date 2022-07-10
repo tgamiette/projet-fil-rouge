@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useDtate} from 'react';
 import SubNav from './nav'
 
 import Qrcode from '../Components/Qrcode/qrcode';

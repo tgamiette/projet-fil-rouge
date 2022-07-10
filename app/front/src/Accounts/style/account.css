@@ -89,3 +89,16 @@ tbody td{
 form{
   width: 100%;
 }
+
+/* PRODUITS */
+
+.c-first{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.c-account_img{
+  border-radius: 10px;
+  margin-right: 10px;
+}

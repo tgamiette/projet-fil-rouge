@@ -40,7 +40,10 @@ export default function Products({}){
                   products.map((item,index) => {
                     return(
                       <tr>
-                        <td>{item.contentUrl} {item.title}</td>
+                        <td className="c-first">
+                          <img className="c-account_img" src={`http://localhost:8000${item.contentUrl}`} alt="" />
+                            {item.title}
+                        </td>
                         <td>{item.price}€/kg</td>
                         <td>{item.quantity} kg</td>
                         <td>{item.objective} kg</td>

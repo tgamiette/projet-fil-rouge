@@ -22,9 +22,9 @@ export default function SubNav({}){
              <Link to="/account/produits">Mes produits</Link>
             </>
             :
-            <Link to="/account/commandes">Mes Commandes</Link>
+            null
         }
-        <Link to="parametres">Parametres</Link>
+        <Link to="/account/commandes">Mes Commandes</Link>
 
      </ul>
    </nav>
