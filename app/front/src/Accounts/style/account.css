@@ -10,7 +10,7 @@
     height: 100%;
 }
 .c-nav.account nav {
-  width: 100%;
+  width: auto!important;
 }
 
 .c-nav.account nav ul{

@@ -41,7 +41,7 @@ export default function Nav({logged, setLogged}){
           <Link to="/calendrier">Calendrier</Link>
 
         </ul>
-        <ul>
+        <ul className="c-nav_right">
           {
             user !== null ?
               <>

@@ -18,11 +18,11 @@ export default function SubNav({}){
         {
           user.role === 'ROLE_ADMIN' || user.role === 'ROLE_SELLER'?
             <>
-             <Link to="produits/ajout">Ajoutés un produits</Link>
-             <Link to="produits">Mes produits</Link>
+             <Link to="/account/produits/ajout">Ajoutés un produits</Link>
+             <Link to="/account/produits">Mes produits</Link>
             </>
             :
-            <Link to="commandes">Mes Commandes</Link>
+            <Link to="/account/commandes">Mes Commandes</Link>
         }
         <Link to="parametres">Parametres</Link>
 

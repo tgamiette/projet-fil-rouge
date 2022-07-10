@@ -52,6 +52,10 @@ nav ul a{
   color: var(--primary-text-yellow);
 }
 
+.c-nav_right a:after{
+  display: none;
+}
+
 nav ul a:not(.logout):after, nav ul a.current{
   content: "";
   position: absolute;

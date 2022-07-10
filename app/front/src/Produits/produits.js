@@ -7,7 +7,7 @@ import {useWaitFor} from '../shared/hooks';
 export default function Produits({}){
 
   const [produits, setProduits] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState(false);
   const [filterDisplay, setFilterDisplay] = useState(false);
   const [search ,setSearch] = useState("");
   const [catSearch ,setCatSearch] = useState(false);
@@ -24,7 +24,7 @@ export default function Produits({}){
         setFilterDisplay(res['hydra:member']);
         setPagination(res['hydra:view']);
         setPageArr([]);
-        console.log(res);
+
       }
     }
   );
@@ -36,9 +36,6 @@ export default function Produits({}){
         setPageArr((pageArr) => [...pageArr, "item"]);
       }
     }
-
-
-
   }, [pagination]);
 
   useWaitFor(
@@ -120,14 +117,21 @@ export default function Produits({}){
             <div className="c-filter_input">
               <p>Trier par catégories de produits</p>
               {
-                category.map((item, index) => {
-                  return(
-                    <>
-                      <label className={item['@id']}>{item.title}</label>
-                      <input type="radio" id={item['@id']} name="category" value={item['@id']} onChange={handleCatSearch}/>
-                    </>
-                  )
-                })
+                category !== false ?
+                <>
+                  {
+                  category.map((item, index) => {
+                    return(
+                      <>
+                        <label className={item['@id']}>{item.title}</label>
+                        <input type="radio" id={item['@id']} name="category" value={item['@id']} onChange={handleCatSearch}/>
+                      </>
+                    )
+                  })
+                  }
+                </>
+                :
+                null
               }
             </div>
           </div>

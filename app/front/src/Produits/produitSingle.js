@@ -33,8 +33,10 @@ export default function ProduitSingle({}){
 
   useWaitFor(
     () => get_product_by_category(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1)),[product],(res) => {
-      setCategory(res['hydra:member']);
-      console.log('cat', res['hydra:member']);
+      if(res!== undefined){
+        setCategory(res['hydra:member']);
+        console.log('cat', res['hydra:member']);
+      }
     }
   );
 
@@ -59,12 +61,12 @@ export default function ProduitSingle({}){
           <div className="c-produit_single">
             <div className="c-produit_img">
               <div className="c-img_circle">
-                <CircularProgressbar value={(product.quantity* 100 )/objective}/>
+                <CircularProgressbar value={(product.quantity* 100 )/product.objective}/>
                 <img className="c-img_produit" src={`http://localhost:8000${product.contentUrl}`} alt="" />
               </div>
               <div className="c-product_number">
                 <span>{product.quantity}kg restant</span>
-                <span>{objective}kg disponible</span>
+                <span>{product.objective}kg disponible</span>
               </div>
             </div>
             <div className="c-produit_infos">

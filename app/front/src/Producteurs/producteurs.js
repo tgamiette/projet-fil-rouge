@@ -17,6 +17,7 @@ export default function Producteurs(){
   useWaitFor(
     () => get_all_producteurs(),[],(res) => {
       if(res !== undefined){
+        console.log(res['hydra:member']);
         setProducteurs(res['hydra:member']);
         setFilterDisplay(res['hydra:member']);
       }
@@ -41,11 +42,10 @@ export default function Producteurs(){
           {
             filterDisplay !== false ?
               filterDisplay.map((item, index) => {
-                console.log(item["roles"][0]);
                 return(
                   <>
                   {
-                    item["roles"][0] === 'ROLE_SELLER' ?
+                    item["roles"][0] === 'ROLE_SELLER' && item.products.length !== 0?
                     <div className="c-card_producteur">
                       <span className="c-producteur_img">
                         <img src="https://icons-for-free.com/download-icon-man+person+profile+user+worker+icon-1320190557331309792_512.png" alt="" />
