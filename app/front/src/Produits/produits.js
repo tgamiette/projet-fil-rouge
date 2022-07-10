@@ -110,8 +110,10 @@ export default function Produits({}){
 
         <div>
           <div className="c-filter">
-            <h2>Filtres</h2>
-            <button type="button" onClick={() => setFilterDisplay(produits)}>Effacer</button>
+            <div className="c-row">
+              <h2>Filtres</h2>
+              <button type="button" onClick={() => setFilterDisplay(produits)}>Effacer</button>
+            </div>
             <div className="c-filter_input search">
               <SearchBar dataList={produits} setFilterDisplay={setFilterDisplay} type="produits"/>
             </div>

@@ -15,8 +15,8 @@ export default function Stripes({}){
 
   useWaitFor(
     () => set_order_user(),[],(res) => {
-      console.log('order', res[0].token);
-      setClientSecret(res[0].token);
+      console.log('order', res);
+      setClientSecret(res.token);
     }
   );
 
