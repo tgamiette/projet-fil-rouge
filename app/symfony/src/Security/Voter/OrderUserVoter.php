@@ -14,13 +14,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderUserVoter extends Voter {
     public const PICKUP = 'ORDER_USER_PICKUP';
+    public const CHECK = 'ORDER_USER_CHECK';
+
     public function __construct(private readonly Security $security, private ProductsOrderRepository $productsOrderRepository) {
     }
 
     protected function supports(string $attribute, $subject): bool {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::PICKUP])
+        return in_array($attribute, [self::PICKUP, self::CHECK])
             && $subject instanceof \App\Entity\OrderUser;
     }
 
@@ -33,17 +35,23 @@ class OrderUserVoter extends Voter {
             return false;
         }
 
-
-        // ... (check conditions and return true to grant permission) ...
+        if ($this->security->isGranted("ROLE_ADMIN")) {
+            return true;
+        }
         return match ($attribute) {
             self::PICKUP => self::canPickup($subject, $user),
+            self::CHECK => self::canCheck($subject, $user),
             default => false
         };
-
-        return false;
     }
 
     private function canPickup(OrderUser $subject, UserInterface $user): bool {
+        $query = $this->productsOrderRepository->findProductsPickUp($user, $subject);
+        //TODO mettre la négation
+        return empty($query);
+    }
+
+    private function canCheck(OrderUser $subject, UserInterface $user): bool {
         $query = $this->productsOrderRepository->findProductsPickUp($user, $subject);
         //TODO mettre la négation
         return empty($query);

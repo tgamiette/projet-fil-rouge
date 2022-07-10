@@ -6,32 +6,33 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensio
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use App\Entity\OrderUser;
-use App\Repository\OrderUserRepository;
+use App\Entity\Product;
+use App\Repository\ProductsRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class GetOrdersUserDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
+class GetSelfProductsOrderUserDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface {
     private iterable $collectionExtensions;
-    private OrderUserRepository $orderUserRepository;
+    private ProductsRepository $productsRepository;
     private Security $security;
 
-    public function __construct(OrderUserRepository $orderUserRepository, Security $security, iterable $itemExtensions) {
+    public function __construct(ProductsRepository $productsRepository, Security $security, iterable $itemExtensions) {
         $this->collectionExtensions = $itemExtensions;
-        $this->orderUserRepository = $orderUserRepository;
+        $this->productsRepository = $productsRepository;
         $this->security = $security;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable {
         $user = $this->security->getUser();
-        $queryBuilder = $this->orderUserRepository->createQueryBuilder('o');
+        $queryBuilder = $this->productsRepository->createQueryBuilder('o');
         $queryNameGenerator = new QueryNameGenerator();
 
         $this->addWhere($queryBuilder);
 
         foreach ($this->collectionExtensions as $extension) {
             $extension->applyToCollection($queryBuilder, $queryNameGenerator, $resourceClass, $operationName, $context);
-//           Pagination
+
+//            Pagination
             if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName, $context)) {
                 return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
             }
@@ -41,8 +42,8 @@ class GetOrdersUserDataProvider implements RestrictedDataProviderInterface, Cont
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool {
-
-        return $resourceClass == OrderUser::class && $operationName == "GET";
+dd($operationName);
+        return $resourceClass == Product::class && $operationName == "MANAGE";
     }
 
     private function addWhere(QueryBuilder $queryBuilder): void {

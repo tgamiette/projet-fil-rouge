@@ -106,17 +106,19 @@ class ProductsOrderRepository extends ServiceEntityRepository {
         ;
     }
     */
+
+
+    // trouve les produit retirable de la commande en fonction de l'user conecter
     public function findProductsPickUp(UserInterface $user, OrderUser $orderUser) {
         $ql = $this->createQueryBuilder('po')
-            ->andWhere('po.status = :status')
+//            ->andWhere('po.status = :status')
             ->andWhere('po.order = :order')
-            ->setParameter('status', ProductsOrder::STATUT_VALIDE)
+//            ->setParameter('status', ProductsOrder::STATUT_VALIDE)
             ->setParameter('order', $orderUser->getId())
             ->innerjoin('po.product', 'product')
-            ->andWhere('product.seller = :current_user')
-            ->setParameter('current_user', $user->getUserIdentifier())
+//            ->andWhere('product.seller = :current_user')
+//            ->setParameter('current_user', $user->getUserIdentifier())
             ->getQuery()
-//        dd($ql->getSQL(),$ql->getParameters());
             ->getResult();
         return $ql;
     }

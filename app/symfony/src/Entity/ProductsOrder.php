@@ -20,7 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
     ]
 )]
-class ProductsOrder extends AbstractEntity {
+class
+ProductsOrder extends AbstractEntity {
     public const STATUT_PENDING = 'PENDING';
     public const STATUT_PENDING_RETURN = 'PENDING_RETURN';
     public const STATUT_PAID = 'PAID';
@@ -35,6 +36,7 @@ class ProductsOrder extends AbstractEntity {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['orderUser_check'])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'productsOrders')]
@@ -42,7 +44,7 @@ class ProductsOrder extends AbstractEntity {
     private $order;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productsOrders')]
-    #[Groups(['orderUser_read', 'order_users_subresource_product_order'])]
+    #[Groups(['orderUser_read', 'order_users_subresource_product_order','orderUser_check'])]
     private $product;
 
     #[ORM\Column(type: 'string')]
@@ -50,7 +52,7 @@ class ProductsOrder extends AbstractEntity {
     private $status;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(['orderUser_read', 'order_users_subresource_product_order'])]
+    #[Groups(['orderUser_read', 'order_users_subresource_product_order', 'orderUser_check'])]
     private $quantity;
 
     #[ORM\Column(type: 'float')]
