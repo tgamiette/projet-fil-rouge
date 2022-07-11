@@ -10,7 +10,7 @@ export default function Panier({}){
   const cart = useSelector(selectCart);
 
   const dispatch = useDispatch();
-  var cartPrice = 0;
+  var cartPrice = 0;const IMG_URL = process.env.REACT_APP_IMG;
 
   const handleRemove = (id) => {
     dispatch(removeCart({id: id, cart: cart.filter(item => item.id !== id)}));
