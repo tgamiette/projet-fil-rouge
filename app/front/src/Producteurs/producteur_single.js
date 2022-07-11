@@ -9,8 +9,6 @@ import { Link } from "react-router-dom";
 export default function ProducteurSingle({}){
 
   const [producteur, setProducteur] = useState(false);
-
-
   const {id} = useParams();
 
   useWaitFor(

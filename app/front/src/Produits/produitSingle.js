@@ -23,7 +23,7 @@ export default function ProduitSingle({}){
   const user = useSelector(selectUser);
 
   const objective = Math.floor(Math.random() * (300 - 105) + 105);
-
+  
   useWaitFor(
     () => get_product(id),[id],(res) => {
       setProduct(res);

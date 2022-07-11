@@ -14,7 +14,7 @@ export default function Reservation(){
 
  return(
    <div className="c-container_calendar">
-    <h1>Calendars</h1>
+    <h1>Prochaines livraisons</h1>
     <div className="calendar-container">
       <MyCalendar date={date.toDateString()}/>
     </div>

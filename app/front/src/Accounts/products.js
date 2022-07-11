@@ -18,6 +18,8 @@ export default function Products({}){
     }
   );
 
+
+
   return(
     <div className="c-account">
       <SubNav />
@@ -25,7 +27,7 @@ export default function Products({}){
         <h1>Mes produits</h1>
         <div>
           {
-            products !== [] && products !== false ?
+            products.length !== 0 && products !== false && products !== undefined ?
               <table>
                 <thead>
                   <td>Nom</td>

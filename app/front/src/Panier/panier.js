@@ -8,15 +8,19 @@ import {selectCart, removeCart} from "../redux/userCart";
 export default function Panier({}){
 
   const cart = useSelector(selectCart);
+
   const dispatch = useDispatch();
   var cartPrice = 0;
 
   const handleRemove = (id) => {
-    console.log(id);
-    dispatch(removeCart({id: id, cart: cart}));
+    dispatch(removeCart({id: id, cart: cart.filter(item => item.id !== id)}));
   }
 
-  console.log('cart', cart);
+  useEffect(() => {
+    console.log('cart', cart);
+  }, [cart]);
+
+
 
   return(
     <div className="c-container">
@@ -66,9 +70,9 @@ export default function Panier({}){
             <Link to={`stripe`} className="c-btn">Procéder au payement</Link>
           </div>
          :
-         <div className="c-commande_card resume">
+         <div className="c-commande_card resume" style={{display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-start"}}>
           <p>Effectuer des achats pour pouvoir procéder au paiements !</p>
-          <Link to={`/produits`} className="c-btn">Voir les produits</Link>
+          <Link to={`/produits`} className="c-btn" >Voir les produits</Link>
          </div>
       }
 

@@ -33,6 +33,8 @@ export default function Commandes({}){
       <SubNav />
       <div>
         <h1>Mes commandes</h1>
+        {
+          orders !== false && orders !== undefined  && orders.length !== 0?
         <table className="c-orders">
           <thead>
             <td>ID</td>
@@ -43,37 +45,33 @@ export default function Commandes({}){
           </thead>
           <tbody>
             {
-              orders !== false && orders !== undefined ?
-                <>
-                {
-                  orders.map((item, index) => {
-                    return(
-                      <>
-                      {
-                        item.buyer['@id'].split("/").pop() == user.id ?
-                          <tr key={index}>
-                             <td>{index + 1}</td>
-                             <td>n°{item['@id'].split("/").pop()}</td>
-                             <td>{item.total}€</td>
-                             <td>{item.productsOrders.length} produits</td>
-                             <td>
-                               <Qrcode text={item['@id'].split("/").pop()} size={50}/>
-                               <button type="button" className="c-btn" onClick={() => handleQrcode({commande: item['@id'].split("/").pop(), text: item['@id'].split("/").pop()})}>Voir le Qr Code</button>
-                             </td>
-                           </tr>
-                        :
-                        null
-                      }
-                      </>
-                    )
-                  })
-                }
-                </>
-              :
-              <p>Vous n'avez encore passé aucune commande !</p>
+              orders.map((item, index) => {
+                return(
+                  <>
+                  {
+                    item.buyer['@id'].split("/").pop() == user.id ?
+                      <tr key={index}>
+                         <td>{index + 1}</td>
+                         <td>n°{item['@id'].split("/").pop()}</td>
+                         <td>{item.total}€</td>
+                         <td>{item.productsOrders.length} produits</td>
+                         <td>
+                           <Qrcode text={item['@id'].split("/").pop()} size={50}/>
+                           <button type="button" className="c-btn" onClick={() => handleQrcode({commande: item['@id'].split("/").pop(), text: item['@id'].split("/").pop()})}>Voir le Qr Code</button>
+                         </td>
+                       </tr>
+                    :
+                    null
+                  }
+                  </>
+                )
+              })
             }
           </tbody>
         </table>
+      :
+      <p>Vous n'avez encore passé aucune commande !</p>
+      }
 
 
       </div>

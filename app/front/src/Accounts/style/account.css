@@ -9,6 +9,8 @@
 .c-nav.account{
     height: 100%;
 }
+
+
 .c-nav.account nav {
   width: auto!important;
 }
@@ -28,6 +30,10 @@
  font-size: 1.2rem;
 }
 
+.c-nav.account:not(.c-card){
+    margin: 20px 30px;
+}
+
 /* USER INFOS  */
 
 
@@ -37,13 +43,22 @@
   justify-content: flex-start;
   gap: 30px;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .c-user_img{
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background: #eaeaea;
   border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-user_img img{
+  width: 100%;
 }
 
 .c-user_form{
@@ -82,10 +97,12 @@ tbody td{
 
 /* AJOUT PRODUITS */
 
-.c-form{
-  width: 100%;
+.products_form{
+  width: 100%!important;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0;
 }
-
 form{
   width: 100%;
 }

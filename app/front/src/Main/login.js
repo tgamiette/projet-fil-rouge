@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import {logIn,setToken} from '../api';
 import {useDispatch} from "react-redux";
 import {login} from "../redux/userSlice";
+import {emptyCart} from "../redux/userCart";
+import './style/login.css';
 
 export default function Login(){
 
@@ -24,6 +26,7 @@ export default function Login(){
                  role: data.data.roles[0],
                  token: data.token
                }));
+               dispatch(emptyCart())
                navigate('/');
            }
          });

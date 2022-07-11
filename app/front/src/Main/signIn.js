@@ -6,11 +6,11 @@ import {useNavigate} from "react-router-dom"
 
 export default function SignIn(){
 
-  const [user, setUser] = useState({fullName: "", password: "", email: ""});
+  const [user, setUser] = useState({fullName: "", password: "", email: "", roles: ""});
   const navigate = useNavigate();
 
   useWaitFor(
-     () => add_user(user.email, user.password, user.fullName),
+     () => add_user(user.email, user.password, user.fullName, user.roles),
      [user],
      (res) => {
       if(res.id){
@@ -27,7 +27,8 @@ export default function SignIn(){
     setUser({
       email: e.target.email.value,
       password: e.target.password.value,
-      fullName: `${e.target.prenom.value} ${e.target.nom.value}`
+      fullName: `${e.target.prenom.value} ${e.target.nom.value}`,
+      roles: e.target.roles.value
     });
   }
 
@@ -50,6 +51,14 @@ export default function SignIn(){
       <div className="c-form_wrapper">
         <label className="">Prénom</label>
         <input type="text" name="prenom"  />
+      </div>
+
+      <div className="c-form_wrapper">
+      <label>Vous êtes ?</label>
+        <label className="acheteur">Acheteur</label>
+        <input type="radio" id="acheteur" name="roles"  value="ROLE_USER"/>
+        <label className="vendeur">Producteur</label>
+        <input type="radio" id="vendeur" name="roles"  value="ROLE_SELLER"/>
       </div>
 
       <div className="c-form_wrapper">

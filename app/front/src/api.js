@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 const DOMAIN_API = "http://localhost:8000/api";
 
 function axios_api_json(method, suffix_url) {
@@ -170,6 +173,10 @@ export function get_all_users() {
 
 export function get_user(id) {
   return axios_api_json("GET", `/users/${id}`);
+}
+
+export function get_user_infos(id) {
+  return axios_api_json("GET", `/user_infos/${id}`);
 }
 
 export function add_user(email, password, name, roles) {

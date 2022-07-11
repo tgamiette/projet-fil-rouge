@@ -26,17 +26,8 @@ export default function Producteurs(){
   );
 
   return(
-    <div className="c-container">
+    <div className="c-container_items">
       <div className="c-producteurs">
-        <div>
-          <div className="c-filter">
-            <h2>Rechercher un producteurs</h2>
-            <div className="c-filter_input search">
-              <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay} type="producteurs"/>
-            </div>
-          </div>
-        </div>
-
         <div className="c-producteur_div">
           <h1>Nos producteurs</h1>
           {
@@ -47,9 +38,9 @@ export default function Producteurs(){
                   {
                     item["roles"][0] === 'ROLE_SELLER' && item.products.length !== 0?
                     <div className="c-card_producteur">
-                      <span className="c-producteur_img">
-                        <img src="https://icons-for-free.com/download-icon-man+person+profile+user+worker+icon-1320190557331309792_512.png" alt="" />
-                      </span>
+                    <span className="c-user_img">
+                      <img src={require(`../assets/images/user_${item.id.toString().slice(-1)}.png`)} alt="" />
+                    </span>
                       <div className="c-producteur_infos">
                         <h2>{item['fullName']}</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla lorem est, eu imperdiet lectus pretium sed.</p>
@@ -65,6 +56,15 @@ export default function Producteurs(){
             :
             null
         }
+        </div>
+      </div>
+
+      <div>
+        <div className="c-filter">
+          <h2>Rechercher un producteurs</h2>
+          <div className="c-filter_input search">
+            <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay} type="producteurs"/>
+          </div>
         </div>
       </div>
     </div>

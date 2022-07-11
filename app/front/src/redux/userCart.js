@@ -11,11 +11,11 @@ export const userCart = createSlice({
             state.cart.push({id, quantity, name, price});
         },
         removeCart: (state, action) => {
-            const { id } = action.payload;
-            return state.cart.filter(item => item.id !== id);
+            const { id, cart} = action.payload;
+            state.cart = cart;
         },
-        emptyCart: (state) => {
-            state.cart = [];
+        emptyCart: (state, action) => {
+            return [];
         },
     },
 });

@@ -16,6 +16,8 @@ export default function Produits({}){
   const [pageArr, setPageArr] = useState([]);
   const [pageNb, setPageNb] = useState(1);
 
+  const IMG_URL = process.env.REACT_APP_IMG;
+
   useWaitFor(
     () => get_all_product(pageNb),[pageNb],(res) => {
       console.log('res', res['hydra:member']);
@@ -40,7 +42,9 @@ export default function Produits({}){
 
   useWaitFor(
     () => get_product_by_category(catSearch),[catSearch],(res) => {
-      setFilterDisplay(res['hydra:member']);
+      if(res !== undefined){
+        setFilterDisplay(res['hydra:member']);
+      }
     }
   );
 
@@ -56,6 +60,7 @@ export default function Produits({}){
 
   const handlePagination = (event) => {
     setPageNb(event);
+    window.location(0,0);
   }
 
   return(
@@ -68,7 +73,7 @@ export default function Produits({}){
               filterDisplay.map((item, index) => {
                 return(
                   <div className="c-product_card">
-                    <img src={`http://localhost:8000${item.contentUrl}`} alt="Image Produits" />
+                    <img src={`${IMG_URL}${item.contentUrl}`} alt="Image Produits" />
                     <div>
                       <p>{item.title}</p>
                       <span>Vendu par {item.seller.fullName}</span>
