@@ -25,6 +25,7 @@ export default function Nav({logged, setLogged}){
      dispatch(logout());
      dispatch(emptyCart());
      window.location.href = "/login";
+     console.log('lapin');
   }
 
   return (
