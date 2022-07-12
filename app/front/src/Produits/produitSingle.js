@@ -27,20 +27,21 @@ export default function ProduitSingle({}){
   useWaitFor(
     () => get_product(id),[id],(res) => {
       setProduct(res);
+
       console.log('res', res);
     }
   );
-
-  useWaitFor(
-    () => get_product_by_category(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1)),[product],(res) => {
-      console.log(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1));
-
-      if(res!== undefined){
-        setCategory(res['hydra:member']);
-        console.log('cat', res['hydra:member']);
-      }
-    }
-  );
+  //
+  // useWaitFor(
+  //   () => get_product_by_category(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1)),[product],(res) => {
+  //     console.log(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1));
+  //
+  //     if(res!== undefined){
+  //       setCategory(res['hydra:member']);
+  //       console.log('cat', res['hydra:member']);
+  //     }
+  //   }
+  // );
 
   const handleProduct = (e) => {
     e.preventDefault();

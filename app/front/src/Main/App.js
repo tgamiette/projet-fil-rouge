@@ -38,7 +38,7 @@ function App() {
         </div>
 
         <div>
-          <p>Face à l’inflation et au réchaffement climatique nous avons décidé d’agir et de mettre en place un market place qui permet à tout le monde d’accéder à des produits frais, locaux et BIO en circuit cours en passant directement par les producteurs. </p>
+          <p>Face à l’inflation et au réchauffement climatique nous avons décidé d’agir et de mettre en place un market place qui permet à tout le monde d’accéder à des produits frais, locaux et BIO en circuit cours en passant directement par les producteurs. </p>
           <span>Achetez en commun c’est acheter malin !</span>
           <img src={farmer} alt="Bioz - Illustration de fermier" />
         </div>
