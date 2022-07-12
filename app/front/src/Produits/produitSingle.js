@@ -23,7 +23,7 @@ export default function ProduitSingle({}){
   const user = useSelector(selectUser);
 
   const objective = Math.floor(Math.random() * (300 - 105) + 105);
-  
+
   useWaitFor(
     () => get_product(id),[id],(res) => {
       setProduct(res);
@@ -33,6 +33,8 @@ export default function ProduitSingle({}){
 
   useWaitFor(
     () => get_product_by_category(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1)),[product],(res) => {
+      console.log(product.category['@id'].substring(product.category['@id'].lastIndexOf('/') + 1));
+
       if(res!== undefined){
         setCategory(res['hydra:member']);
         console.log('cat', res['hydra:member']);

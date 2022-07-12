@@ -23,7 +23,6 @@ final class OrderUserNormalizer implements ContextAwareNormalizerInterface, Norm
         $context[self::ALREADY_CALLED] = true;
         $purchase = $this->purchaseRepository->findOneBy(['orderUser' => $object->getId()]);
         $object->token = $purchase?->getStripeToken();
-//        return $this->normalizer->normalize([['token' => $purchase->getStripeToken()]], $format, $context);
         return $this->normalizer->normalize($object, $format, $context);
     }
 

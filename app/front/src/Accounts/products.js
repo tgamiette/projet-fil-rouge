@@ -40,6 +40,8 @@ export default function Products({}){
                 <tbody>
                 {
                   products.map((item,index) => {
+                    // console.log(item);
+                    console.log(products);
                     return(
                       <tr>
                         <td className="c-first">

@@ -37,33 +37,19 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
         elseif ($operationName === 'api_order_users_products_orders_get_subresource') {
             $this->addWhereCurrentSeller($queryBuilder,);
         }
-//        TODO à remplir
-        switch ($resourceClass) {
-            case OrderUser::class :
-                $this->addWhereCurrentUser($queryBuilder, 'buyer');
-                break;
-            case OrderSeller::class :
-                $this->addWhereCurrentUser($queryBuilder, '');
-                break;
-            case User::class:
-                $this->addWhereCurrentUser($queryBuilder, '');
-                break;
-        }
     }
 
     private function addWhereCurrentUser(QueryBuilder $queryBuilder, $columName = 'customer'): void {
 
-        if ($this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
+        if (
+//            $this->security->isGranted('ROLE_ADMIN') ||
+            null === $user = $this->security->getUser()) {
             return;
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere(sprintf('%s.%s = :current_user', $rootAlias, $columName));
         $queryBuilder->setParameter(':current_user', $user->getId());
-    }
-
-    public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = []) {
-
     }
 
     private function addWhereCurrentSeller(QueryBuilder $queryBuilder,) {
@@ -79,6 +65,8 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
         $queryBuilder->innerJoin($rootAlias . '.product', 'product');
         $queryBuilder->andWhere(sprintf('%s.%s = :current_user', 'product', 'seller'));
         $queryBuilder->setParameter(':current_user', $user->getId());
+    }
 
+    public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = []) {
     }
 }

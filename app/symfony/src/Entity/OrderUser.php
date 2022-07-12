@@ -22,20 +22,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: [
-    'GET',
+    'GET' => [
+        'security' => "is_granted('ROLE_ADMIN')",
+    ],
     'MANAGE' => [
         'pagination_enabled' => false,
         'pagination_client_enabled' => true,
         'path' => 'order_users/self',
         'method' => 'GET',
-        "security_message" => "admin ou pas admin Tu n'es pas un vendeur donc va la bas",
-//            'security' => "is_granted('ROLE_SELLER')",
-//            'normalization_context' => ['groups' => '']
     ],
     'POST'
 ],
     itemOperations: [
-        'GET',
+        'GET' => [
+        ],
         'PICKUP' => [
             'path' => 'order_users/{id}/pickup',
             'method' => 'PUT',
@@ -85,7 +85,7 @@ class OrderUser {
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
     #[ApiSubresource]
-    #[Groups(['orderUser_read','orderUser_check'])]
+    #[Groups(['orderUser_read', 'orderUser_check'])]
     private $productsOrders;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
