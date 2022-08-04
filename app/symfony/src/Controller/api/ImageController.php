@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\api;
 
 use App\Repository\ProductsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,20 +19,18 @@ class ImageController extends AbstractController {
     }
 
     /**
-     * @Route("/image/{name}", name="index")
+     * @Route("/images/products/{name}", name="index")
      */
     public function index(string $name, Request $request, Security $security) {
 
-        if ($request->headers->get('hetic') !== $this->bag->get('lexik_jwt_authentication.pass_phrase')) {
-            throw new AccessDeniedHttpException("access  ?? nan je quoi pas nhan");
-        }
+    //    if ($request->headers->get('hetic') !== $this->bag->get('lexik_jwt_authentication.pass_phrase')) {
+    //        throw new AccessDeniedHttpException("access  ?? nan je quoi pas nhan");
+    //    }
 
 //        $object= $this->productsRepository->findBy(['image'=>$name]);
 //        $file =$this->storage->resolveUri($object, 'file');
 
-        $file = "../public/images/$name";
+        $file = "../public/asset/images/products/$name";
         return $this->file($file, 'product', ResponseHeaderBag::DISPOSITION_INLINE);
     }
 }
-
-

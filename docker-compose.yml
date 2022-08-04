@@ -16,7 +16,6 @@ services:
       DATABASE_URL: mysql://root:azerty@db:3306/app
     ports:
       - "8000:80"
-
   node:
     build:
       context: .
@@ -30,7 +29,6 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - FAST_REFRESH=false
-
   db:
     image: mariadb:latest
     restart: always
@@ -42,20 +40,16 @@ services:
       MYSQL_DATABASE: app
       MYSQL_USER: root
       MYSQL_PASSWORD: azerty
-
-
   phpmyadmin:
     image: phpmyadmin:latest
     depends_on:
       - db
     ports:
       - "8001:80"
-
   maildev:
     image: maildev/maildev
     ports:
       - "1080:80"
-
 volumes:
   #  app-vendor:
   db-data:

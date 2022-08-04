@@ -5,7 +5,7 @@ import './style/Nav.css'
 import {getCookie, eraseCookie} from '../api';
 import {ShoppingBasket} from '@styled-icons/remix-line/ShoppingBasket';
 import {AccountCircle} from '@styled-icons/material-sharp/AccountCircle';
-import logout from "../redux/userSlice";
+import {logout} from "../redux/userSlice";
 import {useSelector, useDispatch} from 'react-redux';
 import {selectUser} from "../redux/userSlice";
 
@@ -33,7 +33,6 @@ export default function Nav({logged, setLogged}){
       <nav>
         <ul>
           <Link to="/">Accueil</Link>
-          <Link to="/commandes">Les commandes</Link>
           <Link to="/produits">Les produits</Link>
           <Link to="/producteurs">Nos producteurs</Link>
           <Link to="/map">Carte</Link>

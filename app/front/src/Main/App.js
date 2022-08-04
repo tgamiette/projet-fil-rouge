@@ -14,7 +14,7 @@ function App() {
   const [filterDisplay, setFilterDisplay] = useState(false);
 
   useWaitFor(
-    () => get_all_product(),[],(res) => {
+    () => get_all_product(1),[],(res) => {
       if(res !== undefined){
         setProduct(res['hydra:member']);
 
@@ -50,7 +50,7 @@ function App() {
         <h2>Nos nouveaux produits</h2>
         <div className="c-last_product">
         {
-          product !== false ?
+          product !== false  && product !== undefined?
              product.map((item,index) => {
                if(index < 5){
                  return(

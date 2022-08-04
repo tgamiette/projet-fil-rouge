@@ -24,7 +24,7 @@ export default function Login(){
                  role: data.data.roles[0],
                  token: data.token
                }));
-               navigate('/commandes');
+               navigate('/');
            }
          });
       }

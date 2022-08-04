@@ -98,17 +98,5 @@ export default [
         title: 'Multi-day Event',
         start: new Date(2022, 3, 20, 19, 30, 0),
         end: new Date(2022, 3, 22, 2, 0, 0),
-    },
-    {
-        id: 14,
-        title: 'Todayq',
-        start: new Date(new Date().setHours(new Date().getHours() - 3)),
-        end: new Date(new Date().setHours(new Date().getHours() + 3)),
-    },
-    {
-        id: 15,
-        title: 'Point in Time Event',
-        start: now,
-        end: now,
-    },
+    }
 ]

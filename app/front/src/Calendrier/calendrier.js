@@ -13,18 +13,12 @@ export default function Reservation(){
  const [date, setDate] = useState(new Date());
 
  return(
-   <>
+   <div className="c-container_calendar">
     <h1>Calendars</h1>
     <div className="calendar-container">
       <MyCalendar date={date.toDateString()}/>
     </div>
-
-    <div className="selected-date">
-     <span>Selected date :{date.toDateString()}</span>
-    </div>
-
-    <div>{date.toDateString()}</div>
-  </>
+  </div>
  )
 }
 
@@ -42,7 +36,6 @@ const MyCalendar = (todaydate) => {
   const localizer = momentLocalizer(moment);
 
   const slotSelected = (slotInfo) => {
-    alert(`start ${slotInfo.start.toLocaleString()}`);
     setView('day');
   }
 
@@ -70,12 +63,7 @@ const MyCalendar = (todaydate) => {
   return(
     <>
       <div className="calendar-container">
-        <div class="c-calendar_form" >
-          <input type="text" name="title" value={newEvent.title} onChange={(e) => setNewEvent({...newEvent, title: e.target.value})} />
-          <DatePicker value={newEvent.start} onChange={(start) =>  setNewEvent({...newEvent, start})}/>
-          <DatePicker value={newEvent.end} onChange={(end) =>  setNewEvent({...newEvent, end})}/>
-          <button type="button" onClick={handleAddEvent}>Add Events</button>
-        </div>
+
         <Calendar selectable localizer={localizer} events={allEvents} defaultView={view} startAccessor="start" endAccessor="end"
         onSelectSlot={(slotInfo) => slotSelected(slotInfo)}
         onSelectEvent={(event) => eventSelected(event)} style={{height: 500}}/>

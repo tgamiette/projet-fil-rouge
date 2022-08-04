@@ -5,8 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Controller\CreateMediaObjectAction;
-use App\Controller\CreateProductAction;
+use App\Controller\api\CreateProductAction;
 use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +15,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 /**
  * @Vich\Uploadable
@@ -78,7 +76,7 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write', 'order_users_subresource_product_order'])]
     private $title;
 
     #[ORM\Column(type: 'integer')]
@@ -109,9 +107,9 @@ class Product extends AbstractEntity {
     #[Groups(['products_read'])]
     public $seller;
 
-    #[Groups(['products_read','products_write'])]
-    #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
-    private $objective;
+//    #[Groups(['products_read','products_write'])]
+//    #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
+//    private $objective;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
@@ -130,6 +128,10 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
+
+    #[Groups(['products_write', 'products_read'])]
+    #[ORM\Column(type: 'integer')]
+    private $objective;
 
 
     public function __construct($array = null) {
@@ -211,21 +213,6 @@ class Product extends AbstractEntity {
         return $this;
     }
 
-    public function getObjective(): ?Objective {
-        return $this->objective;
-    }
-
-    public function setObjective(Objective $objective): self {
-        // set the owning side of the relation if necessary
-        if ($objective->getProduct() !== $this) {
-            $objective->setProduct($this);
-        }
-
-        $this->objective = $objective;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, ProductsOrder>
      */
@@ -276,6 +263,16 @@ class Product extends AbstractEntity {
                 $images->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getObjective(): ?int {
+        return $this->objective;
+    }
+
+    public function setObjective(int $objective): self {
+        $this->objective = $objective;
 
         return $this;
     }

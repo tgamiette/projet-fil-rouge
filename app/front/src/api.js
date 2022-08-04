@@ -6,6 +6,9 @@ function axios_api_json(method, suffix_url) {
     if(loggedIn()){
       auth = getCookie('user_token');
     }
+    else{
+      auth = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTcwMTIwNDQsImV4cCI6MzAwMDAxNjU3MDEyMDQ0LCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIn0.IDjGf6dIKbdjLOUJUITF7lL-c1b4zmWmXIrold7GolOOVbJwMmJo9FueN1Uovt5koyBz59SutNWTQBUExXO_GY5emBHxSEvZzj_0bZ7PmX2FrDYsa-b9HH0nFY4m63-2k8h28fqr42mSzy_m4rZTrUQ_IRjvCebNIDRaxHW74k6iMPD3aL-hgQsbfOKfYArrWpOqvdwTQx52xzBQZsk8qEHQp59Fx7pwp3-Y4FWioELPNpctC2_IBFGw6M_f2uMTfKYQGdQMcMvGvlAGy94dPcj7m3Q-DjbdnbQUr2EqF4-u_eXVrzyXPsU1XBnU3rD4O1hrH7v1vXkS8f-PVF91HQ";
+    }
 
     console.log(auth);
     var myHeaders = new Headers();
@@ -15,7 +18,7 @@ function axios_api_json(method, suffix_url) {
     var raw = JSON.stringify({});
 
     var requestOptions = {
-      method: 'GET',
+      method: method,
       headers: myHeaders,
       redirect: 'follow'
     };
@@ -27,8 +30,8 @@ function axios_api_json(method, suffix_url) {
 }
 
 // Products
-export function get_all_product() {
-  return axios_api_json("GET", "/products/");
+export function get_all_product(page) {
+  return axios_api_json("GET", `/products?page=${page}`);
 }
 
 export function get_product(id) {
@@ -43,7 +46,11 @@ export function get_product_by_category(id) {
   return axios_api_json("GET", `/products?category=${id}`);
 }
 
-export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: File) {
+export function delete_product(id) {
+  return axios_api_json("DELETE", `/products/${id}`);
+}
+
+export function add_product(title : String, description: String, price: Int, quantity: Int, category: String, file: Arr, objective: Int) {
     const url = DOMAIN_API +"/products";
     let auth;
 
@@ -56,26 +63,31 @@ export function add_product(title : String, description: String, price: Int, qua
     formData.append('description', description);
     formData.append('price', price);
     formData.append('quantity', quantity);
+    formData.append("file", file, "cap.png");
     formData.append('category', category);
-    formData.append('file', file);
+    formData.append('objective', objective);
+
+    console.log(formData);
+
 
     return fetch(url,{
         method:"POST",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${auth}`,
-            "Access-Control-Allow-Origin": "*"
+            'Authorization': `Bearer ${auth}`
         },
-        body: formData
-    }).then((response) => {
-        console.log(response);
-        if(response.status===200){
+        body: formData,
+        redirect: 'follow'
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+        if(result.status===200){
             window.location.href = `http://localhost:3001/account/produits`;
         }else{
             return false;
         }
-    }).catch((error) => { console.error(error);return false;})
+    })
+    .catch(error => console.log('error', error));
 }
 
 // Categories
@@ -153,7 +165,7 @@ export function get_user(id) {
   return axios_api_json("GET", `/users/${id}`);
 }
 
-export function add_user(email, password, name) {
+export function add_user(email, password, name, roles) {
     const url = DOMAIN_API +"/users"
     console.log('email', password);
     return fetch(url,{
@@ -165,7 +177,8 @@ export function add_user(email, password, name) {
         body: JSON.stringify({
             email: email,
             password: password,
-            fullName: name
+            fullName: name,
+            roles: [roles]
         })
     })
     .then(response => response.json())

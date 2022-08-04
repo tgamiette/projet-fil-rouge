@@ -23,7 +23,7 @@ build-dev:
 		docker-compose exec php sh -c 'bin/console assets:install public'
 		docker-compose exec php sh -c 'bin/console cache:clear'
 		make ky
-		cd app/front && yarn install && yarn run build
+#		cd app/front && yarn install && yarn run build
 
 ky:
 		docker-compose exec php sh -c 'set -e ;apt-get install -y openssl;'

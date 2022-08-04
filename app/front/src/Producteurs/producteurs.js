@@ -29,22 +29,12 @@ export default function Producteurs(){
       <div className="c-producteurs">
         <div>
           <div className="c-filter">
-            <h2>Filtres</h2>
+            <h2>Rechercher un producteurs</h2>
             <div className="c-filter_input search">
-              <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay}/>
+              <SearchBar dataList={producteurs} setFilterDisplay={setFilterDisplay} type="producteurs"/>
             </div>
-            <div className="c-filter_input">
-              <label>Trier par proximité</label>
-              <input type="radio" name="kilometer" value="5"  placeholder=""/>
-              <input type="radio" name="kilometer" value="10" />
-              <input type="radio" name="kilometer" value="20" />
-              <input type="radio" name="kilometer" value="40" />
-              <input type="radio" name="kilometer" value="50" />
-            </div>
-            <div className="c-filter_input">
-              <label>Trier par produits</label>
-              <input type="radio" name="" value="" />
-            </div>
+
+
           </div>
         </div>
 

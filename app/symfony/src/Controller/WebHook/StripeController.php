@@ -2,13 +2,12 @@
 
 namespace App\Controller\WebHook;
 
-use App\Entity\Product;
 use App\Entity\ProductsOrder;
 use App\Entity\Purchase;
 use App\Repository\PurchaseRepository;
-use App\Services\OrderHelper;
 use App\Services\ProductsOrderHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,21 +44,21 @@ class StripeController extends AbstractController {
             case 'payment_intent.succeeded':
                 try {
                     $paymentIntent = $event->data->object;
+                    //$metadata = $paymentIntent->metadata;
                     $purchase = $this->purchaseRepository->findOneBy(['stripeToken' => $paymentIntent->client_secret]);
                     if (!$purchase) {
-                        throw new \Exception("Purchase non trouvé", 500);
+                        throw new Exception("Purchase non trouvée", 500);
                     }
-                    //$metadata = $paymentIntent->metadata;
                     self::successPayment($purchase);
-
                 }
-                catch (\Exception $exception) {
+                catch (Exception $exception) {
                     return $this->json($exception, 500);
                 }
 
                 $this->json($paymentIntent, 400);
+                break;
             default:
-                echo 'reception evenement inconnu' . $event->type;
+                echo "réception de l'évènement inconnu" . $event->type;
         }
         return $this->json($paymentIntent, 200);
     }
@@ -67,11 +66,17 @@ class StripeController extends AbstractController {
     /*
      * Valide la commande
      */
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
     private function successPayment(Purchase $purchase) {
 
         $purchase->setStatus(Purchase::STATUS_PAID);
-        $OrderUser = $purchase->getOrderUser();
-        $productsOrder = $OrderUser->getProductsOrders();
+        $productsOrder = $purchase->getOrderUser()->getProductsOrders();
+        // TODO appele un helper qui ce chargera de valider les produits de la commande et checker les objectif par la suite
+
+        $this->productsOrderHelper->validateProductOrderList($productsOrder);
         foreach ($productsOrder as $productOrder) {
             $productOrder->setStatus(ProductsOrder::STATUT_PAID);
             $this->productsOrderHelper->checkObjective($productOrder);
@@ -79,6 +84,4 @@ class StripeController extends AbstractController {
 
         $this->em->flush();
     }
-
-
 }

@@ -2,17 +2,35 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\ProductsOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ProductsOrderRepository::class)]
+#[ApiResource(
+    subresourceOperations: [
+        'api_order_users_products_orders_get_subresource' => [
+            'method' => 'GET',
+            'normalization_context' => [
+                'groups' => ['order_users_subresource_product_order'],
+            ],
+        ],
+    ]
+)]
 class ProductsOrder extends AbstractEntity {
     public const STATUT_PENDING = 'PENDING';
     public const STATUT_PENDING_RETURN = 'PENDING_RETURN';
     public const STATUT_PAID = 'PAID';
     public const STATUT_RETURN = 'RETURN';
-    public const STATUT_VALIDE = 'VALID';
+    public const STATUT_VALIDE = 'VALIDE';
     public const STATUT_REFUSE = 'REFUSE';
+    public const STATUT_SEND = 'SEND';
+    public const STATUT_DELIVER = 'DELIVER';
+
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,18 +38,19 @@ class ProductsOrder extends AbstractEntity {
     private $id;
 
     #[ORM\ManyToOne(targetEntity: OrderUser::class, inversedBy: 'productsOrders')]
+    #[ORM\JoinColumn(nullable: false)]
     private $order;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productsOrders')]
+    #[Groups(['orderUser_read', 'order_users_subresource_product_order'])]
     private $product;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['orderUser_read'])]
     private $status;
 
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
-
     #[ORM\Column(type: 'float')]
+    #[Groups(['orderUser_read', 'order_users_subresource_product_order'])]
     private $quantity;
 
     #[ORM\Column(type: 'float')]
@@ -43,19 +62,19 @@ class ProductsOrder extends AbstractEntity {
     #[ORM\Column(type: 'integer')]
     private $total;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
-
+    #[ORM\ManyToOne(targetEntity: OrderSeller::class, inversedBy: 'productsOrders')]
+    #[ORM\JoinColumn(nullable: true)]
+    private $orderSeller;
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getorder(): ?OrderUser {
+    public function getOrder(): ?OrderUser {
         return $this->order;
     }
 
-    public function setorder(?OrderUser $order): self {
+    public function setOrder(?OrderUser $order): self {
         $this->order = $order;
 
         return $this;
@@ -71,22 +90,12 @@ class ProductsOrder extends AbstractEntity {
         return $this;
     }
 
-    public function getStatus(): ?int {
+    public function getStatus(): string {
         return $this->status;
     }
 
     public function setStatus(string $status): self {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -131,14 +140,12 @@ class ProductsOrder extends AbstractEntity {
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
+    public function getOrderSeller(): ?OrderSeller {
+        return $this->orderSeller;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
+    public function setOrderSeller(?OrderSeller $orderSeller): self {
+        $this->orderSeller = $orderSeller;
 
         return $this;
     }

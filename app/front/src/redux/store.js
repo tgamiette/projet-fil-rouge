@@ -14,12 +14,13 @@ import {
 } from 'redux-persist';
 
 const persistConfig = {
-    key: 'counter',
-    storage,
+    key: 'root_key_in_localstorage',
+    storage
 };
 
 const reducers = combineReducers({ user: userReducer, cart: cartReducer });
 const persistedReducer = persistReducer(persistConfig, reducers);
+
 
 
 export default configureStore({
