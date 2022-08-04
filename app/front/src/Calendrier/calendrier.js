@@ -13,8 +13,8 @@ export default function Reservation(){
  const [date, setDate] = useState(new Date());
 
  return(
-   <div className="c-container_map">
-    <h1>Calendars</h1>
+   <div className="c-container_calendar">
+    <h1>Prochaines livraisons</h1>
     <div className="calendar-container">
       <MyCalendar date={date.toDateString()}/>
     </div>

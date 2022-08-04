@@ -57,8 +57,7 @@ class AppFixtures extends Fixture {
             $userInfo->setUser($user)
                 ->setAdress($faker->address())
                 ->setImage($faker->image())
-                ->setDescription($faker->paragraph(1))
-                ->setCreatedAt(new \DateTime());
+                ->setDescription($faker->paragraph(1));
             $manager->persist($userInfo);
 
             $category = new Category();
@@ -78,7 +77,6 @@ class AppFixtures extends Fixture {
                 $orderSeller = new OrderSeller();
                 $orderSeller->setProduct($product)
                     ->setSeller($user)
-                    ->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
                     ->setQuantity(5)
                     ->setTotal(5 * $product->getPrice());
                 $manager->persist($orderSeller);
@@ -93,12 +91,9 @@ class AppFixtures extends Fixture {
                         ->setRoles(['ROLE_USER']);
                     $manager->persist($users);
                     $orderUser = new OrderUser();
-                    $orderUser->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-3 months', 'now')))
-                        ->setBuyer($users)
+                    $orderUser->setBuyer($users)
                         ->setTotal($product->getPrice())
-                    ->setCreatedAt(new \DateTime())->setUpdatedAt(new \DateTime());
-
-
+                        ->setCreatedAt(new \DateTime());
                     $manager->persist($orderUser);
                 }
                 var_dump($p);

@@ -29,7 +29,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "security" => "is_granted('ROLE_ADMIN') or object.id == user.id",
         ],
     ],
-    denormalizationContext: ['disable_type_enforcement' => true], normalizationContext: ["groups" => ['users_read']]
+    denormalizationContext: ['disable_type_enforcement' => true],
+    normalizationContext: ["groups" => ['users_read']],
 )]
 #[UniqueEntity("email", "Un Utilisateur existe déja avec cet email")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface {
@@ -45,14 +46,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[Groups(['orderUser_read', 'users_read', 'products_read'])]
     private $email;
 
-
     #[ORM\Column(type: 'json')]
     #[Groups(['users_read'])]
     private $roles = [];
 
     #[Assert\NotBlank(message: 'Mot de passe requit')]
-//    #[Assert\Type(type: "string", message: 'Mo')]
-//    #[Groups()]
     #[ORM\Column(type: 'string')]
     private $password;
 
@@ -238,13 +236,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection<int, OrderSeller>
      */
-    public function getOrderSellers(): Collection
-    {
+    public function getOrderSellers(): Collection {
         return $this->orderSellers;
     }
 
-    public function addOrderSeller(OrderSeller $orderSeller): self
-    {
+    public function addOrderSeller(OrderSeller $orderSeller): self {
         if (!$this->orderSellers->contains($orderSeller)) {
             $this->orderSellers[] = $orderSeller;
             $orderSeller->setUser($this);
@@ -253,8 +249,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function removeOrderSeller(OrderSeller $orderSeller): self
-    {
+    public function removeOrderSeller(OrderSeller $orderSeller): self {
         if ($this->orderSellers->removeElement($orderSeller)) {
             // set the owning side to null (unless already changed)
             if ($orderSeller->getSeller() === $this) {
@@ -268,13 +263,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @return Collection<int, OrderUser>
      */
-    public function getOrderUsers(): Collection
-    {
+    public function getOrderUsers(): Collection {
         return $this->orderUsers;
     }
 
-    public function addOrderUser(OrderUser $orderUser): self
-    {
+    public function addOrderUser(OrderUser $orderUser): self {
         if (!$this->orderUsers->contains($orderUser)) {
             $this->orderUsers[] = $orderUser;
             $orderUser->setBuyer($this);
@@ -283,8 +276,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function removeOrderUser(OrderUser $orderUser): self
-    {
+    public function removeOrderUser(OrderUser $orderUser): self {
         if ($this->orderUsers->removeElement($orderUser)) {
             // set the owning side to null (unless already changed)
             if ($orderUser->getBuyer() === $this) {

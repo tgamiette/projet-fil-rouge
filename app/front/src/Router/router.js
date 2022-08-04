@@ -8,7 +8,6 @@ import Maps from "../Map/map";
 import Calendrier from "../Calendrier/calendrier";
 import Producteurs from "../Producteurs/producteurs";
 import ProducteurSingle from "../Producteurs/producteur_single";
-import Commande from "../Commande/commande";
 import Login from "../Main/login";
 import Account from "../Accounts/account";
 import Parametres from "../Accounts/parametres";
@@ -43,7 +42,6 @@ export default function Router({}){
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/map" element={<Maps />} />
-            <Route path="/commandes" element={<Commande />} />
             <Route path="/producteurs" element={<Producteurs />} />
             <Route path="/producteur/:id" element={<ProducteurSingle />} />
             <Route path="/produits/:id" element={<ProduitSingle />} />
@@ -55,9 +53,6 @@ export default function Router({}){
                <Route index element={<Panier />} />
                <Route path="stripe" element={<Stripes />} />
             </Route>
-            <Route path="/commandes" element={
-                  <NeedAuth children={<Commande />}></NeedAuth>
-            }/>
             <Route path="/calendrier" element={
                   <NeedAuth children={<Calendrier />}></NeedAuth>
             }/>

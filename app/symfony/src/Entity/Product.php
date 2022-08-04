@@ -24,7 +24,6 @@ use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 #[ApiResource(
     collectionOperations: [
         'GET',
-        'POST',
         'MANAGE' => [
             'pagination_enabled' => false,
             'pagination_client_enabled' => true,
@@ -48,7 +47,7 @@ use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
         'GET',
         'PUT' => [
             "security_message" => "Tu n'as pas les droits sur ce produit ",
-            "security" => "is_granted('ROLE_ADMIN') and object.seller == user",
+            "security" => "is_granted('ROLE_ADMIN') or object.seller == user",
         ],
         'DELETE' => [
             "security_message" => "Tu n'as pas les droits sur ce produit ",
@@ -76,47 +75,41 @@ class Product extends AbstractEntity {
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Titre obligatoire')]
-    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write','order_users_subresource_product_order'])]
+    #[Groups(['users_read', 'products_read', 'orderUser_read', 'orderSeller_read', 'category_read', 'products_write', 'order_users_subresource_product_order', 'orderUser_check', 'products_self'])]
     private $title;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: 'Prix manquant')]
     #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
-    #[Groups(['products_read', 'orderUser_read', 'products_write'])]
+    #[Groups(['products_read', 'orderUser_read', 'products_write', 'products_self'])]
     private $price;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['products_read', 'category_read', 'products_write'])]
+    #[Groups(['products_read', 'category_read', 'products_write', 'products_self'])]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     #[Assert\Type(Category::class, message: 'object incorrect ?')]
     #[Assert\NotBlank(message: 'category obligatoire')]
-    #[Groups(['products_read', 'products_write'])]
+    #[Groups(['products_read', 'products_write', 'products_self'])]
     public $category;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: 'quantité manquant')]
     #[Assert\Positive(message: 'Valeur positive??')]
     #[Assert\Type(type: 'integer', message: 'type incorrecte {{ value }} pas {{ type }}')]
-    #[Groups(['products_read', 'products_write'])]
+    #[Groups(['products_read', 'products_write', 'products_self'])]
     private $quantity;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[Assert\NotBlank(message: 'vendeur manquant')]
-    #[Groups(['products_read'])]
+    #[Groups(['products_read', 'products_self'])]
     public $seller;
-
-//    #[Groups(['products_read','products_write'])]
-//    #[ORM\OneToOne(mappedBy: 'product', targetEntity: Objective::class, cascade: ['persist', 'remove'])]
-//    private $objective;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductsOrder::class)]
     private $productsOrders;
 
 
-//    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
-//    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['products_read'])]
     public ?string $contentUrl = null;
 
@@ -129,9 +122,9 @@ class Product extends AbstractEntity {
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
-    #[Groups(['products_write'])]
+    #[Groups(['products_write', 'products_read'])]
     #[ORM\Column(type: 'integer')]
-    private $objective;
+    private ?int $objective;
 
 
     public function __construct($array = null) {
@@ -267,13 +260,11 @@ class Product extends AbstractEntity {
         return $this;
     }
 
-    public function getObjective(): ?int
-    {
+    public function getObjective(): ?int {
         return $this->objective;
     }
 
-    public function setObjective(int $objective): self
-    {
+    public function setObjective(int $objective): self {
         $this->objective = $objective;
 
         return $this;

@@ -15,9 +15,6 @@ class AuthenticationSuccessListener {
             'username' => $user->getUserIdentifier(),
             'id' => $user->getId(),
         );
-
-//        dd($data,$user);
-
         $event->setData($data);
     }
 }

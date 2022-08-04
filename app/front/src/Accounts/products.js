@@ -18,6 +18,8 @@ export default function Products({}){
     }
   );
 
+
+
   return(
     <div className="c-account">
       <SubNav />
@@ -25,7 +27,7 @@ export default function Products({}){
         <h1>Mes produits</h1>
         <div>
           {
-            products !== [] && products !== false ?
+            products.length !== 0 && products !== false && products !== undefined ?
               <table>
                 <thead>
                   <td>Nom</td>
@@ -38,9 +40,14 @@ export default function Products({}){
                 <tbody>
                 {
                   products.map((item,index) => {
+                    // console.log(item);
+                    console.log(products);
                     return(
                       <tr>
-                        <td>{item.contentUrl} {item.title}</td>
+                        <td className="c-first">
+                          <img className="c-account_img" src={`http://localhost:8000${item.contentUrl}`} alt="" />
+                            {item.title}
+                        </td>
                         <td>{item.price}€/kg</td>
                         <td>{item.quantity} kg</td>
                         <td>{item.objective} kg</td>

@@ -1,5 +1,9 @@
-import React from 'react';
+import React, {useDtate} from 'react';
 import SubNav from './nav'
+
+import Qrcode from '../Components/Qrcode/qrcode';
+
+
 export default function Parametres({}){
 
   return(
@@ -7,7 +11,7 @@ export default function Parametres({}){
       <SubNav />
       <div className="c-parameters">
         <h1>Paramètres</h1>
-
+        <Qrcode />
       </div>
 
     </div>

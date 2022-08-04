@@ -9,8 +9,6 @@ import { Link } from "react-router-dom";
 export default function ProducteurSingle({}){
 
   const [producteur, setProducteur] = useState(false);
-
-
   const {id} = useParams();
 
   useWaitFor(
@@ -31,7 +29,7 @@ export default function ProducteurSingle({}){
             <div className="c-producteur_info">
               <p>{producteur['fullName']}</p>
               <p>{producteur['description']}</p>
-              <button className="c-btn">Voir tous mes produits</button>
+              // <button className="c-btn">Voir tous mes produits</button>
             </div>
           </div>
         </div>
@@ -40,13 +38,13 @@ export default function ProducteurSingle({}){
           <h2>Mes produits</h2>
           <div className="c-products_row">
           {
-            producteur !== false ?
+            producteur !== false && producteur['products'].length !== 0?
               producteur['products'].map((item) => {
                 return(
                   <Link to={`/produits/${item['@id'].charAt(item['@id'].length - 1)}`}>
                     <div className="c-product_card">
                       <span className="c-product_img">
-                        <img src="" alt="" />
+                      <img src={`http://localhost:8000${item.contentUrl}`} alt="Image Produits" />
                       </span>
                       <p>{item['title']}</p>
                     </div>
@@ -54,7 +52,7 @@ export default function ProducteurSingle({}){
                 )
               })
             :
-            null
+            <p>{producteur['fullName']} n'a pas encore ajoutés de produits à la vente !</p>
           }
           </div>
         </div>

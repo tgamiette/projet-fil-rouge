@@ -7,9 +7,6 @@ ps:
 up:
 		docker-compose up -d
 
-fix:
-		docker-compose exec apache sh -c 'vendor/bin/php-cs-fixer fix src/'
-
 bash:
 	docker exec projet-fil-rouge-php-1 bash
 
@@ -23,7 +20,7 @@ build-dev:
 		docker-compose exec php sh -c 'bin/console assets:install public'
 		docker-compose exec php sh -c 'bin/console cache:clear'
 		make ky
-#		cd app/front && yarn install && yarn run build
+		cd app/front && npm install && npm run build
 
 ky:
 		docker-compose exec php sh -c 'set -e ;apt-get install -y openssl;'

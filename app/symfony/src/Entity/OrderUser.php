@@ -5,7 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use App\Controller\api\CheckOrderUser;
 use App\Controller\api\PickUpProduct;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OrderUserRepository;
@@ -20,11 +22,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderUserRepository::class)]
 #[ORM\Table(name: '`order_user`')]
 #[ApiResource(collectionOperations: [
-    'GET',
+    'GET' => [
+        'security' => "is_granted('ROLE_ADMIN')",
+    ],
+    'MANAGE' => [
+        'pagination_enabled' => false,
+        'pagination_client_enabled' => true,
+        'path' => 'order_users/self',
+        'method' => 'GET',
+    ],
     'POST'
 ],
     itemOperations: [
-        'GET',
+        'GET' => [
+        ],
         'PICKUP' => [
             'path' => 'order_users/{id}/pickup',
             'method' => 'PUT',
@@ -34,6 +45,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             'controller' => PickUpProduct::class,
             'validation_groups' => [''],
 //            'denormalization_context' => ['groups' => ['']]
+        ],
+        'CHECK' => [
+            'path' => 'order_users/{id}/check',
+            'method' => 'GET',
+            'security_post_denormalize' => "is_granted('ORDER_USER_CHECK', previous_object)",
+            'controller' => CheckOrderUser::class,
+            'normalization_context' => ['groups' => ['orderUser_check']]
         ]
     ],
     attributes: [
@@ -45,6 +63,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['orderUser_read']])]
 //todo filter par status de commande
 #[ApiFilter(RangeFilter::class, properties: ['total'])]
+#[ApiFilter(NumericFilter::class, properties: ['id'])]
 class OrderUser {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -56,18 +75,17 @@ class OrderUser {
     #[Groups(['orderUser_read', 'selfOrder_read'])]
     private $total;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['orderUser_read'])]
+
     #[AssertCustom\MinimalProperties(options: [])]
     #[Assert\NotBlank()]
-    private $products = [];
+    private array $products;
 
     #[ORM\OneToMany(mappedBy: 'orderUser', targetEntity: Purchase::class)]
     private $purchases;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: ProductsOrder::class)]
     #[ApiSubresource]
-    #[Groups(['orderUser_read'])]
+    #[Groups(['orderUser_read', 'orderUser_check'])]
     private $productsOrders;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orderUsers')]
@@ -77,6 +95,7 @@ class OrderUser {
     #[ORM\OneToMany(mappedBy: 'orderUserTest', targetEntity: ProductsOrder::class)]
     private $ProductOrdertest;
 
+    #[Groups(['orderUser_read'])]
     public ?string $token;
 
     use TimestampableTrait;

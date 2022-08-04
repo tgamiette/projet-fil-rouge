@@ -57,7 +57,7 @@ export default function FormmProduits({}){
   return(
     <div className="c-account">
      <SubNav />
-    <div className="c-form">
+    <div className="c-form products_form">
         <h1>Ajout d'un produit</h1>
         <form onSubmit={handleSubmit} enctype="multipart/form-data">
           <div className="c-form_wrapper">

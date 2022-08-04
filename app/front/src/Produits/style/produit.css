@@ -1,6 +1,17 @@
-.c-produits{
+.c-container_items, .c-produits{
+  display: grid!important;
+  grid-template-columns: 1fr 0.25fr!important;
+  grid-gap: 30px;
+  height: 100%;
+
+  max-width: 1400px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.c-container_products{
   display: grid;
-  grid-template-columns: 1fr 0.5fr;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
   height: 100%;
 }
@@ -111,6 +122,7 @@ input{
 
 .c-popup_bg.active{
   display: flex;
+  position: fixed;
 }
 
 .c-popup_buy{
@@ -152,4 +164,31 @@ input{
 
 .c-btn_grp > a{
   margin-left: 10px;
+}
+
+.c-pagination{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.c-pagination p{
+  border-radius: 20px;
+  background: #fff;
+  width: 2rem;
+  color: #000;
+  font-size: 1rem;
+  margin-right: 25px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-pagination p.current{
+  border-radius: 20px;
+  background: var(--primary-text-yellow);
+  color: #fff;
 }
